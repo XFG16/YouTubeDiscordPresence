@@ -3,6 +3,13 @@
  - This folder should be loaded into ```chrome://extensions```
  - From the ```NativeApp``` folder, move the file named ```com.ytdp.staller.json``` to ```~/Library/Application Support/Google/Chrome/NativeMessagingHosts```
  - Make sure to compile ```staller.cpp```, located in the ```Native App``` folder. Name the compiled file ```staller``` with no file extension
+   - create ~/.zshrc if the file does not exist
+   - open ~/.zshrc and export the path for finding discord dylib:
+     - export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:~/Documents/repos/YouTubeDiscordPresence/lib
+   - To allow discord dylib runnable from mac (only needs to run once):
+   ```sudo xattr -r -d com.apple.quarantine ~/Documents/repos/YouTubeDiscordPresence/lib```
+   - cd NativeApp
+   - run ```make staller```
  - Make sure to run over ```com.ytdp.staller.json``` and check if the exectuable file path and the Chrome extension ID are correct
  - For this extension to work, you must have a tab with a video on Youtube open
 ## Instructions on committing from a terminal
