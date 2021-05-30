@@ -1,5 +1,5 @@
 # YouTubeDiscordPresence for macOS
-## Notes
+## Important notes
  - From the ```NativeApp``` folder, move the file named ```com.ytdp.staller.json``` to ```~/Library/Application Support/Google/Chrome/NativeMessagingHosts```
 ## Instructions on committing from a terminal
  - Run ```git status``` to check if anything needs to be uploaded
