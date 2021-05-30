@@ -11,7 +11,7 @@ setInterval(function() {
             currentTime: document.querySelector("#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > div.ytp-time-display.notranslate > span.ytp-time-current").innerText,
             duration: document.querySelector("#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > div.ytp-time-display.notranslate > span.ytp-time-duration").innerText,
             channelName: document.querySelector("#text > a").innerText,
-            channelImage: document.querySelector("#img").src,
+            channelImage: document.querySelector("#content #page-manager #meta #img").src,
             notPlayingAd: document.querySelector("div.ytp-ad-player-overlay-instream-info") == null,
             link: document.URL
         });
