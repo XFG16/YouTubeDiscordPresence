@@ -1,5 +1,3 @@
-// note that the JSON file should be located in ~/Library/Application Support/Google/Chrome/NativeMessagingHosts
-
 var nativePort = chrome.runtime.connectNative("com.ytdp.staller");
 
 chrome.runtime.onConnect.addListener(function(port){

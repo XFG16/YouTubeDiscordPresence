@@ -127,7 +127,6 @@ int main(void) {
     data["title"] = data["currentTime"] = data["duration"] = "";
     data["channelName"] = data["channelImage"] = data["notPlayingAd"] = "";
 
-    // std::ifstream fin("test.txt");
     std::ofstream fout("log.txt", std::ios_base::app);
     std::string dataBuffer;
     int processStage = 0, count = 0;
