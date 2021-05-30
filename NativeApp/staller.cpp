@@ -1,7 +1,26 @@
+#include "discordAPI/discord.h"
+
 #include <unordered_map>
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <chrono>
+#include <thread>
+
+using namespace discord;
+
+Core* core = nullptr;
+bool isUpdated = false;
+void func() {
+    UserManager& userMan = core->UserManager();
+    userMan.GetUser(556882673130274817, [](Result res, User user) {
+        std::cout << "res=" << (int) res << std::endl;
+        std::cout << "UserName=" << user.GetUsername() << std::endl;
+        isUpdated = true;
+    });
+    core->RunCallbacks();
+}
+
 
 bool processData(int& processingStage, std::string& dataBuffer,
 std::unordered_map<std::string, std::string>& data) {
@@ -130,10 +149,50 @@ int main(void) {
     std::ofstream fout("log.txt", std::ios_base::app);
     std::string dataBuffer;
     int processStage = 0, count = 0;
+    
+    Result result = Core::Create(847682519214456862, DiscordCreateFlags_Default, &core);
+    std::cout << "create result = " <<  (int) result << std::endl;
+    core->SetLogHook(LogLevel::Debug, [](LogLevel level, const char* msg){
+        std::cout << "level=" << (int) level << "; msg=" << msg << std::endl;
+    });
+    
+    std::cout << "to update" << std::endl;
+    func();
+    while(!isUpdated) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        core->RunCallbacks();
+    }
+    isUpdated = false;
 
-    while (true) {
+
+    std::time_t t = std::time(0);
+    Activity activity{};
+    activity.SetDetails("SCP Secret Laboratory | Melancholy (Remixed/Extended version)");
+    activity.SetState("by Multiverse Uncle");
+    ActivityTimestamps& ts = activity.GetTimestamps();
+    ts.SetStart(t);    
+    ActivityAssets& aa = activity.GetAssets();
+    aa.SetLargeImage("vscodemusic");
+    aa.SetLargeText("youtu.be/uuo8P35GSMA");
+
+    std::cout << t << std::endl;
+
+    core->ActivityManager().UpdateActivity(activity, [](Result result) { 
+        std::cout << "Results=" << (int)result << std::endl;
+        isUpdated = true;
+    });
+    core->RunCallbacks();
+
+    while(!isUpdated) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+                core->RunCallbacks();
+
+    }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000000));
+    /*while (true) {
         char ch;
-        std::cin >> std::noskipws >> ch;
+        std::cin >> std::noskipws >> ch;        
         dataBuffer += ch;
         if (processData(processStage, dataBuffer, data)) { // true if all data is processed
             fout << "Packet #" << ++count << std::endl;
@@ -146,5 +205,6 @@ int main(void) {
             data["title"] = data["currentTime"] = data["duration"] = "";
             data["channelName"] = data["channelImage"] = data["notPlayingAd"] = "";
         }
-    }
+    }*/
+    
 }
