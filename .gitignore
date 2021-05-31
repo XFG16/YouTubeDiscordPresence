@@ -4,3 +4,4 @@ staller.dSYM
 obj/
 .DS_Store
 log.txt
+temp.txt

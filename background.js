@@ -7,11 +7,9 @@ chrome.runtime.onConnect.addListener(function(port){
         if (msg.title != "") {
             nativePort.postMessage({
                 title: msg.title,
-                currentTime: msg.currentTime,
-                duration: msg.duration,
-                channelName: msg.channelName,
-                channelImage: msg.channelImage,
-                notPlayingAd: msg.notPlayingAd
+                author: msg.author,
+                noAdv: msg.noAdv,
+                link: msg.link
             });
         }
     });
