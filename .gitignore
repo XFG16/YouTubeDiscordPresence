@@ -1,6 +1,5 @@
 NativeApp/staller
 staller.dSYM
-.vscode
 obj/
 .DS_Store
 log.txt
