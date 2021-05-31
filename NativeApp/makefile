@@ -1,6 +1,6 @@
 IDIR =./discordAPI
 CC=g++
-CFLAGS=-std=c++17 -I$(IDIR)
+CFLAGS=-std=c++17 -DDEBUG -g -I$(IDIR)
 
 ODIR=obj
 LDIR =./lib
