@@ -10,7 +10,7 @@
    - To allow the Discord ```dylib``` to be runnable from macOS, type this:
    ```sudo xattr -r -d com.apple.quarantine ~/Documents/Repositories/YouTubeDiscordPresence/NativeApp/lib```
    - Run ```make staller``` in the ```NativeApp``` folder to compile the source code
- - Make sure to run over ```com.ytdp.staller.json``` and check if the exectuable file path and the Chrome extension ID are correct
+ - Make sure to run over ```com.ytdp.staller.json``` and check if the exectuable file path, ```allowed_origins```, and the Chrome extension ID are correct
  - For this extension to work, you must have a tab with a video on Youtube open
 ## Instructions on committing from a terminal
  - Run ```git status``` to check if anything needs to be uploaded

@@ -12,7 +12,7 @@
             "args": [],
             "stopAtEntry": true,
             "cwd": "${fileDirname}",
-            "environment": [{"name":"DYLD_LIBRARY_PATH", "value":"/Users/yongfuren/Documents/repos/YouTubeDiscordPresence/NativeApp/lib"}],
+            "environment": [{"name":"DYLD_LIBRARY_PATH", "value":"/Users/renyongfu/Documents/Repositories/YouTubeDiscordPresence/NativeApp/lib"}],
             "externalConsole": false,
             "MIMode": "lldb"
         }

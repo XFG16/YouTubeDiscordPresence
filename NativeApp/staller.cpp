@@ -5,13 +5,13 @@
 #include <chrono>
 #include <thread>
 
-#include "discordAPI/discord.h"
+/*#include "discordAPI/discord.h"
 using namespace discord;
 
 #define APPLICATION_ID 847682519214456862
 
 Core* core = nullptr;
-bool updated = false;
+bool updated = false;*/
 
 std::unordered_map<std::string, std::string> data;
 std::string dataBuffer;
@@ -69,7 +69,7 @@ bool processData(void) {
         if (pos != std::string::npos) {
             data["noAdv"].resize(data["noAdv"].size() - 1);
             dataBuffer.clear();
-            parseStage = 0;
+            ++parseStage;
         }
         else {
             data["noAdv"] += dataBuffer.back();
@@ -77,7 +77,7 @@ bool processData(void) {
     }
     else if (parseStage == 6) {
         if (dataBuffer.size() >= 6) {
-            std::size_t pos = dataBuffer.find("link\":");
+            std::size_t pos = dataBuffer.find("link\":\"");
             if (pos != std::string::npos) {
                 ++parseStage;
             }
@@ -98,7 +98,7 @@ bool processData(void) {
     return false;
 }
 
-void updatePresence(void) {
+/*void updatePresence(void) {
     Result result = Core::Create(APPLICATION_ID, DiscordCreateFlags_Default, &core);
     Activity activity{};
     ActivityTimestamps& timeStamp = activity.GetTimestamps();
@@ -107,8 +107,10 @@ void updatePresence(void) {
     activity.SetDetails(data["title"].c_str());
     activity.SetState((std::string("by ") + data["author"]).c_str());
     timeStamp.SetStart(std::time(nullptr));    
-    activityAssets.SetLargeImage("vscodemusic");
-    activityAssets.SetLargeText(data["link"].c_str());
+    activityAssets.SetLargeImage("vscodemusic3");
+    activityAssets.SetLargeText(data["title"].c_str());
+    activityAssets.SetSmallImage("youtube");
+    activityAssets.SetSmallText(data["link"].c_str());
 
     core->ActivityManager().UpdateActivity(activity, [](Result result) { updated = true; });
     while(!updated) {
@@ -117,18 +119,21 @@ void updatePresence(void) {
     }
     updated = false;
 
-    std::this_thread::sleep_for(std::chrono::seconds(15));
-}
+    std::this_thread::sleep_for(std::chrono::seconds(150));
+}*/
 
 int main(void) {
     data["title"] = data["author"] = data["noAdv"] = data["link"] = "";
-    // updatePresence();
+    /*data["title"] = "SCP Secret Laboratory | Melancholy (Remixed/Extended version)";
+    data["author"] = "Multiverse Uncle";
+    data["noAdv"] = true;
+    data["link"] = "https://www.youtube.com/watch?v=uuo8P35GSMA";
+    updatePresence();*/
     
-    std::ifstream fin("temp.txt");
     std::ofstream fout("log.txt", std::ios_base::app);
     while (true) {
         char ch;
-        fin >> std::noskipws >> ch;  
+        std::cin >> std::noskipws >> ch;
         dataBuffer += ch;
         if (processData()) { // true if all data is processed
             fout << data["title"] << std::endl;
@@ -136,16 +141,16 @@ int main(void) {
             fout << data["noAdv"] << std::endl;
             fout << data["link"] << std::endl << std::endl;
             data["title"] = data["author"] = data["noAdv"] = data["link"] = "";
-            break;
+            // break;
         }
     }
 
     return 0;
 }
 
-// std::ofstream fout("log.txt", std::ios_base::app);
+/*std::ofstream fout("log.txt", std::ios_base::app);
 
-/*bool updated = false;
+bool updated = false;
 void func() {
     UserManager& userMan = core->UserManager();
     userMan.GetUser(556882673130274817, [](Result res, User user) {
@@ -154,9 +159,9 @@ void func() {
         updated = true;
     });
     core->RunCallbacks();
-}*/
+}
 
-/*std::cout << "create result = " <<  (int) result << std::endl;
+std::cout << "create result = " <<  (int) result << std::endl;
     core->SetLogHook(LogLevel::Debug, [](LogLevel level, const char* msg){
         std::cout << "level=" << (int) level << "; msg=" << msg << std::endl;
     });
