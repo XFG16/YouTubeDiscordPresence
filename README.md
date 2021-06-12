@@ -12,6 +12,7 @@
    - Run ```make staller``` in the ```NativeApp``` folder to compile the source code.
  - Make sure to run over ```com.ytdp.staller.json``` and check if the exectuable file path, ```allowed_origins```, and the Chrome extension ID are correct.
  - For this extension to work, you must have a tab with a video on Youtube open.
+ - Search files for the ```REDACTED``` keyword and replace it with the current user of the device.
 ## Instructions on committing from a terminal
  - Run ```git status``` to check if anything needs to be uploaded.
  - Run ```git add .``` to prepare all the files for uploading.
