@@ -1,7 +1,7 @@
 {
     "name": "com.ytdp.staller",
     "description": "Component of the extension that runs the staller for testing purposes.",
-    "path": "/Users/renyongfu/Documents/Repositories/YouTubeDiscordPresence/NativeApp/staller",
+    "path": "/Users/REDACTED/Documents/Repositories/YouTubeDiscordPresence/NativeApp/staller",
     "type": "stdio",
     "allowed_origins": [
         "chrome-extension://gdghbbkmnajgpfbjheogjfhfmlhhlgfi/"
