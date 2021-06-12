@@ -12,7 +12,7 @@
    - Run ```make staller``` in the ```NativeApp``` folder to compile the source code.
  - Make sure to run over ```com.ytdp.staller.json``` and check if the exectuable file path, ```allowed_origins```, and the Chrome extension ID are correct.
  - For this extension to work, you must have a tab with a video on Youtube open.
- - Exact path may vary for file paths. Make sure you have the right path. This is just the path for my device.
+ - Exact file paths may vary for file paths. Make sure you have the right paths for each file. The paths in these notes and some of the code are all paths specifically for my device. It'll take some knowledge to figure out which goes where.
 ## Instructions on committing from a terminal
  - Run ```git status``` to check if anything needs to be uploaded.
  - Run ```git add .``` to prepare all the files for uploading.
