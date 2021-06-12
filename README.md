@@ -1,6 +1,6 @@
 # YouTubeDiscordPresence for macOS
 ## Important notes
- - This is a work in progress. Expect messiness and dumb code, like bruh I'm literally not even in high school yet.
+ - This is a work in progress. It is most definitely not finished yet. Expect messiness and dumb code, like bruh I'm literally not even in high school yet.
  - This folder should be loaded into ```chrome://extensions```.
  - From the ```NativeApp``` folder, move the file named ```com.ytdp.staller.json``` to ```~/Library/Application Support/Google/Chrome/NativeMessagingHosts```.
  - Make sure to compile ```staller.cpp```, located in the ```Native App``` folder. Name the compiled file ```staller``` with no file extension.
