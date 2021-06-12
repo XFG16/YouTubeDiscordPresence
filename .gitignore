@@ -4,3 +4,4 @@ obj/
 .DS_Store
 log.txt
 temp.txt
+.vscode
