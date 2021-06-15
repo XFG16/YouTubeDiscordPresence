@@ -153,7 +153,7 @@ int main(void) {
 bool updated = false;
 void func() {
     UserManager& userMan = core->UserManager();
-    userMan.GetUser(556882673130274817, [](Result res, User user) {
+    userMan.GetUser([REDACTED], [](Result res, User user) {
         std::cout << "res=" << (int) res << std::endl;
         std::cout << "UserName=" << user.GetUsername() << std::endl;
         updated = true;
