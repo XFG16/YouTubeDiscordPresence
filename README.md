@@ -6,7 +6,7 @@
 ## Instructions for Setup
  - This folder should be loaded into ```chrome://extensions```.
  - From the ```NativeApp``` folder, move the file named ```com.ytdp.staller.json``` to ```~/Library/Application Support/Google/Chrome/NativeMessagingHosts```.
- - Create a file named ```.zshrc``` under the ```~``` folder if the file does not exist. Open ```.zshrc``` and write ```export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:~/Documents/Repositories/YouTubeDiscordPresence/NativeApp/lib``` into the file.
+ - Navigate to the `~` folder. Hit `command` + `shift` + `.` to show hidden files. Create a file named ```.zshrc``` under the ```~``` folder if the file does not exist. Open ```.zshrc``` and write ```export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:~/Documents/Repositories/YouTubeDiscordPresence/NativeApp/lib``` into the file.
  - To allow the Discord ```dylib``` to be runnable on macOS, type ```sudo xattr -r -d com.apple.quarantine ~/Documents/Repositories/YouTubeDiscordPresence/NativeApp/lib``` into a terminal and execute it.
  - Run ```make staller``` in the ```NativeApp``` folder to compile the source code. Make sure that the executable file for ```staller.cpp``` is ```staller``` with no file extension.
 ## Instructions for Committing From a Terminal
