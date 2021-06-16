@@ -1,5 +1,6 @@
 NativeApp/staller
 NativeApp/staller.dSYM
-NativeApp/obj/
+NativeApp/obj
 NativeApp/temp.txt
+NativeApp/log.txt
 .DS_Store
