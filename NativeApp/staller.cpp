@@ -5,19 +5,31 @@
 #include <chrono>
 #include <thread>
 #include <limits>
+#include <ctime>
 
 #include "discordAPI/discord.h"
 
-/*using namespace discord;
-
 #define APPLICATION_ID 847682519214456862
 
-Core* core = nullptr;
-bool updated = false;*/
+discord::Core* core = nullptr;
+bool updated = false;
 
 std::unordered_map<std::string, std::string> data;
 std::string dataBuffer;
 int parseStage = 0;
+time_t lastUpdated = 0;
+
+std::ofstream fout("log.txt", std::ios_base::app);
+
+void initializeResult(void) {
+    discord::Result result = discord::Core::Create(APPLICATION_ID, DiscordCreateFlags_Default, &core);
+    if (result == discord::Result::Ok) {
+        fout << "Result has been successfully initialized" << std::endl;
+    }
+    else {
+        fout << "Result has failed to initialize" << std::endl;
+    }
+}
 
 bool parseData(char temp) {
     dataBuffer += temp;
@@ -60,11 +72,15 @@ bool parseData(char temp) {
     return false;
 }
 
-/*void updatePresence(void) {
-    Result result = Core::Create(APPLICATION_ID, DiscordCreateFlags_Default, &core);
-    Activity activity{};
-    ActivityTimestamps& timeStamp = activity.GetTimestamps();
-    ActivityAssets& activityAssets = activity.GetAssets();
+void updatePresence(void) {
+    if (!core) {
+        fout << "Failed to update presence because Discord has not been initialized" << std::endl;
+        return;
+    }
+
+    discord::Activity activity{};
+    discord::ActivityTimestamps& timeStamp = activity.GetTimestamps();
+    discord::ActivityAssets& activityAssets = activity.GetAssets();
 
     activity.SetDetails(data["title"].c_str());
     activity.SetState((std::string("by ") + data["author"]).c_str());
@@ -74,62 +90,30 @@ bool parseData(char temp) {
     activityAssets.SetSmallImage("youtube");
     activityAssets.SetSmallText(data["link"].c_str());
 
-    core->ActivityManager().UpdateActivity(activity, [](Result result) { updated = true; });
+    core->ActivityManager().UpdateActivity(activity, [](discord::Result result) { updated = true; });
     while(!updated) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         core->RunCallbacks();
     }
     updated = false;
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(15000));
-}*/
+    /*fout << "RECEIVED AND UPDATED" << std::endl;
+    fout << data["title"] << std::endl;
+    fout << data["author"] << std::endl;
+    fout << data["link"] << std::endl << std::endl;*/
+}
 
 int main(void) {
+    initializeResult();
     data["title"] = data["author"] = data["ad"] = data["link"] = "";
-    /*data["title"] = "SCP Secret Laboratory | Melancholy (Remixed/Extended version)";
-    data["author"] = "Multiverse Uncle";
-    data["noAdv"] = true;
-    data["link"] = "https://www.youtube.com/watch?v=uuo8P35GSMA";
-    updatePresence();*/
-    
     char temp;
-    std::ofstream fout("log.txt", std::ios_base::app);
+
     while (std::cin >> std::noskipws >> temp) {
-        fout << temp;
         if (parseData(temp)) {
-            fout << '\n' << data["title"] << '\n';
-            fout << data["author"] << '\n';
-            fout << data["ad"] << '\n';
-            fout << data["link"] << "\n\n" << std::flush;
+            updatePresence();
             data["title"] = data["author"] = data["ad"] = data["link"] = "";
         }
     }
     
     return 0;
 }
-
-/*std::ofstream fout("log.txt", std::ios_base::app);
-
-bool updated = false;
-void func() {
-    UserManager& userMan = core->UserManager();
-    userMan.GetUser([REDACTED], [](Result res, User user) {
-        std::cout << "res=" << (int) res << std::endl;
-        std::cout << "UserName=" << user.GetUsername() << std::endl;
-        updated = true;
-    });
-    core->RunCallbacks();
-}
-
-std::cout << "create result = " <<  (int) result << std::endl;
-    core->SetLogHook(LogLevel::Debug, [](LogLevel level, const char* msg){
-        std::cout << "level=" << (int) level << "; msg=" << msg << std::endl;
-    });
-    
-    std::cout << "to update" << std::endl;
-    func();
-    while(!updated) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        core->RunCallbacks();
-    }
-    updated = false;*/

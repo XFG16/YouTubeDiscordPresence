@@ -14,4 +14,4 @@ setInterval(function() {
         });
         console.log("message was sent by content.js");
     }
-}, 2500); // set this to 15000 due to Discord limitations
+}, 1000); // set this to 15000 due to Discord limitations
