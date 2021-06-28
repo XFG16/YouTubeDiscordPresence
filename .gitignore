@@ -4,3 +4,6 @@ NativeApp/obj
 NativeApp/temp.txt
 NativeApp/log.txt
 .DS_Store
+NativeApp/test.cpp
+NativeApp/test.dSYM
+NativeApp/test

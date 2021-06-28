@@ -4,9 +4,11 @@
 #include <string>
 #include <chrono>
 #include <thread>
+#include <limits>
 
-/*#include "discordAPI/discord.h"
-using namespace discord;
+#include "discordAPI/discord.h"
+
+/*using namespace discord;
 
 #define APPLICATION_ID 847682519214456862
 
@@ -17,83 +19,43 @@ std::unordered_map<std::string, std::string> data;
 std::string dataBuffer;
 int parseStage = 0;
 
-bool processData(void) {
-    if (parseStage == 0) {
-        if (dataBuffer.size() >= 8) {
-            std::size_t pos = dataBuffer.find("title\":\"");
-            if (pos != std::string::npos) {
-                ++parseStage;
-            }
-        }
+bool parseData(char temp) {
+    dataBuffer += temp;
+    if (parseStage == 0 && dataBuffer.find("*$TITLE%*") != std::string::npos) {
+        ++parseStage;
+    }
+    else if (parseStage == 1 && dataBuffer.find("*$AUTHOR%*") == std::string::npos) {
+        data["title"] += dataBuffer.back();
     }
     else if (parseStage == 1) {
-        std::size_t pos = dataBuffer.find("\",\"");
-        if (pos != std::string::npos) {
-            data["title"].resize(data["title"].size() - 2);
-            dataBuffer.clear();
-            ++parseStage;
-        }
-        else {
-            data["title"] += dataBuffer.back();
-        }
+        data["title"].resize(data["title"].size() - 9);
+        ++parseStage;
+    }
+    else if (parseStage == 2 && dataBuffer.find("*$AD%*") == std::string::npos) {
+        data["author"] += dataBuffer.back();
     }
     else if (parseStage == 2) {
-        if (dataBuffer.size() >= 9) {
-            std::size_t pos = dataBuffer.find("author\":\"");
-            if (pos != std::string::npos) {
-                ++parseStage;
-            }
-        }
+        data["author"].resize(data["author"].size() - 5);
+        ++parseStage;
+    }
+    else if (parseStage == 3 && dataBuffer.find("*$LINK%*") == std::string::npos) {
+        data["ad"] += dataBuffer.back();
     }
     else if (parseStage == 3) {
-        std::size_t pos = dataBuffer.find("\",\"");
-        if (pos != std::string::npos) {
-            data["author"].resize(data["author"].size() - 2);
-            dataBuffer.clear();
-            ++parseStage;
-        }
-        else {
-            data["author"] += dataBuffer.back();
-        }
+        data["ad"].resize(data["ad"].size() - 7);
+        ++parseStage;
+    }
+    else if (parseStage == 4 && dataBuffer.find("*$END%*") == std::string::npos) {
+        data["link"] += dataBuffer.back();
     }
     else if (parseStage == 4) {
-        if (dataBuffer.size() >= 7) {
-            std::size_t pos = dataBuffer.find("noAdv\":");
-            if (pos != std::string::npos) {
-                ++parseStage;
-            }
-        }
+        data["link"].resize(data["link"].size() - 6);
+        ++parseStage;
     }
     else if (parseStage == 5) {
-        std::size_t pos = dataBuffer.find(",\"");
-        if (pos != std::string::npos) {
-            data["noAdv"].resize(data["noAdv"].size() - 1);
-            dataBuffer.clear();
-            ++parseStage;
-        }
-        else {
-            data["noAdv"] += dataBuffer.back();
-        }
-    }
-    else if (parseStage == 6) {
-        if (dataBuffer.size() >= 6) {
-            std::size_t pos = dataBuffer.find("link\":\"");
-            if (pos != std::string::npos) {
-                ++parseStage;
-            }
-        }
-    }
-    else if (parseStage == 7) {
-        std::size_t pos = dataBuffer.find("\"}");
-        if (pos != std::string::npos) {
-            data["link"].resize(data["link"].size() - 1);
-            dataBuffer.clear();
-            parseStage = 0;
-            return true;
-        }
-        else {
-            data["link"] += dataBuffer.back();
-        }
+        dataBuffer.clear();
+        parseStage = 0;
+        return true;
     }
     return false;
 }
@@ -114,37 +76,35 @@ bool processData(void) {
 
     core->ActivityManager().UpdateActivity(activity, [](Result result) { updated = true; });
     while(!updated) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         core->RunCallbacks();
     }
     updated = false;
 
-    std::this_thread::sleep_for(std::chrono::seconds(150));
+    std::this_thread::sleep_for(std::chrono::milliseconds(15000));
 }*/
 
 int main(void) {
-    data["title"] = data["author"] = data["noAdv"] = data["link"] = "";
+    data["title"] = data["author"] = data["ad"] = data["link"] = "";
     /*data["title"] = "SCP Secret Laboratory | Melancholy (Remixed/Extended version)";
     data["author"] = "Multiverse Uncle";
     data["noAdv"] = true;
     data["link"] = "https://www.youtube.com/watch?v=uuo8P35GSMA";
     updatePresence();*/
     
+    char temp;
     std::ofstream fout("log.txt", std::ios_base::app);
-    while (true) {
-        char ch;
-        std::cin >> std::noskipws >> ch;
-        dataBuffer += ch;
-        if (processData()) { // true if all data is processed
-            fout << data["title"] << std::endl;
-            fout << data["author"] << std::endl;
-            fout << data["noAdv"] << std::endl;
-            fout << data["link"] << std::endl << std::endl;
-            data["title"] = data["author"] = data["noAdv"] = data["link"] = "";
-            // break;
+    while (std::cin >> std::noskipws >> temp) {
+        fout << temp;
+        if (parseData(temp)) {
+            fout << '\n' << data["title"] << '\n';
+            fout << data["author"] << '\n';
+            fout << data["ad"] << '\n';
+            fout << data["link"] << "\n\n" << std::flush;
+            data["title"] = data["author"] = data["ad"] = data["link"] = "";
         }
     }
-
+    
     return 0;
 }
 
