@@ -1,4 +1,4 @@
-# YouTubeDiscordPresence for macOS
+# YouTube Discord Presence for macOS
 ## Important Notes
  - This is a work in progress. It is most definitely not finished yet. Expect messiness and dumb code, like bruh I'm literally not even in high school yet.
  - Obviously, you must have a YouTube tab open for this extension to work.
