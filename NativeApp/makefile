@@ -23,7 +23,7 @@ $(STALLER_OBJ)/: staller.cpp $(DEPS)
 
 
 staller: $(OBJ) $(STALLER_OBJ)
-	$(CC) -o $@ ./lib/discord_game_sdk.dylib $^ $(CFLAGS)
+	$(CC) -o $@ ./lib/discord_game_sdk.dylib $^ $(CFLAGS) -rpath ./lib
 
 .PHONY: clean
 
