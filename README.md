@@ -1,4 +1,4 @@
-# YouTube Discord Presence for macOS
+# YouTube Discord Presence for macOS (OLD VERSION)
 ## Important Notes
  - This is a work in progress. It is most definitely not finished yet.
  - Exact file paths may vary based on the device. Make sure you have the right file paths in the code and change them if you must. The file paths in the instructions and the code are all file paths specifically for the device this code was written on. Also, make sure that the extension information for ```allowed_origins``` in ```com.ytdp.installer.json``` is correct.
