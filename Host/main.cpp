@@ -5,6 +5,7 @@
 #include <memory>
 #include <thread>
 #include <chrono>
+#include <ctime>
 
 constexpr int64_t APPLICATION_ID = 847682519214456862;
 
@@ -18,7 +19,14 @@ class DocumentData {
 };
 
 std::unique_ptr<discord::Core> core;
+int lastTimeLeft = -1;
+
 std::ofstream fout("log.txt");
+bool logging = false;
+
+int getSecondsLeft(const std::string& videoTime, const std::string& videoDuration) {
+    return 0;
+}
 
 void createPresence(void) {
     if (core) {
@@ -27,17 +35,35 @@ void createPresence(void) {
 
     discord::Core* corePtr = nullptr;
     discord::Result result = discord::Core::Create(APPLICATION_ID, DiscordCreateFlags_Default, &corePtr);
-    if (result == discord::Result::Ok) {
+    if (logging && result == discord::Result::Ok) {
         fout << "Discord presence has been successfully created" << std::endl;
     }
-    else {
+    else if (logging) {
         fout << "Failed to create Discord presence" << std::endl;
     }
     core.reset(corePtr);
 }
 
-void updatePresence(DocumentData& documentData) {
+void destoryPresence(void) {
     if (!core) {
+        return;
+    }
+
+    core.reset();
+    if (logging && !core) {
+        fout << "Discord presence has been destroyed" << std::endl;
+    }
+    else if (logging) {
+        fout << "Failed to destroy Discord presence" << std::endl;
+    }
+}
+
+void updatePresence(DocumentData& documentData) {
+    if (!core && documentData.title != "#*IDLE*#") {
+        createPresence();
+    }
+    else if (documentData.title == "#*IDLE*#") {
+        destoryPresence();
         return;
     }
 
@@ -48,9 +74,9 @@ void updatePresence(DocumentData& documentData) {
     activity.SetDetails(documentData.title.c_str());
     activity.SetState((std::string("by ") + documentData.author.c_str()).c_str());
     activityAssets.SetLargeImage("youtube2");
-    activityAssets.SetLargeText("YouTubeDiscordPresence");
+    activityAssets.SetLargeText(documentData.title.c_str());
     activityAssets.SetSmallImage("vscodemusic3");
-    activityAssets.SetSmallText("by Michael Ren");
+    activityAssets.SetSmallText("YTDP by Michael Ren");
 
     bool updated;
     core->ActivityManager().UpdateActivity(activity, [&updated](discord::Result result) { updated = true; });
@@ -60,22 +86,8 @@ void updatePresence(DocumentData& documentData) {
     }
     updated = false;
 
-    fout << "SHOULD HAVE RECEIVED AND UPDATED" << std::endl;
-    fout << documentData.title << std::endl;
-    fout << documentData.author << std::endl;
-}
-
-void destoryPresence(void) {
-    if (!core) {
-        return;
-    }
-
-    core.reset();
-    if (core) {
-        fout << "Discord presence has been destroyed" << std::endl;
-    }
-    else {
-        fout << "Failed to destroy Discord presence" << std::endl;
+    if (logging) {
+        fout << "Received and updated: " << std::endl << "    " << documentData.title << std::endl << "    " << documentData.author << std::endl;
     }
 }
 
@@ -107,8 +119,6 @@ bool handleData(DocumentData& documentData) {
 }
 
 int main(void) {
-    createPresence();
-
     DocumentData documentData;
     documentData.stage = 0;
 
