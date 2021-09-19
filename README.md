@@ -1,7 +1,6 @@
 # YouTube Discord Presence for macOS
 ## Important Notes
- - This is a work in progress. It is most definitely not finished yet. Expect messiness and dumb code, like bruh I'm literally not even in high school yet.
- - Obviously, you must have a YouTube tab open for this extension to work.
+ - This is a work in progress. It is most definitely not finished yet.
  - Exact file paths may vary based on the device. Make sure you have the right file paths in the code and change them if you must. The file paths in the instructions and the code are all file paths specifically for the device this code was written on. Also, make sure that the extension information for ```allowed_origins``` in ```com.ytdp.installer.json``` is correct.
 ## Instructions for Setup
  - This folder should be loaded into ```chrome://extensions```.
