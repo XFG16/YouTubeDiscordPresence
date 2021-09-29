@@ -3,8 +3,6 @@
 #include <fstream>
 #include <string>
 #include <memory>
-#include <thread>
-#include <chrono>
 #include <ctime>
 
 constexpr int64_t APPLICATION_ID = 847682519214456862;
@@ -73,18 +71,13 @@ void updatePresence(DocumentData& documentData) {
 
     activity.SetDetails(documentData.title.c_str());
     activity.SetState((std::string("by ") + documentData.author.c_str()).c_str());
-    activityAssets.SetLargeImage("youtube2");
+    activityAssets.SetLargeImage("youtube3");
     activityAssets.SetLargeText(documentData.title.c_str());
     activityAssets.SetSmallImage("vscodemusic3");
-    activityAssets.SetSmallText("YTDP by Michael Ren");
+    activityAssets.SetSmallText("YouTubeDiscordPresence by XFG16");
 
-    bool updated;
-    core->ActivityManager().UpdateActivity(activity, [&updated](discord::Result result) { updated = true; });
-    while(!updated) {
-        core->RunCallbacks();
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
-    updated = false;
+    core->ActivityManager().UpdateActivity(activity, [](discord::Result result) {});
+    core->RunCallbacks();
 
     if (logging) {
         fout << "Received and updated: " << std::endl << "    " << documentData.title << std::endl << "    " << documentData.author << std::endl;
