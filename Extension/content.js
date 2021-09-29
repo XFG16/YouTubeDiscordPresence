@@ -12,7 +12,10 @@ function getYouTubeData() {
 }
 
 setInterval(function() {
-    if (document.URL.startsWith("https://www.youtube.com/watch?v=")) {
+    if (justCreated) {
+        justCreated = false;
+    }
+    else if (document.URL.startsWith("https://www.youtube.com/watch?v=")) {
         getYouTubeData();
         if (documentData.adElement == null && documentData.titleElement != null && documentData.authorElement != null && documentData.videoElement != null && documentData.playingElement != null) {
             port.postMessage({
