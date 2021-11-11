@@ -3,6 +3,8 @@ var port = chrome.runtime.connect({name: "document-data-pipe"});
 var justCreated = true;
 var documentData = new Object();
 
+console.log("YTDP - content.js created")
+
 function getYouTubeData() {
     documentData.adElement = document.querySelector("div.ytp-ad-player-overlay-instream-info");
     documentData.titleElement = document.querySelector("#container > h1 > yt-formatted-string");

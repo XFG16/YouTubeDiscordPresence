@@ -34,7 +34,7 @@ void createPresence(void) {
     discord::Core* corePtr = nullptr;
     discord::Result result = discord::Core::Create(APPLICATION_ID, DiscordCreateFlags_Default, &corePtr);
     if (logging && result == discord::Result::Ok) {
-        fout << "Discord presence has been successfully created" << std::endl;
+        fout << "Discord presence has been created" << std::endl;
     }
     else if (logging) {
         fout << "Failed to create Discord presence" << std::endl;
@@ -57,7 +57,7 @@ void destoryPresence(void) {
 }
 
 void updatePresence(DocumentData& documentData) {
-    if (!core && documentData.title != "#*IDLE*#") {
+    if (documentData.title != "#*IDLE*#") {
         createPresence();
     }
     else if (documentData.title == "#*IDLE*#") {
