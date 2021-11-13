@@ -21,7 +21,7 @@ std::unique_ptr<discord::Core> core;
 int lastTimeLeft = -1;
 
 std::ofstream fout("log.txt");
-bool logging = true;
+bool logging = false;
 
 int getSecondsLeft(const std::string& videoTime, const std::string& videoDuration) {
     return 0;
@@ -73,7 +73,7 @@ void updatePresence(DocumentData& documentData) {
     activityAssets.SetLargeImage("youtube3");
     activityAssets.SetLargeText(documentData.title.c_str());
     activityAssets.SetSmallImage("vscodemusic3");
-    activityAssets.SetSmallText("YouTubeDiscordPresence by XFG16");
+    activityAssets.SetSmallText("YouTubeDiscordPresence by 2309#2309");
     timeStamp.SetEnd(std::time(nullptr) + std::stoi(documentData.timeLeft));
 
     core->ActivityManager().UpdateActivity(activity, [](discord::Result result) {});
