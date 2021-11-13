@@ -1,4 +1,4 @@
-Host/Discord/Compiled/
+.DS_Store
 Host/main.dSYM
-Host/main
 Host/log.txt
+Extension.zip
