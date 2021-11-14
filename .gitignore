@@ -1,4 +1,4 @@
-Host/Discord/Compiled/
+**/*.o
 Host/main.dSYM
 Host/log.txt
 Extension.zip

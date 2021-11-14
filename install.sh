@@ -9,13 +9,13 @@ this application will not work and there may be something wrong with the directo
 
 if ! command -v g++ &> /dev/null
 then
-    echo "GNU G++ Compiler (REQUIRED) is not installed. To install command line tools, run \"xcode-select --install\" in a terminal."
-    exit
+echo "GNU G++ Compiler (REQUIRED) is not installed. To install command line tools, run \"xcode-select --install\" in a terminal."
+exit
 fi
 if ! command -v make &> /dev/null
 then
-    echo "GNU Make (REQUIRED) is not installed. To install command line tools, run \"xcode-select --install\" in a terminal."
-    exit
+echo "GNU Make (REQUIRED) is not installed. To install command line tools, run \"xcode-select --install\" in a terminal."
+exit
 fi
 
 cd Host
