@@ -19,6 +19,9 @@ exit
 fi
 
 cd Host
+cd Discord
+mkdir -p Compiled
+cd ..
 make main
 cd ..
 echo "    ^^not an error"
