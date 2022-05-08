@@ -33,12 +33,15 @@ if (LOGGING) {
 // GET YOUTUBE OEMBED JSON DATA (https://stackoverflow.com/questions/30084140/youtube-video-title-with-api-v3-without-api-key)
 
 function getVideoOEmbed(link) {
-    separatorIndex = link.indexOf(LINK_SEPARATOR_KEY) + LINK_SEPARATOR_KEY.length;
-    link = link.substring(separatorIndex, link.length);
-    if (LOGGING) {
-        console.log(link);
+    separatorIndex = link.indexOf(LINK_SEPARATOR_KEY);
+    if (link.indexOf(LINK_SEPARATOR_KEY) > -1) {
+        link = link.substring(separatorIndex + LINK_SEPARATOR_KEY.length, link.length);
+        if (LOGGING) {
+            console.log(link);
+        }
+        return ("https://www.youtube.com/oembed?url=http%3A//youtube.com/watch%3Fv%3D" + link + "&format=json");
     }
-    return ("https://www.youtube.com/oembed?url=http%3A//youtube.com/watch%3Fv%3D" + link + "&format=json");
+    return null;
 }
 
 // DATA REQUEST (https://stackoverflow.com/questions/2499567/how-to-make-a-json-call-to-an-url/2499647#2499647)
@@ -56,16 +59,32 @@ const getJSON = async url => {
 // (https://stackoverflow.com/questions/9515704/use-a-content-script-to-access-the-page-context-variables-and-functions)
 
 function getYouTubeData() {
-    getJSON(getVideoOEmbed(videoPlayer.getVideoUrl())).then(data => {
-        if (LOGGING) {
-            console.log(data);
+    if (videoPlayer.getVideoUrl()) {
+        var formattedLink = getVideoOEmbed(videoPlayer.getVideoUrl());
+        if (formattedLink) {
+            getJSON(formattedLink).then(data => {
+                if (LOGGING) {
+                    console.log(data);
+                }
+                documentData.title = data.title;
+                documentData.author = data.author_name;
+            }).catch(error => {
+                documentData.title = null;
+                documentData.author = null;
+                console.error(error);
+            });
         }
-        documentData.title = data.title;
-        documentData.author = data.author_name;
-    }).catch(error => {
-        console.error(error);
-    });
-    documentData.timeLeft = videoPlayer.getDuration() - videoPlayer.getCurrentTime();
+    }
+    else {
+        documentData.title = null;
+        documentData.author = null;
+    }
+    if (videoPlayer.getDuration()) {
+        documentData.timeLeft = videoPlayer.getDuration() - videoPlayer.getCurrentTime();
+    }
+    else {
+        documentData.timeLeft = null;
+    }
 }
 
 // COMMUNICATOR WITH CONTENT LOADER
@@ -74,7 +93,7 @@ var transmitterInterval = setInterval(function() {
     if (!videoPlayer) {
         videoPlayer = document.getElementById("movie_player");
     }
-    if (document.URL.startsWith(YOUTUBE_MAIN_URL) || document.URL.startsWith(YOUTUBE_MUSIC_URL) && videoPlayer && videoPlayer.getPlayerState() == 1) {
+    if ((document.URL.startsWith(YOUTUBE_MAIN_URL) || document.URL.startsWith(YOUTUBE_MUSIC_URL)) && videoPlayer && videoPlayer.getPlayerState() == 1) {
         getYouTubeData();
         if (documentData.title && documentData.author && documentData.timeLeft) {
             messageData = {title: documentData.title, author: documentData.author, timeLeft: documentData.timeLeft};
