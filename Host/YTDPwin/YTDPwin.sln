@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "YTDPwin", "YTDPwin\YTDPwin.vcxproj", "{FE7AD499-27B7-4135-AF92-20E7E3984FC3}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "YTDPsetup", "YTDPsetup\YTDPsetup.vdproj", "{22527C5D-CC35-471C-8505-B7688C5E8490}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,11 @@ Global
 		{FE7AD499-27B7-4135-AF92-20E7E3984FC3}.Release|x64.Build.0 = Release|x64
 		{FE7AD499-27B7-4135-AF92-20E7E3984FC3}.Release|x86.ActiveCfg = Release|Win32
 		{FE7AD499-27B7-4135-AF92-20E7E3984FC3}.Release|x86.Build.0 = Release|Win32
+		{22527C5D-CC35-471C-8505-B7688C5E8490}.Debug|x64.ActiveCfg = Debug
+		{22527C5D-CC35-471C-8505-B7688C5E8490}.Debug|x86.ActiveCfg = Debug
+		{22527C5D-CC35-471C-8505-B7688C5E8490}.Release|x64.ActiveCfg = Release
+		{22527C5D-CC35-471C-8505-B7688C5E8490}.Release|x64.Build.0 = Release
+		{22527C5D-CC35-471C-8505-B7688C5E8490}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

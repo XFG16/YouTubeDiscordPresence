@@ -7,12 +7,13 @@
     "content_scripts": [
         {
             "matches": ["https://*.youtube.com/*"],
-            "js": ["content.js"]
+            "js": ["content_loader.js"]
         }
     ],
     "background": {
         "scripts": ["background.js"]
     },
+    "web_accessible_resources": ["content.js"],
     "permissions": [
         "nativeMessaging",
         "background",

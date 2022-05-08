@@ -53,12 +53,20 @@
     <ClInclude Include="..\..\Discord\API\types.h" />
     <ClInclude Include="..\..\Discord\API\user_manager.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\DesktopTemplate\discord_game_sdk.dll" />
+    <None Include="..\..\..\DesktopTemplate\main.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\DesktopTemplate\log.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{fe7ad499-27b7-4135-af92-20e7e3984fc3}</ProjectGuid>
     <RootNamespace>YTDPwin</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>YTDPwin64</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
