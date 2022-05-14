@@ -5,7 +5,7 @@
 ## TODO
  - How to handle multiple tabs
  - Error with quotation marks in video title and author (appears as ```\"``` instead of ```"```)
- - Livestream and premeire support
+ - Livestream and premeire support (DONE! for livestream at least, idk about premiere)
 ## Instructions for Committing From a Terminal
  - Run ```git status``` to check if anything needs to be uploaded
  - Run ```git add .``` to prepare all the files for uploading

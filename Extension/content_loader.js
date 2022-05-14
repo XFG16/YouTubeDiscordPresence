@@ -4,7 +4,7 @@ const LOGGING = false;
 
 var port = chrome.runtime.connect({name: "document-data-pipe"});
 
-window.addEventListener("PassToBackground", function(message) {
+window.addEventListener("SendToLoader", function(message) {
     if (LOGGING) {
         console.log("Data was received by content_loader.js and sent to background.js: ['" + message.detail.title + "', '" + message.detail.author + "', '" + message.detail.timeLeft + "']");
     }

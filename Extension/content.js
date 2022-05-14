@@ -4,24 +4,32 @@
 // ADD LIVESTREAM / PREMIERE SUPPORT
 // MAKE SURE IT WORKS FOR YOUTUBE MUSIC
 
+// document.querySelector("#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > div.ytp-time-display.notranslate.ytp-live > button")
+// POSSIBLE QUERY SELECTOR FOR CHECKING LIVE STREAM^^
+// EVEN BETTER:
+// document.getElementById("movie_player").querySelector("div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > div.ytp-time-display.notranslate.ytp-live > button")
+// TITLE WITHOUT HTTP REQUEST:
+// document.getElementById("movie_player").querySelector("div.ytp-chrome-top > div.ytp-title > div.ytp-title-text > a.ytp-title-link")
+// might have to get author from HTML
+// this can be done by "document.querySelector("#upload-info > #channel-name > #container > #text-container > #text > a")"
+
 const LOGGING = false;
 
-const MUSIC_JS_PATHS = {
-    AD: "div.ytp-ad-player-overlay-instream-info",
-    PLAYING: "#play-pause-button"
-};
-
 const MESSAGE_NULL = "(%NULL%)";
-const VIDEO_STREAM = "video-stream";
 const YOUTUBE_MAIN_URL = "https://www.youtube.com";
 const YOUTUBE_MUSIC_URL = "https://music.youtube.com";
-const YOUTUBE_MAIN_PAUSE = "Pause (k)";
-const YOUTUBE_MUSIC_PAUSE = "Pause";
-const YOUTUBE_MAIN_WATCH_URL = "https://www.youtube.com/watch?v=";
-const YOUTUBE_MUSIC_WATCH_URL = "https://music.youtube.com/watch?v=";
 const LINK_SEPARATOR_KEY = "&v=";
 
-var documentData = new Object(); // a key with the name "element" in it indicates it is stored in here as a raw HTML object, not as an immediately usable text or integer value
+const LIVESTREAM_ELEMENT_SELECTOR = "div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > div.ytp-time-display.notranslate.ytp-live > button"; // VIDEO PLAYER
+const MINIPLAYER_ELEMENT_SELECTOR = "div.ytp-miniplayer-ui"; // VIDEO PLAYER
+const MAIN_LIVESTREAM_TITLE_SELECTOR = "div.ytp-chrome-top > div.ytp-title > div.ytp-title-text > a.ytp-title-link"; // VIDEO PLAYER
+const MAIN_LIVESTREAM_AUTHOR_SELECTOR = "#upload-info > #channel-name > #container > #text-container > #text > a"; // DOCUMENT HTML
+const MINIPLAYER_LIVESTREAM_AUTHOR_SELECTOR = "#info-bar > div.metadata.style-scope.ytd-miniplayer > div.channel.style-scope.ytd-miniplayer > yt-formatted-string"; // DOCUMENT HTML
+const NO_MINIPLAYER_ATTRIBUTE = "display: none;";
+const YES_MINIPLAYER_ATRRIBUTE = "";
+const LIVESTREAM_TIME_ID = -999;
+
+var documentData = new Object();
 var videoPlayer = document.getElementById("movie_player");
 
 // LOGGING
@@ -39,7 +47,7 @@ function getVideoOEmbed(link) {
         if (LOGGING) {
             console.log(link);
         }
-        return ("https://www.youtube.com/oembed?url=http%3A//youtube.com/watch%3Fv%3D" + link + "&format=json");
+        return ("https://www.youtube.com/oembed?url=http%3A//youtube.com/watch%3Fv%3D" + link + "   ");
     }
     return null;
 }
@@ -58,9 +66,46 @@ const getJSON = async url => {
 // DOCUMENT SCANNING (https://developers.google.com/youtube/iframe_api_reference)
 // (https://stackoverflow.com/questions/9515704/use-a-content-script-to-access-the-page-context-variables-and-functions)
 
+function secondarySelection() {
+    let miniplayerHTML = videoPlayer.querySelector(MINIPLAYER_ELEMENT_SELECTOR);
+    if (!miniplayerHTML || (miniplayerHTML && miniplayerHTML.getAttribute("style") == NO_MINIPLAYER_ATTRIBUTE)) {
+        let titleHTML = videoPlayer.querySelector(MAIN_LIVESTREAM_TITLE_SELECTOR);
+        let authorHTML = document.querySelector(MAIN_LIVESTREAM_AUTHOR_SELECTOR);
+        if (titleHTML) {
+            documentData.title = titleHTML.innerText;
+        }
+        else {
+            documentData.title = null;
+        }
+        if (authorHTML) {
+            documentData.author = authorHTML.innerText;
+        }
+        else {
+            documentData.author = null;
+        }
+    }
+    else if (miniplayerHTML && miniplayerHTML.getAttribute("style") == YES_MINIPLAYER_ATRRIBUTE) {
+        let titleHTML = videoPlayer.querySelector(MAIN_LIVESTREAM_TITLE_SELECTOR);
+        let authorHTML = document.querySelector(MINIPLAYER_LIVESTREAM_AUTHOR_SELECTOR);
+        if (titleHTML) {
+            documentData.title = titleHTML.innerText;
+        }
+        else {
+            documentData.title = null;
+        }
+        if (authorHTML) {
+            documentData.author = authorHTML.innerText;
+        }
+        else {
+            documentData.author = null;
+        }
+    }
+}
+
 function getYouTubeData() {
-    if (videoPlayer.getVideoUrl()) {
-        var formattedLink = getVideoOEmbed(videoPlayer.getVideoUrl());
+    let livestreamHTML = videoPlayer.querySelector(LIVESTREAM_ELEMENT_SELECTOR);
+    if (videoPlayer.getVideoUrl() && !livestreamHTML) {
+        let formattedLink = getVideoOEmbed(videoPlayer.getVideoUrl());
         if (formattedLink) {
             getJSON(formattedLink).then(data => {
                 if (LOGGING) {
@@ -69,18 +114,23 @@ function getYouTubeData() {
                 documentData.title = data.title;
                 documentData.author = data.author_name;
             }).catch(error => {
-                documentData.title = null;
-                documentData.author = null;
+                secondarySelection();
                 console.error(error);
             });
         }
     }
     else {
-        documentData.title = null;
-        documentData.author = null;
+        secondarySelection();
     }
-    if (videoPlayer.getDuration()) {
+
+    if (livestreamHTML) {
+        documentData.timeLeft = LIVESTREAM_TIME_ID;
+    }
+    else if (videoPlayer.getDuration()) {
         documentData.timeLeft = videoPlayer.getDuration() - videoPlayer.getCurrentTime();
+        if (documentData.timeLeft < 0) {
+            documentData.timeLeft = 0;
+        }
     }
     else {
         documentData.timeLeft = null;
@@ -96,8 +146,8 @@ var transmitterInterval = setInterval(function() {
     if ((document.URL.startsWith(YOUTUBE_MAIN_URL) || document.URL.startsWith(YOUTUBE_MUSIC_URL)) && videoPlayer && videoPlayer.getPlayerState() == 1) {
         getYouTubeData();
         if (documentData.title && documentData.author && documentData.timeLeft) {
-            messageData = {title: documentData.title, author: documentData.author, timeLeft: documentData.timeLeft};
-            var messageEvent = new CustomEvent("PassToBackground", {detail: messageData});
+            messageData = {title: documentData.title, author: documentData.author, timeLeft: parseInt(documentData.timeLeft)};
+            var messageEvent = new CustomEvent("SendToLoader", {detail: messageData});
             window.dispatchEvent(messageEvent);
             if (LOGGING) {
                 console.log("Data was sent by content.js to the content_loader.js")

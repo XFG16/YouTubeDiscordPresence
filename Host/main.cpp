@@ -12,6 +12,7 @@ const std::string TIME_LEFT_IDENTIFIER = ":TIMELEFT003:";
 const std::string END_IDENTIFIER = ":END004:";
 const std::string IDLE_IDENTIFIER = "#*IDLE*#";
 const std::string NULL_AUTHOR = "(%NULL%)";
+const int LIVESTREAM_TIME_ID = -999;
 
 const bool LOGGING = false;
 
@@ -19,6 +20,7 @@ std::unique_ptr<discord::Core> core;
 discord::Activity activity{};
 discord::ActivityTimestamps& timeStamp = activity.GetTimestamps();
 discord::ActivityAssets& activityAssets = activity.GetAssets();
+int previousTimeLeft = 0; // USED FOR SWITCHING TO LIVESTREAM PURPOSES
 
 // CREATE A DISCORD PRESENCE IF ONE DOESN'T ALREADY EXIST
 
@@ -40,7 +42,7 @@ void createPresence(void) {
 
 // DESTROY THE DISCORD PRESENCE IF IT EXISTS
 
-void destoryPresence(void) {
+void destroyPresence(void) {
     if (!core) {
         return;
     }
@@ -59,14 +61,28 @@ void destoryPresence(void) {
 
 // UPDATE DISCORD PRESENCE WITH DATA
 
-void updatePresence(const std::string& title, const std::string& author, const std::string& timeLeft) {
+void updatePresence(const std::string& title, const std::string& author, const std::string& timeLeftStr) {
     if (title == IDLE_IDENTIFIER) {
-        destoryPresence();
+        destroyPresence();
         return;
+    }
+    int timeLeft = std::stoi(timeLeftStr); // NEED TO DESTROY PRESENCE IN ORDER TO REMOVE TIMESTAMP
+    if (previousTimeLeft >= 0 && timeLeft == LIVESTREAM_TIME_ID) {
+        destroyPresence();
     }
     createPresence();
 
-    activity.SetDetails(title.c_str());
+    if (timeLeft != LIVESTREAM_TIME_ID) {
+        activity.SetDetails(title.c_str());
+        activityAssets.SetLargeText(title.c_str());
+        timeStamp.SetEnd(std::time(nullptr) + timeLeft);
+    }
+    else {
+        activity.SetDetails(("[LIVE] " + title).c_str());
+        activityAssets.SetLargeText(("[LIVE] " + title).c_str());
+    }
+
+    previousTimeLeft = timeLeft;
 
     if (author == NULL_AUTHOR) {
         activity.SetState("");
@@ -76,10 +92,8 @@ void updatePresence(const std::string& title, const std::string& author, const s
     }
 
     activityAssets.SetLargeImage("youtube3");
-    activityAssets.SetLargeText(title.c_str());
     activityAssets.SetSmallImage("vscodemusic3");
     activityAssets.SetSmallText("YouTubeDiscordPresence by 2309#2309");
-    timeStamp.SetEnd(std::time(nullptr) + std::stoi(timeLeft));
 
     core->ActivityManager().UpdateActivity(activity, [](discord::Result result) {});
     core->RunCallbacks();
@@ -139,7 +153,7 @@ int main(void) {
 
 // void updatePresence(DocumentData& documentData) {
 //     if (documentData.title == "#*IDLE*#") {
-//         destoryPresence();
+//         destroyPresence();
 //         return;
 //     }
 //     createPresence();
