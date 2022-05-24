@@ -3,9 +3,9 @@
  - Editing the extension and ```main.cpp``` can be done in VSCode directly
  - Compiling ```main.cpp``` and creating the installer should be done in Visual Studio
 ## TODO
- - How to handle multiple tabs
+ - How to handle multiple tabs (```DONE!```)
  - Error with quotation marks in video title and author (appears as ```\"``` instead of ```"```)
- - Livestream and premeire support (DONE! for livestream at least, idk about premiere)
+ - Livestream and premeire support (```DONE! for livestream at least, idk about premiere```)
 ## Instructions for Committing From a Terminal
  - Run ```git status``` to check if anything needs to be uploaded
  - Run ```git add .``` to prepare all the files for uploading
