@@ -11,7 +11,7 @@ const NMF = { // NMF = NATIVE_MESSAGE_FORMAT
     IDLE: "#*IDLE*#"
 }
 
-const IDLE_TIME_REQUIREMENT = 1900;
+const IDLE_TIME_REQUIREMENT = 2000;
 
 var nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
 var scriptQueue = [];
@@ -62,4 +62,4 @@ var pipeInterval = setInterval(function() {
         }
         nativePort.postMessage(NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END);
     }
-}, 1000);
+}, IDLE_TIME_REQUIREMENT);

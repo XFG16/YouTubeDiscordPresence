@@ -112,16 +112,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\DesktopTemplate\main.json">
+    <None Include="..\..\main.json">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\..\..\DesktopTemplate\discord_game_sdk.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\..\DesktopTemplate\log.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
   </ItemGroup>
 </Project>

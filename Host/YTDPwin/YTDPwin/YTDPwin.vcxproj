@@ -54,11 +54,7 @@
     <ClInclude Include="..\..\Discord\API\user_manager.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\DesktopTemplate\discord_game_sdk.dll" />
-    <None Include="..\..\..\DesktopTemplate\main.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\..\DesktopTemplate\log.txt" />
+    <None Include="..\..\main.json" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -182,7 +178,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\Discord\Lib\x86_64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);discord_game_sdk.dll.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);C:\repos\YouTubeDiscordPresence\Host\Discord\Lib\discord_game_sdk.dll.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

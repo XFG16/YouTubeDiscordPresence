@@ -15,25 +15,13 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_19D744490DE741AF96D6FF1C4C159110"
+        "MsmKey" = "8:_A70BF558FFDC46B3A9BFD15E2AA7967D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_259E3DBE73684B25A0CC4F702B0D9293"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_623D9B8AFEAC48D7B1187C28172DFAC8"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C4524DC753A94AA8AD13A692834272AA"
+        "MsmKey" = "8:_B0C7DA1524844F76A68B5FD5DB65EB7F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -62,6 +50,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -86,6 +82,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -108,50 +112,30 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_259E3DBE73684B25A0CC4F702B0D9293"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A70BF558FFDC46B3A9BFD15E2AA7967D"
             {
-            "SourcePath" = "8:..\\..\\..\\DesktopTemplate\\log.txt"
-            "TargetName" = "8:log.txt"
-            "Tag" = "8:"
-            "Folder" = "8:_56A3632D70DB4D05A6394C0929BF78F7"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_623D9B8AFEAC48D7B1187C28172DFAC8"
-            {
-            "SourcePath" = "8:..\\..\\..\\DesktopTemplate\\main.json"
-            "TargetName" = "8:main.json"
-            "Tag" = "8:"
-            "Folder" = "8:_56A3632D70DB4D05A6394C0929BF78F7"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C4524DC753A94AA8AD13A692834272AA"
-            {
-            "SourcePath" = "8:..\\..\\..\\DesktopTemplate\\discord_game_sdk.dll"
+            "SourcePath" = "8:..\\..\\Discord\\Lib\\discord_game_sdk.dll"
             "TargetName" = "8:discord_game_sdk.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_56A3632D70DB4D05A6394C0929BF78F7"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B0C7DA1524844F76A68B5FD5DB65EB7F"
+            {
+            "SourcePath" = "8:..\\..\\main.json"
+            "TargetName" = "8:main.json"
             "Tag" = "8:"
             "Folder" = "8:_56A3632D70DB4D05A6394C0929BF78F7"
             "Condition" = "8:"
@@ -225,7 +209,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:YouTubeDiscordPresence"
         "ProductCode" = "8:{92E3C54C-1479-48DA-83FF-1FF6C0EA1A0A}"
-        "PackageCode" = "8:{C8DB3763-08AB-400D-9378-031B4A98EA2D}"
+        "PackageCode" = "8:{460F194A-E70A-4959-962A-12918FB75441}"
         "UpgradeCode" = "8:{E382DBD1-8EDE-47B6-A376-403178519F67}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -844,7 +828,7 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_19D744490DE741AF96D6FF1C4C159110"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_8CD04B468229486FB27D89251FF336AB"
             {
             "SourcePath" = "8:..\\x64\\Release\\YTDPwin64.exe"
             "TargetName" = "8:"
@@ -864,7 +848,7 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
+            "OutputConfiguration" = "8:Release|x64"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{FE7AD499-27B7-4135-AF92-20E7E3984FC3}"
             "ShowKeyOutput" = "11:TRUE"

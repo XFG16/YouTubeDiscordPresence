@@ -27,7 +27,7 @@ const MAIN_LIVESTREAM_AUTHOR_SELECTOR = "#upload-info > #channel-name > #contain
 const MINIPLAYER_LIVESTREAM_AUTHOR_SELECTOR = "#info-bar > div.metadata.style-scope.ytd-miniplayer > div.channel.style-scope.ytd-miniplayer > yt-formatted-string"; // DOCUMENT HTML
 const NO_MINIPLAYER_ATTRIBUTE = "display: none;";
 const YES_MINIPLAYER_ATRRIBUTE = "";
-const LIVESTREAM_TIME_ID = -999;
+const LIVESTREAM_TIME_ID = -1;
 
 var documentData = new Object();
 var videoPlayer = document.getElementById("movie_player");

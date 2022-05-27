@@ -1,5 +1,6 @@
 #include "Discord/API/discord.h"
 #include <iostream>
+#include <cstring>
 #include <string>
 #include <memory>
 #include <ctime>
@@ -11,15 +12,12 @@ const std::string AUTHOR_IDENTIFIER = ":AUTHOR002:";
 const std::string TIME_LEFT_IDENTIFIER = ":TIMELEFT003:";
 const std::string END_IDENTIFIER = ":END004:";
 const std::string IDLE_IDENTIFIER = "#*IDLE*#";
-const std::string NULL_AUTHOR = "(%NULL%)";
-const int LIVESTREAM_TIME_ID = -999;
+const int LIVESTREAM_TIME_ID = -1;
 
 const bool LOGGING = false;
 
 std::unique_ptr<discord::Core> core;
-discord::Activity activity{};
-discord::ActivityTimestamps& timeStamp = activity.GetTimestamps();
-discord::ActivityAssets& activityAssets = activity.GetAssets();
+std::time_t elapsedTime = 0;
 int previousTimeLeft = 0; // USED FOR SWITCHING TO LIVESTREAM PURPOSES
 
 // CREATE A DISCORD PRESENCE IF ONE DOESN'T ALREADY EXIST
@@ -47,16 +45,27 @@ void destroyPresence(void) {
         return;
     }
 
-    activity.SetDetails("");
-    activity.SetState("");
-    timeStamp.SetEnd(0);
-    core.reset();
+    discord::Core* corePtr = nullptr;
+    core.reset(corePtr);
     if (LOGGING && !core) {
         std::cout << "Discord presence has been destroyed" << std::endl;
     }
     else if (LOGGING) {
         std::cout << "Failed to destroy Discord presence" << std::endl;
     }
+}
+
+// FORMAT C STRINGS
+
+void formatCString(char* str) { // REMEMBER TO DEAL WITH OTHER SPECIAL CHARACTERS LATER
+    int j = 0;
+    for (int i = 0; str[i] != '\0'; ++i) {
+        if (!(str[i] == '\\' && str[i + 1] == '\"') && !(str[i] == '\\' && str[i + 1] == '\'') && !(str[i] == '\\' && str[i + 1] == '\?') && !(str[i] == '\\' && str[i + 1] == '\\')) {
+            str[j] = str[i];
+            ++j;
+        }
+    }
+    memset(&str[j], '\0', 128 - j);
 }
 
 // UPDATE DISCORD PRESENCE WITH DATA
@@ -66,35 +75,44 @@ void updatePresence(const std::string& title, const std::string& author, const s
         destroyPresence();
         return;
     }
-    int timeLeft = std::stoi(timeLeftStr); // NEED TO DESTROY PRESENCE IN ORDER TO REMOVE TIMESTAMP
-    if (previousTimeLeft >= 0 && timeLeft == LIVESTREAM_TIME_ID) {
-        destroyPresence();
-    }
+    int timeLeft = std::stoi(timeLeftStr);
     createPresence();
 
+    discord::Activity activity{};
+    discord::ActivityTimestamps& timeStamp = activity.GetTimestamps();
+    discord::ActivityAssets& activityAssets = activity.GetAssets();
+
+    char authorCString[128];
+    memset(authorCString, '\0', sizeof(authorCString));
     if (timeLeft != LIVESTREAM_TIME_ID) {
-        activity.SetDetails(title.c_str());
-        activityAssets.SetLargeText(title.c_str());
+        strcpy_s(authorCString, 128, ("by " + author).c_str());
+        formatCString(authorCString);
+        activity.SetState(authorCString);
+        activityAssets.SetLargeImage("youtube3");
         timeStamp.SetEnd(std::time(nullptr) + timeLeft);
     }
     else {
-        activity.SetDetails(("[LIVE] " + title).c_str());
-        activityAssets.SetLargeText(("[LIVE] " + title).c_str());
+        if (previousTimeLeft >= 0) {
+            elapsedTime = std::time(nullptr);
+        }
+        strcpy_s(authorCString, 128, ("[LIVE] on " + author).c_str());
+        formatCString(authorCString);
+        activity.SetState(authorCString);
+        activityAssets.SetLargeImage("youtubelive1");
+        timeStamp.SetStart(elapsedTime);
     }
 
-    previousTimeLeft = timeLeft;
+    char titleCString[128];
+    memset(authorCString, '\0', sizeof(authorCString));
+    strcpy_s(titleCString, 128, title.c_str());
+    formatCString(titleCString);
 
-    if (author == NULL_AUTHOR) {
-        activity.SetState("");
-    }
-    else {
-        activity.SetState(("by " + author).c_str());
-    }
-
-    activityAssets.SetLargeImage("youtube3");
+    activity.SetDetails(titleCString);
+    activityAssets.SetLargeText(titleCString);
     activityAssets.SetSmallImage("vscodemusic3");
     activityAssets.SetSmallText("YouTubeDiscordPresence by 2309#2309");
 
+    previousTimeLeft = timeLeft;
     core->ActivityManager().UpdateActivity(activity, [](discord::Result result) {});
     core->RunCallbacks();
 
