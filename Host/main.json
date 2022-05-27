@@ -1,6 +1,6 @@
 {
     "name": "com.ytdp.discord.presence",
-    "description": "Component of the YouTube Discord Presence extension that allows the usage of native messaging.",
+    "description": "Component of the YouTubeDiscordPresence extension that allows the usage of native messaging.",
     "path": "YTDPwin64.exe",
     "type": "stdio",
     "allowed_origins": [
