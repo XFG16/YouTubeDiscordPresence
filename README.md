@@ -17,3 +17,4 @@
  - For linking the Discord SDK DLL to Visual Studio, go to ```[PROJECT NAME ON EXPLORER] > Properties > Linker > Input > Additional Dependencies``` and add the EXACT path to the .lib file associated with the DLL
  - The appearance and disappearance of the rich presence on your profile can be delayed because Discord limits the processing of rich presence update requests to 15 seconds
  - Files ending with ```save_copy``` can probably be ignored and even removed later on
+ - Maybe add a feature to stop the presence from disappearing when no video is playing; instead, just make the rich presence display idle (let the user choose between original or this)

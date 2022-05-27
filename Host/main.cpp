@@ -2,6 +2,8 @@
 #include <iostream>
 #include <cstring>
 #include <string>
+#include <thread>
+#include <chrono>
 #include <memory>
 #include <ctime>
 #include <map>
@@ -72,11 +74,12 @@ void formatCString(char* str) { // REMEMBER TO DEAL WITH OTHER SPECIAL CHARACTER
 
 void updatePresence(const std::string& title, const std::string& author, const std::string& timeLeftStr) {
     if (title == IDLE_IDENTIFIER) {
+        previousTimeLeft = 0;
         destroyPresence();
         return;
     }
-    int timeLeft = std::stoi(timeLeftStr);
     createPresence();
+    int timeLeft = std::stoi(timeLeftStr);
 
     discord::Activity activity{};
     discord::ActivityTimestamps& timeStamp = activity.GetTimestamps();
@@ -110,11 +113,21 @@ void updatePresence(const std::string& title, const std::string& author, const s
     activity.SetDetails(titleCString);
     activityAssets.SetLargeText(titleCString);
     activityAssets.SetSmallImage("vscodemusic3");
-    activityAssets.SetSmallText("YouTubeDiscordPresence by 2309#2309");
+    activityAssets.SetSmallText("YouTubeDiscordPresence by 2309#2309 [XFG16] on GitHub");
 
     previousTimeLeft = timeLeft;
-    core->ActivityManager().UpdateActivity(activity, [](discord::Result result) {});
-    core->RunCallbacks();
+    bool presenceUpdated = false, entered = false;
+    core->ActivityManager().UpdateActivity(activity, [&presenceUpdated](discord::Result result) {
+        presenceUpdated = true;
+    });
+    while (!presenceUpdated) {
+        entered = true;
+        core->RunCallbacks();
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+    if (!entered) {
+        core->RunCallbacks();
+    }
 
     if (LOGGING) {
         std::cout << "Received and updated: " << std::endl << "    " << title << std::endl << "    " << author << std::endl << "    " << timeLeft << std::endl;
@@ -158,97 +171,3 @@ int main(void) {
 
     return 0;
 }
-
-/*// class DocumentData {
-//   public:
-//     std::string title;
-//     std::string author;
-//     std::string buffer;
-//     std::string timeLeft;
-//     char temp = '0';
-//     int stage = 0;
-// };
-
-// void updatePresence(DocumentData& documentData) {
-//     if (documentData.title == "#*IDLE*#") {
-//         destroyPresence();
-//         return;
-//     }
-//     createPresence();
-
-//     discord::Activity activity{};
-//     discord::ActivityTimestamps& timeStamp = activity.GetTimestamps();
-//     discord::ActivityAssets& activityAssets = activity.GetAssets();
-
-//     activity.SetDetails(documentData.title.c_str());
-
-//     auto temp = documentData.author;
-//     if (temp == "(%NULL%)") {
-//         activity.SetState("");
-//     }
-//     else {
-//         activity.SetState(("by " + temp).c_str());
-//     }
-
-//     activityAssets.SetLargeImage("youtube3");
-//     activityAssets.SetLargeText(documentData.title.c_str());
-//     activityAssets.SetSmallImage("vscodemusic3");
-//     activityAssets.SetSmallText("YouTubeDiscordPresence by 2309#2309");
-//     timeStamp.SetEnd(std::time(nullptr) + std::stoi(documentData.timeLeft));
-
-//     core->ActivityManager().UpdateActivity(activity, [](discord::Result result) {});
-//     core->RunCallbacks();
-
-//     if (LOGGING) {
-//         std::cout << "Received and updated: " << std::endl << "    " << documentData.title << std::endl << "    " << documentData.author << std::endl << "    " << documentData.timeLeft << std::endl;
-//     }
-// }
-
-// bool handleData(DocumentData& documentData) {
-//     documentData.buffer += documentData.temp;
-//     if (documentData.stage == 0 && documentData.buffer.find(":TITLE001:") != std::string::npos) {
-//         ++documentData.stage;
-//     }
-//     else if (documentData.stage == 1 && documentData.buffer.find(":AUTHOR002:") == std::string::npos) { // subtraction size (eg. - 10) is length of it hovering over the string (12 in this case) - 2
-//         documentData.title += documentData.temp;
-//     }
-//     else if (documentData.stage == 1) {
-//         documentData.title.resize(documentData.title.size() - 10);
-//         ++documentData.stage;
-//     }
-//     else if (documentData.stage == 2 && documentData.buffer.find(":TIMELEFT003:") == std::string::npos) {
-//         documentData.author += documentData.temp;
-//     }
-//     else if (documentData.stage == 2) {
-//         documentData.author.resize(documentData.author.size() - 12);
-//         ++documentData.stage;
-//     }
-//     else if (documentData.stage == 3 && documentData.buffer.find(":END004:") == std::string::npos) {
-//         documentData.timeLeft += documentData.temp;
-//     }
-//     else if (documentData.stage == 3) {
-//         documentData.timeLeft.resize(documentData.timeLeft.size() - 7);
-//         ++documentData.stage;
-//     }
-//     else if (documentData.stage == 4) {
-//         documentData.buffer.clear();
-//         documentData.stage = 0;
-//         return true;
-//     }
-//     return false;
-// }
-
-// int main(void) {
-//     DocumentData documentData;
-//     documentData.stage = 0;
-
-//     while (std::cin >> std::noskipws >> documentData.temp) {
-//         bool finishedHandling = handleData(documentData);
-//         if (finishedHandling) {
-//             updatePresence(documentData);
-//             documentData.title.clear();
-//             documentData.author.clear();
-//             documentData.timeLeft.clear();
-//         }
-//     }
-// }*/
