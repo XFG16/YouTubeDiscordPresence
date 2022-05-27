@@ -2,14 +2,14 @@
  - This is now the main branch that I'll probably use and clear up later (macOS is a bit annoying)
  - Editing the extension and ```main.cpp``` can be done in VSCode directly
  - Compiling ```main.cpp``` and creating the installer should be done in Visual Studio
-## Installation
+## Installation (no need to download additional libraries)
  - MSI installer is located under ```YouTubeDiscordPresence/tree/YouTubeDiscordPresenceWin/Host/YTDPwin/YTDPsetup/Release```
-    - It's gonna say Windows blocked an unknown app because the publisher is unknown (I'm a broke high schooler and can't afford a digital certificate). Just click more info and run anyway
-    - If you're scared, just scan the file with VirusTotal or something
+    - It's gonna say Windows blocked an unknown app because the publisher is unknown (I'm a broke high schooler and can't afford a digital certificate). Just click more info and run anyway. Also, if you run this through VirusTotal, there are gonna be several false positives
+    - Otherwise, you can just build the whole thing yourself with Visual Studio 2022. Just open the ```YTDPwin.sln``` file under ```YouTubeDiscordPresence/tree/YouTubeDiscordPresenceWin/Host/```
  - You might need to change the Chrome Extension ID in ```main.json``` on different computers (located in the ```YouTubeDiscordPresence``` folder in ```Program Files``` if you installed it with the default path) until the extension somehow gets uploaded to the Chrome Web Store
-## Issues
- - ~~How to handle multiple tabs~~ **[DONE]**
- - ~~Error with quotation marks (NOT JUST QUOTATION MARKS, BUT ALL SPECIAL CHARACTERS) in video title and author (appears as ```\"``` instead of ```"```)~~ **[DONE]**
+## Known Issues
+ - ~~How to handle multiple tabs~~
+ - ~~Error with quotation marks (NOT JUST QUOTATION MARKS, BUT ALL SPECIAL CHARACTERS) in video title and author (appears as ```\"``` instead of ```"```)~~
     - There might be a problem if the video has multiple backslashes in a row though
  - ~~Livestream and premeire support~~ **[DONE for livestream at least, don't about premiere because I haven't gotten to test it yet]**
  - Not that big of an issue, but if someone goes from one livestream to another, the elapsed time continues without restarting from zero

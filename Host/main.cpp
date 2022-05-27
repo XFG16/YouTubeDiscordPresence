@@ -113,7 +113,7 @@ void updatePresence(const std::string& title, const std::string& author, const s
     activity.SetDetails(titleCString);
     activityAssets.SetLargeText(titleCString);
     activityAssets.SetSmallImage("vscodemusic3");
-    activityAssets.SetSmallText("YouTubeDiscordPresence by 2309#2309 [XFG16] on GitHub");
+    activityAssets.SetSmallText("YouTubeDiscordPresence on GitHub by XFG16 (2309#2309)"); // keep this here please for both myself and others
 
     previousTimeLeft = timeLeft;
     bool presenceUpdated = false, entered = false;

@@ -3,7 +3,7 @@
     "author": "Michael Ren",
     "description": "An extension used to create a rich presence for YouTube on Discord.",
     "version": "1.0",
-    "manifest_version": 2,
+    "manifest_version": 3,
     "content_scripts": [
         {
             "matches": ["https://*.youtube.com/*"],
@@ -11,9 +11,14 @@
         }
     ],
     "background": {
-        "scripts": ["background.js"]
+        "service_worker": "background.js"
     },
-    "web_accessible_resources": ["content.js"],
+    "web_accessible_resources": [
+        {
+            "resources": ["content.js"],
+            "matches": ["https://*.youtube.com/*"]
+        }
+    ],
     "permissions": [
         "nativeMessaging",
         "background",

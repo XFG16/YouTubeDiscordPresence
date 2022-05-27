@@ -1,17 +1,4 @@
-// TODO: TRY REDUCING NUMBER OF REQUESTS, MAKE A QUEUE THAT PRIORITIZES CERTAIN TABS OVER OTHERS, FIX FORMATTING ERROR WHEN VIDEO TITLE HAS QUOTATION MARKS
 // MAIN VARIABLE INITIALIZATION
-// document.getElementById("movie_player"); TRY MAKING USE OF THIS
-// ADD LIVESTREAM / PREMIERE SUPPORT
-// MAKE SURE IT WORKS FOR YOUTUBE MUSIC
-
-// document.querySelector("#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > div.ytp-time-display.notranslate.ytp-live > button")
-// POSSIBLE QUERY SELECTOR FOR CHECKING LIVE STREAM^^
-// EVEN BETTER:
-// document.getElementById("movie_player").querySelector("div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > div.ytp-time-display.notranslate.ytp-live > button")
-// TITLE WITHOUT HTTP REQUEST:
-// document.getElementById("movie_player").querySelector("div.ytp-chrome-top > div.ytp-title > div.ytp-title-text > a.ytp-title-link")
-// might have to get author from HTML
-// this can be done by "document.querySelector("#upload-info > #channel-name > #container > #text-container > #text > a")"
 
 const LOGGING = false;
 
@@ -158,3 +145,16 @@ var transmitterInterval = setInterval(function() {
         }
     }
 }, 1000);
+
+// document.getElementById("movie_player"); TRY MAKING USE OF THIS
+// ADD LIVESTREAM / PREMIERE SUPPORT
+// MAKE SURE IT WORKS FOR YOUTUBE MUSIC
+
+// document.querySelector("#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > div.ytp-time-display.notranslate.ytp-live > button")
+// POSSIBLE QUERY SELECTOR FOR CHECKING LIVE STREAM^^
+// EVEN BETTER:
+// document.getElementById("movie_player").querySelector("div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > div.ytp-time-display.notranslate.ytp-live > button")
+// TITLE WITHOUT HTTP REQUEST:
+// document.getElementById("movie_player").querySelector("div.ytp-chrome-top > div.ytp-title > div.ytp-title-text > a.ytp-title-link")
+// might have to get author from HTML
+// this can be done by "document.querySelector("#upload-info > #channel-name > #container > #text-container > #text > a")"
