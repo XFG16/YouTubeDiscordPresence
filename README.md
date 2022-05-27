@@ -3,6 +3,7 @@
  - Editing the extension and ```main.cpp``` can be done in VSCode directly
  - Compiling ```main.cpp``` and creating the installer should be done in Visual Studio
 ## Installation (no need to download additional libraries)
+ - NOTE: To turn this application on or off, just go to ```chrome://extensions``` and enable/disable the extension
  - MSI installer is located under ```YouTubeDiscordPresenceWin/Host/YTDPwin/YTDPsetup/Release```
     - It's gonna say Windows blocked an unknown app because the publisher is unknown (I'm a broke high schooler and can't afford a digital certificate). Just click more info and run anyway. Also, if you run this through VirusTotal, there are gonna be several false positives
     - Otherwise, you can just build the whole thing yourself with Visual Studio 2022. Just open the ```YTDPwin.sln``` file under ```YouTubeDiscordPresenceWin/Host/YTDPwin```
