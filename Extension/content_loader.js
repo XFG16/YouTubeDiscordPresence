@@ -6,6 +6,10 @@ const SCRIPT_ID = toString(Math.floor(Math.random() * Number.MAX_SAFE_INTEGER));
 
 var port = chrome.runtime.connect({name: "document-data-pipe"});
 
+port.onDisconnect.addListener(function() {
+    port = chrome.runtime.connect({name: "document-data-pipe"});
+});
+
 window.addEventListener("SendToLoader", function(message) {
     if (LOGGING) {
         console.log("Data was received by content_loader.js and sent to background.js: ['" + SCRIPT_ID + "', '" + message.detail.title + "', '" + message.detail.author + "', '" + message.detail.timeLeft + "']");

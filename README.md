@@ -3,9 +3,9 @@
  - Editing the extension and ```main.cpp``` can be done in VSCode directly
  - Compiling ```main.cpp``` and creating the installer should be done in Visual Studio
 ## Installation (no need to download additional libraries)
- - MSI installer is located under ```YouTubeDiscordPresence/tree/YouTubeDiscordPresenceWin/Host/YTDPwin/YTDPsetup/Release```
+ - MSI installer is located under ```YouTubeDiscordPresenceWin/Host/YTDPwin/YTDPsetup/Release```
     - It's gonna say Windows blocked an unknown app because the publisher is unknown (I'm a broke high schooler and can't afford a digital certificate). Just click more info and run anyway. Also, if you run this through VirusTotal, there are gonna be several false positives
-    - Otherwise, you can just build the whole thing yourself with Visual Studio 2022. Just open the ```YTDPwin.sln``` file under ```YouTubeDiscordPresence/tree/YouTubeDiscordPresenceWin/Host/```
+    - Otherwise, you can just build the whole thing yourself with Visual Studio 2022. Just open the ```YTDPwin.sln``` file under ```YouTubeDiscordPresenceWin/Host/YTDPwin```
  - You might need to change the Chrome Extension ID in ```main.json``` on different computers (located in the ```YouTubeDiscordPresence``` folder in ```Program Files``` if you installed it with the default path) until the extension somehow gets uploaded to the Chrome Web Store
 ## Known Issues
  - ~~How to handle multiple tabs~~
@@ -24,3 +24,4 @@
  - The appearance and disappearance of the rich presence on your profile can be delayed because Discord limits the processing of rich presence update requests to 15 seconds
  - Files ending with ```save_copy``` can probably be ignored and even removed later on
  - Maybe add a feature to stop the presence from disappearing when no video is playing; instead, just make the rich presence display idle (let the user choose between original or this)
+ - If the extension gets published to the Chrome Web Store, the Extension ID needs to get updated directly in Visual Studio
