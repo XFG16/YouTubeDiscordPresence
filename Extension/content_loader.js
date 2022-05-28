@@ -2,8 +2,6 @@
 
 const LOGGING = true;
 
-const SCRIPT_ID = toString(Math.floor(Math.random() * Number.MAX_SAFE_INTEGER));
-
 var port = chrome.runtime.connect({name: "document-data-pipe"});
 
 port.onDisconnect.addListener(function() {
@@ -12,10 +10,9 @@ port.onDisconnect.addListener(function() {
 
 window.addEventListener("SendToLoader", function(message) {
     if (LOGGING) {
-        console.log("Data was received by content_loader.js and sent to background.js: ['" + SCRIPT_ID + "', '" + message.detail.title + "', '" + message.detail.author + "', '" + message.detail.timeLeft + "']");
+        console.log("Data was received by content_loader.js and sent to background.js: ['" + message.detail.title + "', '" + message.detail.author + "', '" + message.detail.timeLeft + "']");
     }
     port.postMessage({
-        scriptId: SCRIPT_ID,
         title: message.detail.title,
         author: message.detail.author,
         timeLeft: message.detail.timeLeft

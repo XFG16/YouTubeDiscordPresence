@@ -12,10 +12,10 @@ const NMF = { // NMF = NATIVE_MESSAGE_FORMAT
 }
 
 const IDLE_TIME_REQUIREMENT = 2000;
+const LIVESTREAM_TIME_ID = -1;
 
 var nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
-var scriptQueue = [];
-var lastUpdated = new Map();
+var lastUpdated = 0;
 var currentMessage = new Object();
 
 // LISTENER FOR CONTENT.JS AND PIPE TO NATIVE APP
@@ -23,16 +23,11 @@ var currentMessage = new Object();
 chrome.runtime.onConnect.addListener(function(port) {
     console.assert(port.name === "document-data-pipe");
     port.onMessage.addListener(function(message) {
-        if (message.title && message.author && message.timeLeft) {
-            if (scriptQueue.indexOf(message.scriptId) == -1) {
-                scriptQueue.push(message.scriptId);
-            }
-            lastUpdated.set(message.scriptId, new Date().getTime());
-            if (message.scriptId == scriptQueue[0]) {
-                currentMessage.title = message.title;
-                currentMessage.author = message.author;
-                currentMessage.timeLeft = message.timeLeft;
-            }
+        if (message.title && message.author && message.timeLeft) { // SELECTION ON WHICH TAB TO DISPLAY IS PURELY BASED ON WHICH ONE IS CLOSER TO THE UPDATE TIME (2 SECONDS)
+            currentMessage.title = message.title;
+            currentMessage.author = message.author;
+            currentMessage.timeLeft = message.timeLeft;
+            lastUpdated = new Date().getTime();
         }
     });
 });
@@ -44,13 +39,7 @@ if (LOGGING) {
 }
 
 var pipeInterval = setInterval(function() {
-    for (const element of lastUpdated[Symbol.iterator]()) {
-        if ((new Date().getTime()) - element[1] >= IDLE_TIME_REQUIREMENT) {
-            lastUpdated.delete(element[0]);
-            scriptQueue.splice(scriptQueue.indexOf(element[0], 1))
-        }
-    }
-    if (lastUpdated.size > 0) {
+    if (new Date().getTime() - lastUpdated < IDLE_TIME_REQUIREMENT) {
         if (LOGGING) {
             console.log("[CURRENTMESSAGE] SENT BY BACKGROUND.JS: ['" + currentMessage.title + "', '" + currentMessage.author + "', '" + currentMessage.timeLeft + "']");
         }

@@ -6,6 +6,7 @@ const MESSAGE_NULL = "(%NULL%)";
 const YOUTUBE_MAIN_URL = "https://www.youtube.com";
 const YOUTUBE_MUSIC_URL = "https://music.youtube.com";
 const LINK_SEPARATOR_KEY = "&v=";
+const IDLE_TIME_REQUIREMENT = 2000;
 
 const LIVESTREAM_ELEMENT_SELECTOR = "div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > div.ytp-time-display.notranslate.ytp-live > button"; // VIDEO PLAYER
 const MINIPLAYER_ELEMENT_SELECTOR = "div.ytp-miniplayer-ui"; // VIDEO PLAYER
@@ -53,7 +54,7 @@ const getJSON = async url => {
 // DOCUMENT SCANNING (https://developers.google.com/youtube/iframe_api_reference)
 // (https://stackoverflow.com/questions/9515704/use-a-content-script-to-access-the-page-context-variables-and-functions)
 
-function secondarySelection() {
+function nonOEmbedSelection() {
     let miniplayerHTML = videoPlayer.querySelector(MINIPLAYER_ELEMENT_SELECTOR);
     if (!miniplayerHTML || (miniplayerHTML && miniplayerHTML.getAttribute("style") == NO_MINIPLAYER_ATTRIBUTE)) {
         let titleHTML = videoPlayer.querySelector(MAIN_LIVESTREAM_TITLE_SELECTOR);
@@ -89,6 +90,18 @@ function secondarySelection() {
     }
 }
 
+function timeSelection() { // has to be a separate function because the oembed request is asynchronous, which can cause the presence to display the wrong time if put into the main function directly
+    if (videoPlayer.getDuration()) {
+        documentData.timeLeft = videoPlayer.getDuration() - videoPlayer.getCurrentTime();
+        if (documentData.timeLeft < 0) {
+            documentData.timeLeft = 0;
+        }
+    }
+    else {
+        documentData.timeLeft = null;
+    }
+}
+
 function getYouTubeData() {
     let livestreamHTML = videoPlayer.querySelector(LIVESTREAM_ELEMENT_SELECTOR);
     if (videoPlayer.getVideoUrl() && !livestreamHTML) {
@@ -100,27 +113,17 @@ function getYouTubeData() {
                 }
                 documentData.title = data.title;
                 documentData.author = data.author_name;
+                timeSelection();
             }).catch(error => {
-                secondarySelection();
+                nonOEmbedSelection();
+                timeSelection();
                 console.error(error);
             });
         }
     }
     else {
-        secondarySelection();
-    }
-
-    if (livestreamHTML) {
+        nonOEmbedSelection();
         documentData.timeLeft = LIVESTREAM_TIME_ID;
-    }
-    else if (videoPlayer.getDuration()) {
-        documentData.timeLeft = videoPlayer.getDuration() - videoPlayer.getCurrentTime();
-        if (documentData.timeLeft < 0) {
-            documentData.timeLeft = 0;
-        }
-    }
-    else {
-        documentData.timeLeft = null;
     }
 }
 
@@ -133,7 +136,7 @@ var transmitterInterval = setInterval(function() {
     if ((document.URL.startsWith(YOUTUBE_MAIN_URL) || document.URL.startsWith(YOUTUBE_MUSIC_URL)) && videoPlayer && videoPlayer.getPlayerState() == 1) {
         getYouTubeData();
         if (documentData.title && documentData.author && documentData.timeLeft) {
-            messageData = {title: documentData.title, author: documentData.author, timeLeft: parseInt(documentData.timeLeft)};
+            messageData = {title: documentData.title, author: documentData.author, timeLeft: parseInt(documentData.timeLeft)}; // parseInt to remove decimals
             var messageEvent = new CustomEvent("SendToLoader", {detail: messageData});
             window.dispatchEvent(messageEvent);
             if (LOGGING) {
@@ -144,7 +147,7 @@ var transmitterInterval = setInterval(function() {
             }
         }
     }
-}, 1000);
+}, IDLE_TIME_REQUIREMENT / 2);
 
 // document.getElementById("movie_player"); TRY MAKING USE OF THIS
 // ADD LIVESTREAM / PREMIERE SUPPORT
