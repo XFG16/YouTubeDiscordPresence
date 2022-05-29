@@ -1,8 +1,4 @@
 # YouTubeDiscordPresnce for Windows (x64)
-<p align="center">
-  <img width="480" height="300" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/ytdpScreenshot1.png?raw=true">
-</p>
-
  - This is now the main branch that I'll probably use and clear up later (macOS is a bit annoying)
  - Editing the extension and ```main.cpp``` can be done in VSCode directly
  - Compiling ```main.cpp``` and creating the installer should be done in Visual Studio
@@ -15,8 +11,16 @@
  - After loading the extension in, you might need to change the Chrome Extension ID in ```main.json``` on different computers (located in the ```YouTubeDiscordPresence``` folder in ```Program Files``` if you installed it with the default path) until the extension somehow gets uploaded to the Chrome Web Store.
 
 <p align="center">
-  <img width="480" height="300" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/ytdpScreenshot2.png?raw=true">
+  <img width="100%" height="5" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/ytdpScreenshot1.png?raw=true">
 </p>
+<p align="center">
+  <img width="49%" height="auto" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/ytdpScreenshot1.png?raw=true">
+  <img width="49%" height="auto" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/ytdpScreenshot2.png?raw=true">
+</p>
+<p align="center">
+  <img width="100%" height="5" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/ytdpScreenshot1.png?raw=true">
+</p>
+
 ## Known Issues
  - ~~How to handle multiple tabs~~
  - ~~Error with quotation marks (NOT JUST QUOTATION MARKS, BUT ALL SPECIAL CHARACTERS) in video title and author (appears as ```\"``` instead of ```"```)~~
