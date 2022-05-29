@@ -9,7 +9,7 @@
   <img width="100%" height="5" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/ytdpScreenshot1.png?raw=true">
 </p>
 
-# YouTubeDiscordPresnce for Windows (x64)
+# YouTubeDiscordPresence for Windows (x64)
  - This is now the main branch that I'll probably use and clear up later (macOS is a bit annoying)
  - Editing the extension and ```main.cpp``` can be done in VSCode directly
  - Compiling ```main.cpp``` and creating the installer should be done in Visual Studio
