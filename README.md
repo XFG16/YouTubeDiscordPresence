@@ -2,6 +2,8 @@
  - This is now the main branch that I'll probably use and clear up later (macOS is a bit annoying)
  - Editing the extension and ```main.cpp``` can be done in VSCode directly
  - Compiling ```main.cpp``` and creating the installer should be done in Visual Studio
+![Demo screenshot 1](https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/ytdpScreenshot1.png?raw=true)
+![Demo screenshot 2](https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/ytdpScreenshot2.png?raw=true)
 ## Installation (no need to download additional libraries)
  - NOTE: To turn this application on or off, just go to ```chrome://extensions``` and enable/disable the extension
  - MSI installer is located under ```YouTubeDiscordPresenceWin/Host/YTDPwin/YTDPsetup/Release```
@@ -14,6 +16,7 @@
     - There might be a problem if the video has multiple backslashes in a row though
  - ~~Livestream and premeire support~~ **[DONE for livestream at least, don't about premiere because I haven't gotten to test it yet]**
  - Not that big of an issue, but if someone goes from one livestream to another, the elapsed time continues without restarting from zero
+ - The service worker randomly shuts down sometimes and the port from content.js disconnects. It gets reset when the user reloads the tab
 ## Instructions for Committing From a Terminal
  - Run ```git status``` to check if anything needs to be uploaded
  - Run ```git add .``` to prepare all the files for uploading
