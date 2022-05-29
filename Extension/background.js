@@ -20,16 +20,14 @@ var currentMessage = new Object();
 
 // LISTENER FOR CONTENT.JS AND PIPE TO NATIVE APP
 
-chrome.runtime.onConnect.addListener(function(port) {
-    console.assert(port.name === "document-data-pipe");
-    port.onMessage.addListener(function(message) {
-        if (message.title && message.author && message.timeLeft) { // SELECTION ON WHICH TAB TO DISPLAY IS PURELY BASED ON WHICH ONE IS CLOSER TO THE UPDATE TIME (2 SECONDS)
-            currentMessage.title = message.title;
-            currentMessage.author = message.author;
-            currentMessage.timeLeft = message.timeLeft;
-            lastUpdated = new Date().getTime();
-        }
-    });
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.title && message.author && message.timeLeft) { // SELECTION ON WHICH TAB TO DISPLAY IS PURELY BASED ON WHICH ONE IS CLOSER TO THE UPDATE TIME (2 SECONDS)
+        currentMessage.title = message.title;
+        currentMessage.author = message.author;
+        currentMessage.timeLeft = message.timeLeft;
+        lastUpdated = new Date().getTime();
+        sendResponse(null);
+    }
 });
 
 // IDLE HANDLER

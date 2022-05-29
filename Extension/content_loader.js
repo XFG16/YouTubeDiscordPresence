@@ -9,13 +9,14 @@ port.onDisconnect.addListener(function() {
 });
 
 window.addEventListener("SendToLoader", function(message) {
-    if (LOGGING) {
-        console.log("Data was received by content_loader.js and sent to background.js: ['" + message.detail.title + "', '" + message.detail.author + "', '" + message.detail.timeLeft + "']");
-    }
-    port.postMessage({
+    chrome.runtime.sendMessage({
         title: message.detail.title,
         author: message.detail.author,
         timeLeft: message.detail.timeLeft
+    }, (response) => {
+        if (LOGGING) {
+            console.log("Data was sent by content_loader.js and received by background.js: ['" + message.detail.title + "', '" + message.detail.author + "', '" + message.detail.timeLeft + "']");
+        }
     });
 }, false);
 

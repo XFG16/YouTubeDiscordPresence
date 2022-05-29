@@ -25,15 +25,16 @@
  - ~~How to handle multiple tabs~~
  - ~~Error with quotation marks (NOT JUST QUOTATION MARKS, BUT ALL SPECIAL CHARACTERS) in video title and author (appears as ```\"``` instead of ```"```)~~
     - There might be a problem if the video has multiple backslashes in a row though
- - ~~Livestream and premeire support~~ **[DONE for livestream at least, don't about premiere because I haven't gotten to test it yet]**
+ - ~~Livestream and premeire support~~ **[TESTED AND WORKS!]**
+ - ~~The service worker randomly shuts down sometimes and the port from content.js disconnects. It gets reset when the user reloads the~~ **[SWITCHED TO SINGLE-TIME MESSAGES INSTEAD OF PORT TO AVOID ISSUES WHEN THE SERVICE WORKER UNLOADS]**
  - Not that big of an issue, but if someone goes from one livestream to another, the elapsed time continues without restarting from zero
- - The service worker randomly shuts down sometimes and the port from content.js disconnects. It gets reset when the user reloads the tab
 ## Instructions for Committing From a Terminal
  - Run ```git status``` to check if anything needs to be uploaded
  - Run ```git add .``` to prepare all the files for uploading
  - Run ```git commit -m [description]``` to describe the commit
  - Run ```git push``` to push the files into the repository
 ## Other Notes
+ - **REMEMBER TO TURN OFF LOGGING FOR RELEASE VERSIONS**
  - Press ```Alt``` + ```Enter``` to show properties in Visual Studio
  - For linking the Discord SDK DLL to Visual Studio, go to ```[PROJECT NAME ON EXPLORER] > Properties > Linker > Input > Additional Dependencies``` and add the exact path to the .lib file associated with the DLL
  - The appearance and disappearance of the rich presence on your profile can be delayed because Discord limits the processing of rich presence update requests to 15 seconds
