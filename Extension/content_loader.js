@@ -2,12 +2,6 @@
 
 const LOGGING = true;
 
-var port = chrome.runtime.connect({name: "document-data-pipe"});
-
-port.onDisconnect.addListener(function() {
-    port = chrome.runtime.connect({name: "document-data-pipe"});
-});
-
 window.addEventListener("SendToLoader", function(message) {
     chrome.runtime.sendMessage({
         title: message.detail.title,
