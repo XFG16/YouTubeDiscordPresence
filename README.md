@@ -10,11 +10,12 @@
 </p>
 
 # Installation (no need to download additional libraries)
- - The **MSI installer** is located under `Host/YTDPwin/YTDPsetup/Release`
+ - Download the `YTDPsetup.msi` file in the releases section
     - It's gonna say Windows **blocked an unknown app** because the publisher is unknown. Sorry, I'm broke and can't afford a digital certificate, at least for now. Just click more info and run anyway.
     - If you run this through VirusTotal, there are gonna be several **false positives**. Sorry, but my word is the only thing I can really offer here.
     - Otherwise, you can just **build** the whole thing yourself with **Visual Studio 2022**. Just open the `YTDPwin.sln` file under `Host/YTDPwin`, link the libraries and `main.cpp`, and you should be set.
- - After loading the extension in, you might need to **change the Chrome Extension ID** in ```main.json``` on different computers (located in the ```YouTubeDiscordPresence``` folder in ```Program Files``` if you installed it with the default path) until the extension somehow gets **uploaded to the Chrome Web Store**.
+ - After running `YTDPsetup.msi` and loading the extension into Chrome after downloading the `Extension.zip` file in releases, you might need to **change the Chrome Extension ID** in ```main.json``` (located in the ```YouTubeDiscordPresence``` folder in ```Program Files``` if you installed it with the default path)
+   - Subject to change after the extension gets **uploaded to the Chrome Web Store**
 
 # YouTubeDiscordPresence for Windows (x64)
 ## General Notes 
