@@ -9,6 +9,13 @@
   <img width="100%" height="5" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/Screenshots/ytdpScreenshot1.png?raw=true">
 </p>
 
+# Installation (no need to download additional libraries)
+ - The **MSI installer** is located under `Host/YTDPwin/YTDPsetup/Release`
+    - It's gonna say Windows **blocked an unknown app** because the publisher is unknown. Sorry, I'm broke and can't afford a digital certificate, at least for now. Just click more info and run anyway.
+    - If you run this through VirusTotal, there are gonna be several **false positives**. Sorry, but my word is the only thing I can really offer here.
+    - Otherwise, you can just **build** the whole thing yourself with **Visual Studio 2022**. Just open the `YTDPwin.sln` file under `Host/YTDPwin`, link the libraries and `main.cpp`, and you should be set.
+ - After loading the extension in, you might need to **change the Chrome Extension ID** in ```main.json``` on different computers (located in the ```YouTubeDiscordPresence``` folder in ```Program Files``` if you installed it with the default path) until the extension somehow gets **uploaded to the Chrome Web Store**.
+
 # YouTubeDiscordPresence for Windows (x64)
 ## General Notes 
  - This is an extension used to create a **detailed rich presence** for YouTube videos and livestreams on Discord.
@@ -16,16 +23,9 @@
  - Supports both **normal** and **livestream/premiere** videos on YouTube as well as **YouTube Music**
  - On a more **technical note**, it works similar to the **Spotify rich presence**—it only appears **when a video is playing** and **disappears when there is no video or the video is paused**. In addition, it only displays the presence for videos. Idling and searching are **not displayed**.
  - There are **two** components:
-   - Chrome Extension (`YouTubeDiscordPresenceWin/Extension`)
-   - Desktop Application (`YouTubeDiscordPresenceWin/Host`)
+   - Chrome Extension (`Extension`)
+   - Desktop Application (`Host`)
  - To turn this application **on or off**, just go to `chrome://extensions` and **toggle the switch** for the extension
-
-## Installation (no need to download additional libraries)
- - The **MSI installer** is located under `YouTubeDiscordPresenceWin/Host/YTDPwin/YTDPsetup/Release`
-    - It's gonna say Windows **blocked an unknown app** because the publisher is unknown. Sorry, I'm broke and can't afford a digital certificate, at least for now. Just click more info and run anyway.
-    - If you run this through VirusTotal, there are gonna be several **false positives**. Sorry, but my word is the only thing I can really offer here.
-    - Otherwise, you can just **build** the whole thing yourself with **Visual Studio 2022**. Just open the `YTDPwin.sln` file under `YouTubeDiscordPresenceWin/Host/YTDPwin`, link the libraries and `main.cpp`, and you should be set.
- - After loading the extension in, you might need to **change the Chrome Extension ID** in ```main.json``` on different computers (located in the ```YouTubeDiscordPresence``` folder in ```Program Files``` if you installed it with the default path) until the extension somehow gets **uploaded to the Chrome Web Store**.
 
 ## Known Issues
  - Not that big of an issue, but if you go from one livestream to another, the elapsed time continues without restarting from zero

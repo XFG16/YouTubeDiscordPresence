@@ -6,7 +6,7 @@
     "manifest_version": 3,
     "content_scripts": [
         {
-            "matches": ["https://*.youtube.com/*"],
+            "matches": ["https://www.youtube.com/*", "https://music.youtube.com/*"],
             "js": ["content_loader.js"]
         }
     ],
@@ -16,7 +16,7 @@
     "web_accessible_resources": [
         {
             "resources": ["content.js"],
-            "matches": ["https://*.youtube.com/*"]
+            "matches": ["https://www.youtube.com/*", "https://music.youtube.com/*"]
         }
     ],
     "permissions": [

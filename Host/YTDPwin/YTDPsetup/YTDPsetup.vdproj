@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_65946D9490F44ED7BF8E62841740BFCF"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_A70BF558FFDC46B3A9BFD15E2AA7967D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -112,6 +118,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_65946D9490F44ED7BF8E62841740BFCF"
+            {
+            "SourcePath" = "8:C:\\Users\\renyo\\Downloads\\ytdpLogo.ico"
+            "TargetName" = "8:ytdpLogo.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_56A3632D70DB4D05A6394C0929BF78F7"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A70BF558FFDC46B3A9BFD15E2AA7967D"
             {
             "SourcePath" = "8:..\\..\\Discord\\Lib\\discord_game_sdk.dll"
@@ -209,7 +235,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:YouTubeDiscordPresence"
         "ProductCode" = "8:{92E3C54C-1479-48DA-83FF-1FF6C0EA1A0A}"
-        "PackageCode" = "8:{EFC9887C-EC82-4A66-B76C-4239163F42A7}"
+        "PackageCode" = "8:{E2D47F6A-9328-4FBB-8FB6-49438FCA7034}"
         "UpgradeCode" = "8:{E382DBD1-8EDE-47B6-A376-403178519F67}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -226,7 +252,7 @@
         "Keywords" = "8:YouTube Discord"
         "ARPCOMMENTS" = "8:An extension that takes data directly from the YouTube video playing on the browser and displays it as a rich presence on Discord. Works similar to the Spotify Discord rich presence."
         "ARPURLINFOABOUT" = "8:https://github.com/XFG16"
-        "ARPPRODUCTICON" = "8:"
+        "ARPPRODUCTICON" = "8:_65946D9490F44ED7BF8E62841740BFCF"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
