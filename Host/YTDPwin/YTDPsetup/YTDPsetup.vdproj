@@ -15,7 +15,7 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_7EA594A616154970BBB45DCFA5603214"
+        "MsmKey" = "8:_4E316C51956A40A7AAFCB02D921B05D3"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -118,9 +118,9 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7EA594A616154970BBB45DCFA5603214"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4E316C51956A40A7AAFCB02D921B05D3"
             {
-            "SourcePath" = "8:C:\\Users\\renyo\\Downloads\\YTDPlogo.ico"
+            "SourcePath" = "8:C:\\Users\\renyo\\OneDrive\\Pictures\\YTDPlogo.ico"
             "TargetName" = "8:YTDPlogo.ico"
             "Tag" = "8:"
             "Folder" = "8:_56A3632D70DB4D05A6394C0929BF78F7"
@@ -235,7 +235,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:YouTubeDiscordPresence"
         "ProductCode" = "8:{92E3C54C-1479-48DA-83FF-1FF6C0EA1A0A}"
-        "PackageCode" = "8:{E31EA110-8283-46E2-A7F6-A005C7B9A857}"
+        "PackageCode" = "8:{93E4C63E-10D6-4D47-8E66-3052B089029E}"
         "UpgradeCode" = "8:{E382DBD1-8EDE-47B6-A376-403178519F67}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
@@ -252,7 +252,7 @@
         "Keywords" = "8:YouTube Discord"
         "ARPCOMMENTS" = "8:An extension that takes data directly from the YouTube video playing on the browser and displays it as a rich presence on Discord. Works similar to the Spotify Discord rich presence."
         "ARPURLINFOABOUT" = "8:https://github.com/XFG16"
-        "ARPPRODUCTICON" = "8:_7EA594A616154970BBB45DCFA5603214"
+        "ARPPRODUCTICON" = "8:_4E316C51956A40A7AAFCB02D921B05D3"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"

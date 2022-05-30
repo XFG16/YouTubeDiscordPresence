@@ -15,7 +15,7 @@ const std::string TIME_LEFT_IDENTIFIER = ":TIMELEFT003:";
 const std::string END_IDENTIFIER = ":END004:";
 const std::string IDLE_IDENTIFIER = "#*IDLE*#";
 const int LIVESTREAM_TIME_ID = -1;
-const int ACTIVITY_BUFFER_SIZE = 128;
+const int ACTIVITY_BUFFER_SIZE = 1024;
 
 const bool LOGGING = false;
 

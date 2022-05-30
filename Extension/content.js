@@ -140,7 +140,7 @@ var transmitterInterval = setInterval(function() {
     if ((document.URL.startsWith(YOUTUBE_MAIN_URL) || document.URL.startsWith(YOUTUBE_MUSIC_URL)) && videoPlayer && videoPlayer.getPlayerState() == 1) {
         getYouTubeData();
         if (documentData.title && documentData.author && documentData.timeLeft) {
-            messageData = {title: documentData.title, author: documentData.author, timeLeft: Math.floor(documentData.timeLeft)};
+            messageData = {title: documentData.title, author: documentData.author, timeLeft: Math.round(documentData.timeLeft)};
             var messageEvent = new CustomEvent("SendToLoader", {detail: messageData});
             window.dispatchEvent(messageEvent);
             if (LOGGING) {
