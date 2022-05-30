@@ -50,10 +50,10 @@ const getJSON = async url => {
     return data;
 }
 
-// DOCUMENT SCANNING (https://developers.google.com/youtube/iframe_api_reference)
+// DOCUMENT SCANNING IF VIDEO IS LIVESTREAM OR OEMBED DOESN'T WORK (https://developers.google.com/youtube/iframe_api_reference)
 // ALSO SEE (https://stackoverflow.com/questions/9515704/use-a-content-script-to-access-the-page-context-variables-and-functions)
 
-function nonOEmbedSelection() {
+function getLivestreamData() {
     let miniplayerHTML = videoPlayer.querySelector(MINIPLAYER_ELEMENT_SELECTOR);
     if (!miniplayerHTML || (miniplayerHTML && miniplayerHTML.getAttribute("style") == NO_MINIPLAYER_ATTRIBUTE)) {
         let titleHTML = videoPlayer.querySelector(MAIN_LIVESTREAM_TITLE_SELECTOR);
@@ -92,7 +92,7 @@ function nonOEmbedSelection() {
 // SEPARATE FUNCTION FOR GETTING VIDEO TIMES
 // HAS TO BE A SEPARATE FUNCTION BECAUSE THE OEMBED REQUEST IS ASYNCHRONOUS, WHICH CAN CAUSE THE PRESENCE TO DISPLAY THE WRONG TIME IF PUT INTO THE MAIN FUNCTION DIRECTLY
 
-function timeSelection() {
+function getTimeData() {
     if (videoPlayer.getDuration()) {
         documentData.timeLeft = videoPlayer.getDuration() - videoPlayer.getCurrentTime();
         if (documentData.timeLeft < 0) {
@@ -117,16 +117,16 @@ function getYouTubeData() {
                 }
                 documentData.title = data.title;
                 documentData.author = data.author_name;
-                timeSelection();
+                getTimeData();
             }).catch(error => {
-                nonOEmbedSelection();
-                timeSelection();
+                getLivestreamData();
+                getTimeData();
                 console.error(error);
             });
         }
     }
     else {
-        nonOEmbedSelection();
+        getLivestreamData();
         documentData.timeLeft = LIVESTREAM_TIME_ID;
     }
 }
@@ -140,7 +140,7 @@ var transmitterInterval = setInterval(function() {
     if ((document.URL.startsWith(YOUTUBE_MAIN_URL) || document.URL.startsWith(YOUTUBE_MUSIC_URL)) && videoPlayer && videoPlayer.getPlayerState() == 1) {
         getYouTubeData();
         if (documentData.title && documentData.author && documentData.timeLeft) {
-            messageData = {title: documentData.title, author: documentData.author, timeLeft: parseInt(documentData.timeLeft)}; // parseInt to remove decimals
+            messageData = {title: documentData.title, author: documentData.author, timeLeft: Math.floor(documentData.timeLeft)};
             var messageEvent = new CustomEvent("SendToLoader", {detail: messageData});
             window.dispatchEvent(messageEvent);
             if (LOGGING) {
@@ -151,4 +151,4 @@ var transmitterInterval = setInterval(function() {
             }
         }
     }
-}, IDLE_TIME_REQUIREMENT / 2);
+}, IDLE_TIME_REQUIREMENT);

@@ -15,6 +15,7 @@ const std::string TIME_LEFT_IDENTIFIER = ":TIMELEFT003:";
 const std::string END_IDENTIFIER = ":END004:";
 const std::string IDLE_IDENTIFIER = "#*IDLE*#";
 const int LIVESTREAM_TIME_ID = -1;
+const int ACTIVITY_BUFFER_SIZE = 128;
 
 const bool LOGGING = false;
 
@@ -67,7 +68,7 @@ void formatCString(char* str) { // REMEMBER TO DEAL WITH OTHER SPECIAL CHARACTER
             ++j;
         }
     }
-    memset(&str[j], '\0', 128 - j);
+    memset(&str[j], '\0', ACTIVITY_BUFFER_SIZE - j);
 }
 
 // UPDATE DISCORD PRESENCE WITH DATA
@@ -85,12 +86,13 @@ void updatePresence(const std::string& title, const std::string& author, const s
     discord::ActivityTimestamps& timeStamp = activity.GetTimestamps();
     discord::ActivityAssets& activityAssets = activity.GetAssets();
 
-    char authorCString[128];
+    char titleCString[ACTIVITY_BUFFER_SIZE], authorCString[ACTIVITY_BUFFER_SIZE];
     memset(authorCString, '\0', sizeof(authorCString));
+    memset(titleCString, '\0', sizeof(titleCString));
+
+    strcpy_s(titleCString, ACTIVITY_BUFFER_SIZE, title.c_str());
     if (timeLeft != LIVESTREAM_TIME_ID) {
-        strcpy_s(authorCString, 128, ("by " + author).c_str());
-        formatCString(authorCString);
-        activity.SetState(authorCString);
+        strcpy_s(authorCString, ACTIVITY_BUFFER_SIZE, ("by " + author).c_str());
         activityAssets.SetLargeImage("youtube3");
         timeStamp.SetEnd(std::time(nullptr) + timeLeft);
     }
@@ -98,22 +100,19 @@ void updatePresence(const std::string& title, const std::string& author, const s
         if (previousTimeLeft >= 0) {
             elapsedTime = std::time(nullptr);
         }
-        strcpy_s(authorCString, 128, ("[LIVE] on " + author).c_str());
-        formatCString(authorCString);
-        activity.SetState(authorCString);
+        strcpy_s(authorCString, ACTIVITY_BUFFER_SIZE, ("[LIVE] on " + author).c_str());
         activityAssets.SetLargeImage("youtubelive1");
         timeStamp.SetStart(elapsedTime);
     }
 
-    char titleCString[128];
-    memset(authorCString, '\0', sizeof(authorCString));
-    strcpy_s(titleCString, 128, title.c_str());
     formatCString(titleCString);
+    formatCString(authorCString);
 
     activity.SetDetails(titleCString);
     activityAssets.SetLargeText(titleCString);
-    activityAssets.SetSmallImage("vscodemusic3");
-    activityAssets.SetSmallText("YouTubeDiscordPresence on GitHub by XFG16 (2309#2309)"); // keep this here please for both myself and others
+    activity.SetState(authorCString);
+    activityAssets.SetSmallImage("githubmark2");
+    activityAssets.SetSmallText("YouTubeDiscordPresence on GitHub by XFG16 (2309#2309)");    
 
     previousTimeLeft = timeLeft;
     bool presenceUpdated = false, entered = false;

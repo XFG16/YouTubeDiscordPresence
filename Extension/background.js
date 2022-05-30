@@ -39,7 +39,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 // NATIVE MESSAGING HANDLER
 
 var pipeInterval = setInterval(function() {
-    if (new Date().getTime() - lastUpdated < IDLE_TIME_REQUIREMENT) {
+    if (new Date().getTime() - lastUpdated < 1.1 * IDLE_TIME_REQUIREMENT) {
         if (LOGGING) {
             console.log("[CURRENTMESSAGE] SENT BY BACKGROUND.JS: ['" + currentMessage.title + "', '" + currentMessage.author + "', '" + currentMessage.timeLeft + "']");
         }
