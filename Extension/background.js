@@ -1,4 +1,3 @@
-// https://github.com/discord/discord-rpc
 // MAIN VARIABLE INITIALIZATION
 
 const LOGGING = true;
@@ -18,10 +17,17 @@ var nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
 var lastUpdated = 0;
 var currentMessage = new Object();
 
-// LISTENER FOR CONTENT.JS AND PIPE TO NATIVE APP
+// LOGGING
+
+if (LOGGING) {
+    console.log("background.js created");
+}
+
+// LISTENER FOR DATA FROM CONTENT_LOADER.JS
+// SELECTION ON WHICH TAB TO DISPLAY IS PURELY BASED ON WHICH ONE IS CLOSER TO THE UPDATE TIME (2 SECONDS)
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.title && message.author && message.timeLeft) { // SELECTION ON WHICH TAB TO DISPLAY IS PURELY BASED ON WHICH ONE IS CLOSER TO THE UPDATE TIME (2 SECONDS)
+    if (message.title && message.author && message.timeLeft) {
         currentMessage.title = message.title;
         currentMessage.author = message.author;
         currentMessage.timeLeft = message.timeLeft;
@@ -30,11 +36,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 });
 
-// IDLE HANDLER
-
-if (LOGGING) {
-    console.log("background.js created");
-}
+// NATIVE MESSAGING HANDLER
 
 var pipeInterval = setInterval(function() {
     if (new Date().getTime() - lastUpdated < IDLE_TIME_REQUIREMENT) {

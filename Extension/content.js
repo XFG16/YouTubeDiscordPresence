@@ -2,7 +2,6 @@
 
 const LOGGING = false;
 
-const MESSAGE_NULL = "(%NULL%)";
 const YOUTUBE_MAIN_URL = "https://www.youtube.com";
 const YOUTUBE_MUSIC_URL = "https://music.youtube.com";
 const LINK_SEPARATOR_KEY = "&v=";
@@ -26,7 +25,7 @@ if (LOGGING) {
     console.log("YouTubeDiscordPresence - content.js created");
 }
 
-// GET YOUTUBE OEMBED JSON DATA (https://stackoverflow.com/questions/30084140/youtube-video-title-with-api-v3-without-api-key)
+// GET YOUTUBE OEMBED LINK FOR JSON DATA (https://stackoverflow.com/questions/30084140/youtube-video-title-with-api-v3-without-api-key)
 
 function getVideoOEmbed(link) {
     separatorIndex = link.indexOf(LINK_SEPARATOR_KEY);
@@ -35,12 +34,12 @@ function getVideoOEmbed(link) {
         if (LOGGING) {
             console.log(link);
         }
-        return ("https://www.youtube.com/oembed?url=http%3A//youtube.com/watch%3Fv%3D" + link + "   ");
+        return ("https://www.youtube.com/oembed?url=http%3A//youtube.com/watch%3Fv%3D" + link + "&format=json");
     }
     return null;
 }
 
-// DATA REQUEST (https://stackoverflow.com/questions/2499567/how-to-make-a-json-call-to-an-url/2499647#2499647)
+// WEB REQUEST FOR VIDEO DATA (https://stackoverflow.com/questions/2499567/how-to-make-a-json-call-to-an-url/2499647#2499647)
 
 const getJSON = async url => {
     const response = await fetch(url);
@@ -52,7 +51,7 @@ const getJSON = async url => {
 }
 
 // DOCUMENT SCANNING (https://developers.google.com/youtube/iframe_api_reference)
-// (https://stackoverflow.com/questions/9515704/use-a-content-script-to-access-the-page-context-variables-and-functions)
+// ALSO SEE (https://stackoverflow.com/questions/9515704/use-a-content-script-to-access-the-page-context-variables-and-functions)
 
 function nonOEmbedSelection() {
     let miniplayerHTML = videoPlayer.querySelector(MINIPLAYER_ELEMENT_SELECTOR);
@@ -90,7 +89,10 @@ function nonOEmbedSelection() {
     }
 }
 
-function timeSelection() { // has to be a separate function because the oembed request is asynchronous, which can cause the presence to display the wrong time if put into the main function directly
+// SEPARATE FUNCTION FOR GETTING VIDEO TIMES
+// HAS TO BE A SEPARATE FUNCTION BECAUSE THE OEMBED REQUEST IS ASYNCHRONOUS, WHICH CAN CAUSE THE PRESENCE TO DISPLAY THE WRONG TIME IF PUT INTO THE MAIN FUNCTION DIRECTLY
+
+function timeSelection() {
     if (videoPlayer.getDuration()) {
         documentData.timeLeft = videoPlayer.getDuration() - videoPlayer.getCurrentTime();
         if (documentData.timeLeft < 0) {
@@ -101,6 +103,8 @@ function timeSelection() { // has to be a separate function because the oembed r
         documentData.timeLeft = null;
     }
 }
+
+// SEPARATE FUNCTION FOR LIVESTREAM DATA OR MINIPLAYERS THAT INCLUDE THE AUTHOR
 
 function getYouTubeData() {
     let livestreamHTML = videoPlayer.querySelector(LIVESTREAM_ELEMENT_SELECTOR);
@@ -127,7 +131,7 @@ function getYouTubeData() {
     }
 }
 
-// COMMUNICATOR WITH CONTENT LOADER
+// SENDER OF DATA TO CONTENT_LOADER.JS FOR REDIRECTION TO BACKGROUND.JS
 
 var transmitterInterval = setInterval(function() {
     if (!videoPlayer) {
@@ -148,16 +152,3 @@ var transmitterInterval = setInterval(function() {
         }
     }
 }, IDLE_TIME_REQUIREMENT / 2);
-
-// document.getElementById("movie_player"); TRY MAKING USE OF THIS
-// ADD LIVESTREAM / PREMIERE SUPPORT
-// MAKE SURE IT WORKS FOR YOUTUBE MUSIC
-
-// document.querySelector("#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > div.ytp-time-display.notranslate.ytp-live > button")
-// POSSIBLE QUERY SELECTOR FOR CHECKING LIVE STREAM^^
-// EVEN BETTER:
-// document.getElementById("movie_player").querySelector("div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > div.ytp-time-display.notranslate.ytp-live > button")
-// TITLE WITHOUT HTTP REQUEST:
-// document.getElementById("movie_player").querySelector("div.ytp-chrome-top > div.ytp-title > div.ytp-title-text > a.ytp-title-link")
-// might have to get author from HTML
-// this can be done by "document.querySelector("#upload-info > #channel-name > #container > #text-container > #text > a")"

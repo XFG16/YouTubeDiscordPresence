@@ -2,6 +2,8 @@
 
 const LOGGING = true;
 
+// REDIRECTION OF DATA FROM INJECTED CONTENT.JS TO BACKGROUND.JS
+
 window.addEventListener("SendToLoader", function(message) {
     chrome.runtime.sendMessage({
         title: message.detail.title,
@@ -13,6 +15,8 @@ window.addEventListener("SendToLoader", function(message) {
         }
     });
 }, false);
+
+// INJECTION OF CONTENT.JS INTO MAIN DOM
 
 var mainScript = document.createElement("script");
 mainScript.src = chrome.runtime.getURL("content.js");
