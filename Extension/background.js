@@ -46,7 +46,7 @@ var pipeInterval = setInterval(function() {
         }
         nativePort.postMessage(NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END);
     }
-    else if (new Date().getTime() - lastUpdated < IDLE_TIME_REQUIREMENT + 500 && (currentMessage.timeLeft == LIVESTREAM_TIME_ID || (!(prevMessage.title == currentMessage.title && prevMessage.author == currentMessage.author && (prevMessage.timeLeft == currentMessage.timeLeft || prevMessage.timeLeft == currentMessage.timeLeft - 1))))) {
+    else if (new Date().getTime() - lastUpdated < IDLE_TIME_REQUIREMENT + 500 && (currentMessage.timeLeft == LIVESTREAM_TIME_ID || (!(prevMessage.title == currentMessage.title && prevMessage.author == currentMessage.author && (prevMessage.timeLeft == currentMessage.timeLeft || prevMessage.timeLeft - 1 == currentMessage.timeLeft))))) {
         if (LOGGING) {
             console.log("[CURRENTMESSAGE] SENT BY BACKGROUND.JS: ['" + currentMessage.title + "', '" + currentMessage.author + "', '" + currentMessage.timeLeft + "']");
         }
