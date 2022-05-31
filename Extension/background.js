@@ -10,13 +10,13 @@ const NMF = { // NMF = NATIVE_MESSAGE_FORMAT
     IDLE: "#*IDLE*#"
 }
 
-const IDLE_TIME_REQUIREMENT = 2000;
+const IDLE_TIME_REQUIREMENT = 4000;
 const LIVESTREAM_TIME_ID = -1;
 
 var nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
 var lastUpdated = 0;
-var skipOnce = false;
 var currentMessage = new Object();
+var prevMessage = new Object()
 
 // LOGGING
 
@@ -29,15 +29,10 @@ if (LOGGING) {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.title && message.author && message.timeLeft) {
-        if (!(message.title == currentMessage.title && message.author == currentMessage.author && message.timeLeft == currentMessage.timeLeft)) {
-            currentMessage.title = message.title;
-            currentMessage.author = message.author;
-            currentMessage.timeLeft = message.timeLeft;
-            sendResponse(null);
-        }
-        else if (message.timeLeft != LIVESTREAM_TIME_ID){
-            skipOnce = true;
-        }
+        currentMessage.title = message.title;
+        currentMessage.author = message.author;
+        currentMessage.timeLeft = message.timeLeft;
+        sendResponse(null);
         lastUpdated = new Date().getTime();
     }
 });
@@ -45,19 +40,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 // NATIVE MESSAGING HANDLER
 
 var pipeInterval = setInterval(function() {
-    if (new Date().getTime() - lastUpdated < IDLE_TIME_REQUIREMENT && !skipOnce) {
-        if (LOGGING) {
-            console.log("[CURRENTMESSAGE] SENT BY BACKGROUND.JS: ['" + currentMessage.title + "', '" + currentMessage.author + "', '" + currentMessage.timeLeft + "']");
-        }
-        nativePort.postMessage(NMF.TITLE + currentMessage.title + NMF.AUTHOR + currentMessage.author + NMF.TIME_LEFT + currentMessage.timeLeft + NMF.END);
-    }
-    else if (!skipOnce) {
+    if (new Date().getTime() - lastUpdated > IDLE_TIME_REQUIREMENT + 500) {
         if (LOGGING) {
             console.log("Idle data sent: " + NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END);
         }
         nativePort.postMessage(NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END);
     }
-    if (skipOnce) {
-        skipOnce = false;
+    else if (new Date().getTime() - lastUpdated < IDLE_TIME_REQUIREMENT + 500 && (currentMessage.timeLeft == LIVESTREAM_TIME_ID || (!(prevMessage.title == currentMessage.title && prevMessage.author == currentMessage.author && (prevMessage.timeLeft == currentMessage.timeLeft || prevMessage.timeLeft == currentMessage.timeLeft - 1))))) {
+        if (LOGGING) {
+            console.log("[CURRENTMESSAGE] SENT BY BACKGROUND.JS: ['" + currentMessage.title + "', '" + currentMessage.author + "', '" + currentMessage.timeLeft + "']");
+        }
+        nativePort.postMessage(NMF.TITLE + currentMessage.title + NMF.AUTHOR + currentMessage.author + NMF.TIME_LEFT + currentMessage.timeLeft + NMF.END);
+        prevMessage.title = currentMessage.title;
+        prevMessage.author = currentMessage.author;
+        prevMessage.timeLeft = currentMessage.timeLeft;
     }
-}, IDLE_TIME_REQUIREMENT);
+}, IDLE_TIME_REQUIREMENT / 2);

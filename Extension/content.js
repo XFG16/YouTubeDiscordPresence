@@ -5,7 +5,7 @@ const LOGGING = false;
 const YOUTUBE_MAIN_URL = "https://www.youtube.com";
 const YOUTUBE_MUSIC_URL = "https://music.youtube.com";
 const LINK_SEPARATOR_KEY = "&v=";
-const IDLE_TIME_REQUIREMENT = 2000;
+const IDLE_TIME_REQUIREMENT = 4000;
 
 const LIVESTREAM_ELEMENT_SELECTOR = "div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > div.ytp-time-display.notranslate.ytp-live > button"; // VIDEO PLAYER
 const MINIPLAYER_ELEMENT_SELECTOR = "div.ytp-miniplayer-ui"; // VIDEO PLAYER
