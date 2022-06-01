@@ -11,6 +11,7 @@ const NMF = { // NMF = NATIVE_MESSAGE_FORMAT
 }
 
 const IDLE_TIME_REQUIREMENT = 3000;
+const NORMAL_MESSAGE_DELAY = 1000;
 const LIVESTREAM_TIME_ID = -1;
 
 var nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
@@ -45,7 +46,7 @@ var pipeInterval = setInterval(function() {
         }
         nativePort.postMessage(NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END);
     }
-    else if (new Date().getTime() - lastUpdated < IDLE_TIME_REQUIREMENT + 500) {
+    else if (new Date().getTime() - lastUpdated < NORMAL_MESSAGE_DELAY + 500) {
         if (LOGGING) {
             console.log("[CURRENTMESSAGE] SENT BY BACKGROUND.JS: ['" + currentMessage.title + "', '" + currentMessage.author + "', '" + currentMessage.timeLeft + "']");
         }

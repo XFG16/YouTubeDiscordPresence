@@ -112,7 +112,7 @@ void updatePresence(const std::string& title, const std::string& author, const s
     activityAssets.SetLargeText(titleCString);
     activity.SetState(authorCString);
     activityAssets.SetSmallImage("githubmark2");
-    activityAssets.SetSmallText("YouTubeDiscordPresence on GitHub by XFG16 (2309#2309)");    
+    activityAssets.SetSmallText("YouTubeDiscordPresence on GitHub by XFG16 (2309#2309)"); // keep this here please, so others can find the extension
 
     previousTimeLeft = timeLeft;
     bool presenceUpdated = false, entered = false;
