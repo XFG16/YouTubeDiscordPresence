@@ -151,4 +151,4 @@ var transmitterInterval = setInterval(function() {
             }
         }
     }
-}, IDLE_TIME_REQUIREMENT / 2);
+}, 1000);

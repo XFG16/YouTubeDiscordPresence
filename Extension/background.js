@@ -10,13 +10,12 @@ const NMF = { // NMF = NATIVE_MESSAGE_FORMAT
     IDLE: "#*IDLE*#"
 }
 
-const IDLE_TIME_REQUIREMENT = 4000;
+const IDLE_TIME_REQUIREMENT = 3000;
 const LIVESTREAM_TIME_ID = -1;
 
 var nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
 var lastUpdated = 0;
 var currentMessage = new Object();
-var prevMessage = new Object()
 
 // LOGGING
 
@@ -46,13 +45,10 @@ var pipeInterval = setInterval(function() {
         }
         nativePort.postMessage(NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END);
     }
-    else if (new Date().getTime() - lastUpdated < IDLE_TIME_REQUIREMENT + 500 && (currentMessage.timeLeft == LIVESTREAM_TIME_ID || (!(prevMessage.title == currentMessage.title && prevMessage.author == currentMessage.author && (prevMessage.timeLeft == currentMessage.timeLeft || prevMessage.timeLeft - 1 == currentMessage.timeLeft))))) {
+    else if (new Date().getTime() - lastUpdated < IDLE_TIME_REQUIREMENT + 500) {
         if (LOGGING) {
             console.log("[CURRENTMESSAGE] SENT BY BACKGROUND.JS: ['" + currentMessage.title + "', '" + currentMessage.author + "', '" + currentMessage.timeLeft + "']");
         }
         nativePort.postMessage(NMF.TITLE + currentMessage.title + NMF.AUTHOR + currentMessage.author + NMF.TIME_LEFT + currentMessage.timeLeft + NMF.END);
-        prevMessage.title = currentMessage.title;
-        prevMessage.author = currentMessage.author;
-        prevMessage.timeLeft = currentMessage.timeLeft;
     }
-}, IDLE_TIME_REQUIREMENT / 2);
+}, 1000);

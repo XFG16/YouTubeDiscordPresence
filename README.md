@@ -10,12 +10,13 @@
 </p>
 
 # Installation (no need to download additional libraries)
- - Download the `YTDPsetup.msi` file in the releases section
+ - Download the `YTDPsetup.msi` file in the releases section and run it on your computer
     - It's gonna say Windows **blocked an unknown app** because the publisher is unknown. Sorry, I'm broke and can't afford a digital certificate, at least for now. Just click more info and run anyway.
     - If you run this through VirusTotal, there are gonna be several **false positives**. Sorry, but my word is the only thing I can really offer here.
     - Otherwise, you can just **build** the whole thing yourself with **Visual Studio 2022**. Just open the `YTDPwin.sln` file under `Host/YTDPwin`, link the libraries and `main.cpp`, and you should be set.
- - After running `YTDPsetup.msi` and loading the extension into Chrome after downloading the `Extension.zip` file in releases, you might need to **change the Chrome Extension ID** in ```main.json``` (located in the ```YouTubeDiscordPresence``` folder in ```Program Files``` if you installed it with the default path)
-   - Subject to change after the extension gets **uploaded to the Chrome Web Store**
+  - Download the **Chrome Extension** from `https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa` and turn it on **after installing the desktop component.** If you installed the extension before installing the desktop component, just turn it **off and back on** after the desktop component is installed.
+  - You should be all set and ready to go! To turn this application **on or off**, just go to `chrome://extensions` and **toggle the switch** for the extension
+
 
 # YouTubeDiscordPresence for Windows (x64)
 ## General Notes 
@@ -26,14 +27,16 @@
  - There are **two** components:
    - Chrome Extension (`Extension`)
    - Desktop Application (`Host`)
- - To turn this application **on or off**, just go to `chrome://extensions` and **toggle the switch** for the extension
  - If Discord is closed while the extension is running, just switch the extension off and back on, and the presence should reappear on your profile
 
 ## Known Issues
  - If you go from one livestream to another, the elapsed time continues without restarting from zero
+   - Caused because the `LIVESTREAM_TIME_ID` is constant
  - Sometimes, if you switch from one video to another after a pause (or from a livestream to a video), the presence will display the previous video/livestream for a split second before returning to normal
+   - Caused because content.js might accidentally read the data of the previous video right after a new video starts
  - The appearance and disappearance of the rich presence on your profile can be delayed because Discord limits the processing of rich presence update requests to 15 seconds
  - The rich presence can also randomly disappear and reappear within a few seconds because Chrome forcibly unloads and reloads the `background.js` as part of Manifest V3
+   - Will also cause the elapsed time for livestreams to restart
 
 ## Other Notes
  - REMEMBER TO **TURN OFF LOGGING** FOR RELEASE VERSIONS
