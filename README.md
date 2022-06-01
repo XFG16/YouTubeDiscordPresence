@@ -33,7 +33,7 @@
  - If you go from one livestream to another, the elapsed time continues without restarting from zero
    - Caused because the `LIVESTREAM_TIME_ID` is constant
  - Sometimes, if you switch from one video to another after a pause (or from a livestream to a video), the presence will display the previous video/livestream for a split second before returning to normal
-   - Caused because content.js might accidentally read the data of the previous video right after a new video starts
+   - Caused because `content.js` might accidentally read the data of the previous video right after a new video starts, although it's not that big of a problem overall
  - The appearance and disappearance of the rich presence on your profile can be delayed because Discord limits the processing of rich presence update requests to 15 seconds
  - The rich presence can also randomly disappear and reappear within a few seconds because Chrome forcibly unloads and reloads the `background.js` as part of Manifest V3
    - Will also cause the elapsed time for livestreams to restart
