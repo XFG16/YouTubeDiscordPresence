@@ -13,8 +13,7 @@
  1. Download the `YTDPsetup.msi` file in the [**<ins>releases section</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.0) and run it on your computer
     - It's gonna say Windows **blocked an unknown app** because the publisher is unknown. Sorry, I'm broke and can't afford a digital certificate, at least for now. Just click more info and run anyway.
     - If you run this through VirusTotal, there are gonna be several **false positives**. Sorry, but my word is the only thing I can really offer here.
-    - Otherwise, you can just **build** the whole thing yourself with **Visual Studio 2022**. Just open the `YTDPwin.sln` file under `Host/YTDPwin` and link the Discord Game SDK,  `main.cpp`, and `main.json`, and you should be set.
-       - For linking the Discord Game SDK to Visual Studio, go to `[PROJECT NAME ON EXPLORER] > Properties > Linker > Input > Additional Dependencies` and add the exact path to the `.lib` file associated with the `.dll` file
+    - Otherwise, you can just **build** the whole thing yourself with **Visual Studio 2022**. Just open the `YTDPwin.sln` file under `Host/YTDPwin` and link the Discord Game SDK,  `main.cpp`, and `main.json`, and you should be set. See below for more details on linking the Discord Game SDK.
   2. Add the [<ins>**Chrome Extension**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) from the **Chrome Web Store** and turn it on **after installing the desktop component.** If you installed the extension before installing the desktop component, just turn it **off and back on** after the desktop component is installed.
   3. You should be all set and ready to go! To turn this application **on or off**, just go to `chrome://extensions` and **toggle the switch** for the extension
 
@@ -44,3 +43,4 @@
  - Press `Alt` + `Enter` to show properties in Visual Studio
  - Maybe add a feature to stop the presence from disappearing when no video is playing; instead, just make the rich presence display idle (let the user choose between original or this)
  - Maybe have presence display a different icon for YouTube Music
+ - For linking the Discord Game SDK to Visual Studio, go to `[PROJECT NAME ON EXPLORER] > Properties > Linker > Input > Additional Dependencies` and add the exact path to the `.lib` file associated with the `.dll` file
