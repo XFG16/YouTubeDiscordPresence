@@ -15,7 +15,7 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_4E316C51956A40A7AAFCB02D921B05D3"
+        "MsmKey" = "8:_6B301B626CF14E41AFC478258D1BB7CF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -118,9 +118,9 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4E316C51956A40A7AAFCB02D921B05D3"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6B301B626CF14E41AFC478258D1BB7CF"
             {
-            "SourcePath" = "8:C:\\Users\\renyo\\OneDrive\\Pictures\\YTDPlogo.ico"
+            "SourcePath" = "8:..\\..\\YTDPlogo.ico"
             "TargetName" = "8:YTDPlogo.ico"
             "Tag" = "8:"
             "Folder" = "8:_56A3632D70DB4D05A6394C0929BF78F7"
@@ -252,7 +252,7 @@
         "Keywords" = "8:YouTube Discord"
         "ARPCOMMENTS" = "8:An extension that takes data directly from the YouTube video playing on the browser and displays it as a rich presence on Discord. Works similar to the Spotify Discord rich presence."
         "ARPURLINFOABOUT" = "8:https://github.com/XFG16"
-        "ARPPRODUCTICON" = "8:_4E316C51956A40A7AAFCB02D921B05D3"
+        "ARPPRODUCTICON" = "8:_6B301B626CF14E41AFC478258D1BB7CF"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
