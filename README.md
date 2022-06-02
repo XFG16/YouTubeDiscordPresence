@@ -25,12 +25,11 @@
  - On a more **technical note**, it works similar to the **Spotify rich presence**—it only appears **when a video is playing** and **disappears when there is no video or the video is paused**. In addition, it only displays the presence for videos. Idling and searching are **not displayed**.
  - There are **two** components:
    - Chrome Extension ( Source code [v1.2]: `Extension` | Release [v1.0]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) )
-   - Desktop Application ( Source code [v1.0]: `Host` | Release [v1.0]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.0) )
+   - Desktop Application ( Source code [v1.1]: `Host` | Release [v1.0]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.0) )
  - If Discord is closed **while the extension is running**, just switch the extension **off and back on**, and the presence should **reappear** on your profile
 
 ## Known Issues
  - If you go from one livestream to another, the elapsed time continues without restarting from zero
-   - Caused because the `LIVESTREAM_TIME_ID` is constant
  - The appearance and disappearance of the rich presence on your profile can be delayed because Discord limits the processing of rich presence update requests to 15 seconds
  - The rich presence can also randomly disappear and reappear within a few seconds because Chrome forcibly unloads and reloads the `background.js` as part of Manifest V3
    - Will also cause the elapsed time for livestreams to restart

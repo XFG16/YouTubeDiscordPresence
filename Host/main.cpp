@@ -25,20 +25,20 @@ int previousTimeLeft = 0; // USED FOR SWITCHING TO LIVESTREAM PURPOSES
 
 // CREATE A DISCORD PRESENCE IF ONE DOESN'T ALREADY EXIST
 
-void createPresence(void) {
+bool createPresence(void) {
     if (core) {
-        return;
+        return true;
     }
-
-    discord::Core* corePtr = nullptr;
-    discord::Result result = discord::Core::Create(APPLICATION_ID, DiscordCreateFlags_Default, &corePtr);
+    discord::Core* tempCore = nullptr;
+    discord::Result result = discord::Core::Create(APPLICATION_ID, DiscordCreateFlags_NoRequireDiscord, &tempCore);
     if (LOGGING && result == discord::Result::Ok) {
         std::cout << "Discord presence has been created" << std::endl;
     }
     else if (LOGGING) {
         std::cout << "Failed to create Discord presence" << std::endl;
     }
-    core.reset(corePtr);
+    core.reset(tempCore);
+    return result == discord::Result::Ok;
 }
 
 // DESTROY THE DISCORD PRESENCE IF IT EXISTS
@@ -47,9 +47,8 @@ void destroyPresence(void) {
     if (!core) {
         return;
     }
-
-    discord::Core* corePtr = nullptr;
-    core.reset(corePtr);
+    core.reset(nullptr);
+    previousTimeLeft = 0;
     if (LOGGING && !core) {
         std::cout << "Discord presence has been destroyed" << std::endl;
     }
@@ -74,12 +73,17 @@ void formatCString(char* str) { // REMEMBER TO DEAL WITH OTHER SPECIAL CHARACTER
 // UPDATE DISCORD PRESENCE WITH DATA
 
 void updatePresence(const std::string& title, const std::string& author, const std::string& timeLeftStr) {
-    if (title == IDLE_IDENTIFIER) {
-        previousTimeLeft = 0;
+    if (core && (title == IDLE_IDENTIFIER || core->RunCallbacks() != discord::Result::Ok)) {
         destroyPresence();
         return;
     }
-    createPresence();
+    else if (!core) {
+        bool didCreatePresence = createPresence();
+        if (!didCreatePresence || title == IDLE_IDENTIFIER) {
+            destroyPresence();
+            return;
+        }
+    }
     int timeLeft = std::stoi(timeLeftStr);
 
     discord::Activity activity{};
@@ -115,31 +119,27 @@ void updatePresence(const std::string& title, const std::string& author, const s
     activityAssets.SetSmallText("YouTubeDiscordPresence on GitHub by XFG16 (2309#2309)"); // keep this here please, so others can find the extension
 
     previousTimeLeft = timeLeft;
-    bool presenceUpdated = false, entered = false;
+    bool presenceUpdated = false, updatedOnce = false;
     core->ActivityManager().UpdateActivity(activity, [&presenceUpdated](discord::Result result) {
         presenceUpdated = true;
     });
     while (!presenceUpdated) {
-        entered = true;
+        updatedOnce = true;
         core->RunCallbacks();
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
-    if (!entered) {
+    if (!updatedOnce) {
         core->RunCallbacks();
-    }
-
-    if (LOGGING) {
-        std::cout << "Received and updated: " << std::endl << "    " << title << std::endl << "    " << author << std::endl << "    " << timeLeft << std::endl;
     }
 }
 
 // FORMAT ACTUAL INFORMATION FROM DATA SENT BY EXTENSION
 
 void handleData(const std::string& documentData) {
-    int titleLocation = documentData.find(TITLE_IDENTIFIER);
-    int authorLocation = documentData.find(AUTHOR_IDENTIFIER);
-    int timeLeftLocation = documentData.find(TIME_LEFT_IDENTIFIER);
-    int endLocation = documentData.length() - END_IDENTIFIER.length();
+    size_t titleLocation = documentData.find(TITLE_IDENTIFIER);
+    size_t authorLocation = documentData.find(AUTHOR_IDENTIFIER);
+    size_t timeLeftLocation = documentData.find(TIME_LEFT_IDENTIFIER);
+    size_t endLocation = documentData.length() - END_IDENTIFIER.length();
 
     std::string title = documentData.substr(titleLocation + TITLE_IDENTIFIER.length(), authorLocation - (titleLocation + TITLE_IDENTIFIER.length()));
     std::string author = documentData.substr(authorLocation + AUTHOR_IDENTIFIER.length(), timeLeftLocation - (authorLocation + AUTHOR_IDENTIFIER.length()));

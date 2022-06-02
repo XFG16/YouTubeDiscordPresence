@@ -36,6 +36,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         currentMessage.author = message.author;
         currentMessage.timeLeft = message.timeLeft;
         lastUpdated = new Date().getTime();
+        sendResponse(null);
     }
 });
 
@@ -43,7 +44,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 var pipeInterval = setInterval(function() {
     let delaySinceUpdate = new Date().getTime() - lastUpdated;
-    if (delaySinceUpdate <= NORMAL_MESSAGE_DELAY + 500) {
+    if (nativePort && delaySinceUpdate <= NORMAL_MESSAGE_DELAY + 500) {
         let skipMessage = false;
         if (previousMessage.timeLeft >= currentMessage.timeLeft && ((previousMessage.timeLeft - currentMessage.timeLeft < NORMAL_MESSAGE_DELAY / 1000 + 0.5) || (previousMessage.timeLeft == LIVESTREAM_TIME_ID && currentMessage.timeLeft != LIVESTREAM_TIME_ID))) {
             skipMessage = true;
@@ -62,7 +63,7 @@ var pipeInterval = setInterval(function() {
     else if (delaySinceUpdate <= 2 * NORMAL_MESSAGE_DELAY + 500) {
         currentMessage.scriptId = null;
     }
-    else if (delaySinceUpdate >= IDLE_TIME_REQUIREMENT + 500 && !isIdle) {
+    else if (nativePort && delaySinceUpdate >= IDLE_TIME_REQUIREMENT + 500 && !isIdle) {
         if (LOGGING) {
             console.log("Idle data sent: " + NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END);
         }
