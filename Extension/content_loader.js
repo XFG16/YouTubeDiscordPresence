@@ -2,10 +2,13 @@
 
 const LOGGING = true;
 
+const SCRIPT_ID = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+
 // REDIRECTION OF DATA FROM INJECTED CONTENT.JS TO BACKGROUND.JS
 
 window.addEventListener("SendToLoader", function(message) {
     chrome.runtime.sendMessage({
+        scriptId: SCRIPT_ID,
         title: message.detail.title,
         author: message.detail.author,
         timeLeft: message.detail.timeLeft

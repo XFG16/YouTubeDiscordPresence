@@ -2,10 +2,9 @@
 
 const LOGGING = false;
 
-const YOUTUBE_MAIN_URL = "https://www.youtube.com";
-const YOUTUBE_MUSIC_URL = "https://music.youtube.com";
-const LINK_SEPARATOR_KEY = "&v=";
-const IDLE_TIME_REQUIREMENT = 4000;
+const VIDEO_ID_SEPARATOR_KEY = "v=";
+const PLAYLIST_SEPRATOR_KEY = "&";
+const NORMAL_MESSAGE_DELAY = 1000;
 
 const LIVESTREAM_ELEMENT_SELECTOR = "div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > div.ytp-time-display.notranslate.ytp-live > button"; // VIDEO PLAYER
 const MINIPLAYER_ELEMENT_SELECTOR = "div.ytp-miniplayer-ui"; // VIDEO PLAYER
@@ -18,6 +17,7 @@ const LIVESTREAM_TIME_ID = -1;
 
 var documentData = new Object();
 var videoPlayer = document.getElementById("movie_player");
+var shouldSendData = 0;
 
 // LOGGING
 
@@ -25,24 +25,20 @@ if (LOGGING) {
     console.log("YouTubeDiscordPresence - content.js created");
 }
 
-// GET YOUTUBE OEMBED LINK FOR JSON DATA (https://stackoverflow.com/questions/30084140/youtube-video-title-with-api-v3-without-api-key)
+// GET VIDEO ID FROM LINK
 
-function getVideoOEmbed(link) {
-    separatorIndex = link.indexOf(LINK_SEPARATOR_KEY);
-    if (link.indexOf(LINK_SEPARATOR_KEY) > -1) {
-        link = link.substring(separatorIndex + LINK_SEPARATOR_KEY.length, link.length);
-        if (LOGGING) {
-            console.log(link);
-        }
-        return ("https://www.youtube.com/oembed?url=http%3A//youtube.com/watch%3Fv%3D" + link + "&format=json");
+function getVideoId(link) {
+    if (link.includes(VIDEO_ID_SEPARATOR_KEY)) {
+        return link.split(VIDEO_ID_SEPARATOR_KEY)[1]
     }
     return null;
 }
 
 // WEB REQUEST FOR VIDEO DATA (https://stackoverflow.com/questions/2499567/how-to-make-a-json-call-to-an-url/2499647#2499647)
+// ALSO SEE OEMBED DETAILS: (https://stackoverflow.com/questions/30084140/youtube-video-title-with-api-v3-without-api-key)
 
-const getJSON = async url => {
-    const response = await fetch(url);
+const getOEmbedJSON = async videoId => {
+    const response = await fetch("https://www.youtube.com/oembed?url=http%3A//youtube.com/watch%3Fv%3D" + videoId + "&format=json");
     if (!response.ok) {
         throw new Error(response.statusText);
     }
@@ -93,10 +89,10 @@ function getLivestreamData() {
 // HAS TO BE A SEPARATE FUNCTION BECAUSE THE OEMBED REQUEST IS ASYNCHRONOUS, WHICH CAN CAUSE THE PRESENCE TO DISPLAY THE WRONG TIME IF PUT INTO THE MAIN FUNCTION DIRECTLY
 
 function getTimeData() {
-    if (videoPlayer.getDuration()) {
+    if (videoPlayer.getDuration() && videoPlayer.getCurrentTime()) {
         documentData.timeLeft = videoPlayer.getDuration() - videoPlayer.getCurrentTime();
         if (documentData.timeLeft < 0) {
-            documentData.timeLeft = 0;
+            documentData.timeLeft = null;
         }
     }
     else {
@@ -104,30 +100,41 @@ function getTimeData() {
     }
 }
 
+// SEPARATE FUNCTION FOR COMMUNICATION TO PREVENT ASYNC FROM CAUSING WRONG DATA TO GET SENT
+
+function sendDocumentData() {
+    if (documentData.title && documentData.author && documentData.timeLeft) {
+        messageData = {title: documentData.title, author: documentData.author, timeLeft: documentData.timeLeft};
+        var messageEvent = new CustomEvent("SendToLoader", {detail: messageData});
+        window.dispatchEvent(messageEvent);
+    }
+}
+
 // SEPARATE FUNCTION FOR LIVESTREAM DATA OR MINIPLAYERS THAT INCLUDE THE AUTHOR
 
-function getYouTubeData() {
+function handleYouTubeData() {
     let livestreamHTML = videoPlayer.querySelector(LIVESTREAM_ELEMENT_SELECTOR);
     if (videoPlayer.getVideoUrl() && !livestreamHTML) {
-        let formattedLink = getVideoOEmbed(videoPlayer.getVideoUrl());
-        if (formattedLink) {
-            getJSON(formattedLink).then(data => {
-                if (LOGGING) {
-                    console.log(data);
-                }
-                documentData.title = data.title;
-                documentData.author = data.author_name;
-                getTimeData();
-            }).catch(error => {
-                getLivestreamData();
-                getTimeData();
-                console.error(error);
-            });
+        documentData.videoId = getVideoId(videoPlayer.getVideoUrl());
+        if (!documentData.videoId) {
+            return;
         }
+        getOEmbedJSON(documentData.videoId).then(data => {
+            documentData.title = data.title;
+            documentData.author = data.author_name;
+            getTimeData();
+            sendDocumentData();
+        }).catch(error => {
+            getLivestreamData();
+            getTimeData();
+            sendDocumentData();
+            console.error(error);
+        });
     }
     else {
         getLivestreamData();
         documentData.timeLeft = LIVESTREAM_TIME_ID;
+        sendDocumentData();
     }
 }
 
@@ -137,18 +144,7 @@ var transmitterInterval = setInterval(function() {
     if (!videoPlayer) {
         videoPlayer = document.getElementById("movie_player");
     }
-    if ((document.URL.startsWith(YOUTUBE_MAIN_URL) || document.URL.startsWith(YOUTUBE_MUSIC_URL)) && videoPlayer && videoPlayer.getPlayerState() == 1) {
-        getYouTubeData();
-        if (documentData.title && documentData.author && documentData.timeLeft) {
-            messageData = {title: documentData.title, author: documentData.author, timeLeft: Math.round(documentData.timeLeft)};
-            var messageEvent = new CustomEvent("SendToLoader", {detail: messageData});
-            window.dispatchEvent(messageEvent);
-            if (LOGGING) {
-                console.log("Data was sent by content.js to the content_loader.js")
-                console.log(documentData.title);
-                console.log(documentData.author)
-                console.log(documentData.timeLeft);
-            }
-        }
+    if (videoPlayer && videoPlayer.getPlayerState() == 1) {
+        handleYouTubeData();
     }
-}, 1000);
+}, NORMAL_MESSAGE_DELAY);
