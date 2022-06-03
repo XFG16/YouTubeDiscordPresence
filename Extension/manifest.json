@@ -1,7 +1,7 @@
 {
     "name": "YouTubeDiscordPresence",
     "author": "Michael Ren",
-    "description": "An extension used to create a detailed rich presence for YouTube videos and livestreams on Discord.",
+    "description": "An extension used to create a detailed rich presence for YouTube videos on Discord.",
     "version": "1.2",
     "manifest_version": 3,
     "content_scripts": [

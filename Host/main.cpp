@@ -21,7 +21,9 @@ const bool LOGGING = false;
 
 std::unique_ptr<discord::Core> core;
 std::time_t elapsedTime = 0;
-int previousTimeLeft = 0; // USED FOR SWITCHING TO LIVESTREAM PURPOSES
+
+std::string previousTitle;
+std::string previousAuthor;
 
 // CREATE A DISCORD PRESENCE IF ONE DOESN'T ALREADY EXIST
 
@@ -48,7 +50,6 @@ void destroyPresence(void) {
         return;
     }
     core.reset(nullptr);
-    previousTimeLeft = 0;
     if (LOGGING && !core) {
         std::cout << "Discord presence has been destroyed" << std::endl;
     }
@@ -101,7 +102,7 @@ void updatePresence(const std::string& title, const std::string& author, const s
         timeStamp.SetEnd(std::time(nullptr) + timeLeft);
     }
     else {
-        if (previousTimeLeft >= 0) {
+        if (!(previousTitle == title && previousAuthor == author)) { // MIGHT JUST BE BETTER TO HAVE BACKGROUND.JS SEND THE VIDEO ID
             elapsedTime = std::time(nullptr);
         }
         strcpy_s(authorCString, ACTIVITY_BUFFER_SIZE, ("[LIVE] on " + author).c_str());
@@ -118,7 +119,9 @@ void updatePresence(const std::string& title, const std::string& author, const s
     activityAssets.SetSmallImage("githubmark2");
     activityAssets.SetSmallText("YouTubeDiscordPresence on GitHub by XFG16 (2309#2309)"); // keep this here please, so others can find the extension
 
-    previousTimeLeft = timeLeft;
+    previousTitle = title;
+    previousAuthor = author;
+
     bool presenceUpdated = false, updatedOnce = false;
     core->ActivityManager().UpdateActivity(activity, [&presenceUpdated](discord::Result result) {
         presenceUpdated = true;
