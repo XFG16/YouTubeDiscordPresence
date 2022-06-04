@@ -24,7 +24,7 @@
  - Supports both **normal** and **livestream/premiere** videos on YouTube as well as **YouTube Music**
  - On a more **technical note**, it works similar to the **Spotify rich presence**—it only appears **when a video is playing** and **disappears when there is no video or the video is paused**. In addition, it only displays the presence for videos. Idling and searching are **not displayed**.
  - There are **two** components:
-   - Chrome Extension ( Source code [v1.2]: `Extension` | Release [v1.1]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) )
+   - Chrome Extension ( Source code [v1.2]: `Extension` | Release [v1.2]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) )
    - Desktop Application ( Source code [v1.2]: `Host` | Release [v1.2]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.2) )
  - If Discord is closed **while the extension is running**, just switch the extension **off and back on**, and the presence should **reappear** on your profile
 
