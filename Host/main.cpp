@@ -79,8 +79,11 @@ void updatePresence(const std::string& title, const std::string& author, const s
         return;
     }
     else if (!core) {
+        if (title == IDLE_IDENTIFIER) {
+            return;
+        }
         bool didCreatePresence = createPresence();
-        if (!didCreatePresence || title == IDLE_IDENTIFIER) {
+        if (!didCreatePresence) {
             destroyPresence();
             return;
         }
@@ -122,17 +125,15 @@ void updatePresence(const std::string& title, const std::string& author, const s
     previousTitle = title;
     previousAuthor = author;
 
-    bool presenceUpdated = false, updatedOnce = false;
+    bool presenceUpdated = false;
     core->ActivityManager().UpdateActivity(activity, [&presenceUpdated](discord::Result result) {
         presenceUpdated = true;
     });
-    while (!presenceUpdated) {
-        updatedOnce = true;
+    int numUpdates = 0;
+    while (numUpdates < 4 || (numUpdates < 10 && !presenceUpdated)) {
         core->RunCallbacks();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-    if (!updatedOnce) {
-        core->RunCallbacks();
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        ++numUpdates;
     }
 }
 
