@@ -22,6 +22,7 @@
  - This is an extension used to create a **detailed rich presence** for YouTube videos and livestreams on Discord.
  - Currently, the application only runs on **Windows** that have a **64-bit** processor
  - Supports both **normal** and **livestream/premiere** videos on YouTube as well as **YouTube Music**
+ - **No**, this is not a bootleg copy of PreMiD. The way it displays the rich presence and what it decides to display are **different** from PreMiD and everything here was written from scratch. Look at the next note below. Also, PreMiD uses a **Node.js** for its desktop component, while YouTubeDiscordPresence uses **C++** and the [<ins>**Discord Game SDK**</ins>](https://discord.com/developers/docs/game-sdk/sdk-starter-guide), which means that no additional libraries are required.
  - On a more **technical note**, it works similar to the **Spotify rich presence**—it only appears **when a video is playing** and **disappears when there is no video or the video is paused**. In addition, it only displays the presence for videos. Idling and searching are **not displayed**.
  - There are **two** components:
    - Chrome Extension ( Source code [v1.2]: `Extension` | Release [v1.2]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) )
