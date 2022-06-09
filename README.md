@@ -25,13 +25,14 @@
  - **No**, this is not a bootleg copy of PreMiD. The way it displays the rich presence and what it decides to display are **different** from PreMiD and everything here was written from scratch. Look at the next note below. Also, PreMiD uses **Node.js** for its desktop component, while YouTubeDiscordPresence uses **C++** and the [<ins>**Discord Game SDK**</ins>](https://discord.com/developers/docs/game-sdk/sdk-starter-guide), which means that no additional libraries are required.
  - On a more **technical note**, it works similar to the **Spotify rich presence**—it only appears **when a video is playing** and **disappears when there is no video or the video is paused**. In addition, it only displays the presence for videos. Idling and searching are **not displayed**.
  - There are **two** components:
-   - Chrome Extension ( Source code [v1.2]: `Extension` | Release [v1.2]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) )
+   - Chrome Extension ( Source code [v1.3]: `Extension` | Release [v1.2]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) )
    - Desktop Application ( Source code [v1.2]: `Host` | Release [v1.2]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.2) )
  - If Discord is closed **while the extension is running**, just switch the extension **off and back on**, and the presence should **reappear** on your profile
 
 ## Known Issues
  - The appearance and disappearance of the rich presence on your profile can be delayed because Discord limits the processing of rich presence update requests to 15 seconds
  - The rich presence can also randomly disappear and reappear within a few seconds because Chrome forcibly unloads and reloads the `background.js` as part of Manifest V3
+ - If you enable and disable the extension too much within a short period of time through the pop-up interface, it will overload the Discord refresh limit and the extension will be prevented by Discord from displaying. To fix this, reload your Discord and turn the extension off and back on
 
 ## Other Notes/Suggestions
  - REMEMBER TO **TURN OFF LOGGING** FOR RELEASE VERSIONS

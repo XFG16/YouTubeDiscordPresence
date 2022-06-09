@@ -17,6 +17,7 @@ const LIVESTREAM_TIME_ID = -1;
 var nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
 var currentMessage = new Object();
 var previousMessage = new Object();
+var extensionEnabled = true;
 var lastUpdated = 0;
 var isIdle = true;
 
@@ -25,6 +26,43 @@ var isIdle = true;
 if (LOGGING) {
     console.log("background.js created");
 }
+
+// CLEANER CODE
+
+function saveKey(key, value) {
+    let saveObject = new Object();
+    saveObject[key] = value;
+    chrome.storage.sync.set(saveObject, function() {
+        if (LOGGING) {
+            console.log(key + " (saved): ", value);
+        }
+    });
+}
+
+// STORAGE INITIALIZER FOR POPUP.JS
+
+chrome.runtime.onStartup.addListener(function() {
+    chrome.storage.sync.get("enableOnStartup", function(result) {
+        saveKey("enableOnStartup", typeof result.enableOnStartup == "undefined");
+        saveKey("enabled", typeof result.enableOnStartup == "undefined" || result.enableOnStartup == true);
+    });
+});
+
+// INITIALIZE EXTENSIONENABLED
+
+chrome.storage.sync.get("enabled", function(result) {
+    extensionEnabled = typeof result.enabled == "undefined" || result.enabled == true;
+});
+
+// DETECT CHANGE IN ENABLED SETTING
+
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+    for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
+        if (key == "enabled") {
+            extensionEnabled = newValue;
+        }
+    }
+});
 
 // LISTENER FOR DATA FROM CONTENT_LOADER.JS
 // SELECTION ON WHICH TAB TO DISPLAY IS BASED ON WHICH ONE IS LOADED FIRST BY SETTING CURRENTMESSAGE.SCRIPTID TO NULL
@@ -44,7 +82,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 var pipeInterval = setInterval(function() {
     let delaySinceUpdate = new Date().getTime() - lastUpdated;
-    if (nativePort && delaySinceUpdate <= NORMAL_MESSAGE_DELAY + 500) {
+    if (nativePort && !isIdle && !extensionEnabled) {
+        if (LOGGING) {
+            console.log("Idle data sent: " + NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END);
+        }
+        nativePort.postMessage(NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END);
+        isIdle = true;
+    }
+    else if (nativePort && delaySinceUpdate <= NORMAL_MESSAGE_DELAY + 500 && extensionEnabled) {
         let skipMessage = false;
         if (previousMessage.timeLeft >= currentMessage.timeLeft && ((previousMessage.timeLeft - currentMessage.timeLeft < NORMAL_MESSAGE_DELAY / 1000 + 0.5) || (previousMessage.timeLeft == LIVESTREAM_TIME_ID && currentMessage.timeLeft != LIVESTREAM_TIME_ID))) {
             skipMessage = true;
