@@ -26,7 +26,8 @@
     "permissions": [
         "nativeMessaging",
         "background",
-        "storage"
+        "storage",
+        "tabs"
     ],
     "icons": { 
         "16": "/Images/icon16.png",

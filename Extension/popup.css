@@ -1,6 +1,6 @@
 html, body {
     width: 400px;
-    height: 500px;
+    height: 580px;
     background-color: rgb(40, 40, 40);
     margin: 0px;
 }
@@ -13,11 +13,11 @@ html, body {
 
 #ytdpSettingsOutside {
     width: 100%;
-    height: 370px;
+    height: 450px;
     display: flex;
 }
 
-.ytdpSettingsBody {
+#ytdpSettingsBody {
     align-self: center;
     width: 96%;
     height: 90%;
@@ -30,15 +30,12 @@ html, body {
     padding-bottom: 3%;
 }
 
-h1 {
-    padding: 0px;
-    margin: 0px;
-    font-size: 50px;
+#exclusionsOutside {
+    display: none;
 }
 
-h2 {
-    padding: 0px;
-    margin: 0px;
+#inclusionsOutside {
+    display: none;
 }
 
 div {
@@ -47,25 +44,32 @@ div {
     margin: 0%;
 }
 
-h2 {
-    color:rgb(129, 17, 137);
+.settingsCategory {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    margin: 0px;
+    margin-left: 2px;
+    margin-top: 14px;
+    margin-bottom: 4px;
+    color: rgb(128, 128, 128);
 }
 
-p {
+.settingsOption {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
     font-weight: 500;
-    text-align: center;
     color: rgb(210, 210, 210);
-    text-align: left;
-    margin: 8px;
-    margin-bottom: 10px;
-    margin-top: 10px;
-    padding: 0px;
-    padding-bottom: 12px;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 14px;
+    padding-bottom: 15px;
     border-bottom: solid;
     border-width: 1px;
-    border-color: rgb(143, 143, 143);
+    border-color: rgb(111, 111, 111);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    margin: 0px;
 }
 
 .switchStatus {
@@ -77,12 +81,35 @@ p {
     font-weight: bold;
 }
 
-/* SWITCH CSS START (W3SCHOOLS) */
-.switch {
+.triangle {
+	width: 0;
+	height: 0;
+	border-top: 5px solid transparent;
+	border-left: 10px solid white;
+	border-bottom: 5px solid transparent;
+}
+
+.subpageButton {
     float: right;
     position: relative;
+    margin: 6px;
+    margin-right: 8px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.subpageButtonBody:hover {
+    background-color: rgb(40, 40, 40);
+    cursor: pointer;
+}
+
+.switch { /* W3SCHOOLS START */
+    float: right;
+    position: relative;
+    vertical-align: middle;
     width: 45px;
     height: 22px;
+    margin: 0px;
 }
   
 .switch input {
@@ -133,5 +160,5 @@ input:checked + .slider::before {
   
 .slider.round::before {
     border-radius: 50%;
-}
-/* SWITCH CSS END */
+} /* W3SCHOOLS END */
+

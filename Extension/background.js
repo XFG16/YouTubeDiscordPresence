@@ -13,10 +13,13 @@ const NMF = { // NMF = NATIVE_MESSAGE_FORMAT (FOR HANDLING BY YTDPwin.exe)
 const IDLE_TIME_REQUIREMENT = 3000;
 const NORMAL_MESSAGE_DELAY = 1000;
 const LIVESTREAM_TIME_ID = -1;
+const UPDATE_PRESENCE_MESSAGE = "UPDATE PRESENCE DATA";
+const UPDATE_TAB_SETTINGS_MESSAGE = "ENABLE ON THIS TAB";
 
 var nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
 var currentMessage = new Object();
 var previousMessage = new Object();
+var tabEnabledSettings = new Object();
 var extensionEnabled = true;
 var lastUpdated = 0;
 var isIdle = true;
@@ -46,6 +49,14 @@ chrome.runtime.onStartup.addListener(function() {
         saveKey("enableOnStartup", typeof result.enableOnStartup == "undefined");
         saveKey("enabled", typeof result.enableOnStartup == "undefined" || result.enableOnStartup == true);
     });
+    chrome.storage.sync.get(null, function(items) { // REMOVE ALL ENABLE ON THIS TAB KEYS
+        var allKeys = Object.keys(items);
+        for (const key of allKeys) {
+            if (key.startsWith("enableOnThisTab")) {
+                chrome.storage.sync.remove(key);
+            }
+        }
+    });
 });
 
 // INITIALIZE EXTENSIONENABLED
@@ -68,14 +79,27 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 // SELECTION ON WHICH TAB TO DISPLAY IS BASED ON WHICH ONE IS LOADED FIRST BY SETTING CURRENTMESSAGE.SCRIPTID TO NULL
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.scriptId == currentMessage.scriptId || currentMessage.scriptId == null) {
-        currentMessage.scriptId = message.scriptId;
-        currentMessage.title = message.title;
-        currentMessage.author = message.author;
-        currentMessage.timeLeft = message.timeLeft;
-        lastUpdated = new Date().getTime();
+    if (message.messageType == UPDATE_PRESENCE_MESSAGE && (sender.tab.id == currentMessage.scriptId || currentMessage.scriptId == null)) {
+        if (!(sender.tab.id in tabEnabledSettings)) {
+            tabEnabledSettings[sender.tab.id] = true;
+        }
+        if (tabEnabledSettings[sender.tab.id]) {
+            currentMessage.scriptId = sender.tab.id;    
+            currentMessage.title = message.title;
+            currentMessage.author = message.author;
+            currentMessage.timeLeft = message.timeLeft;
+            lastUpdated = new Date().getTime();
+            sendResponse(null);
+        }
+    }
+    else if (message.messageType == UPDATE_TAB_SETTINGS_MESSAGE) {
+        if (LOGGING) {
+            console.log(message.tabId, " set to ", message.value);
+        }
+        tabEnabledSettings[message.tabId] = message.value;
         sendResponse(null);
     }
+    return true;
 });
 
 // NATIVE MESSAGING HANDLER
