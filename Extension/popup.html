@@ -9,8 +9,8 @@
         <div>
             <img src="/Images/ytdpSettings.png" alt="YouTubeDiscordPresence Settings" id="ytdpSettingsTitle">
         </div>
-        <div id="ytdpSettingsOutside">
-            <div id="ytdpSettingsBody">
+        <div id="ytdpSettingsOutside" class="pageOutside">
+            <div id="ytdpSettingsBody" class="pageBody">
                 <p class="settingsCategory">HOME</p>
                 <p id="enabledLabel" class="settingsOption">Enable extension
                     <label class="switch">
@@ -37,7 +37,7 @@
                 <p id="addExclusionsLabel" class="subpageButtonBody settingsOption">Add videos to exclude
                     <span class="triangle subpageButton">
                 </p>
-                <p id="addInclusionsLabel" class="subpageButtonBody settingsOption">Only display certain videos
+                <p id="addInclusionsLabel" class="subpageButtonBody settingsOption">Add videos to include
                     <span class="triangle subpageButton">
                 </p>
                 <p class="settingsCategory">TROUBLESHOOTING</p>
@@ -46,23 +46,31 @@
                 </p>
             </div>
         </div>
-        <div id="exclusionsOutside">
-            <div id="exclusionsBody">
-                <p class="settingsOption">Hi</p>
+        <div id="exclusionsOutside" class="pageOutside">
+            <div id="exclusionsBody" class="pageBody">
+                <span id="returnFromExclusionsLabel" class="returnBack">&#10006</span>
+                <p class="settingsCategory">EXCLUSIONS</p>
+                <p id="enableExclusionsLabel" class="settingsOption">Exclude certain videos
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="switchStatus" style="color: #ff0000;">OFF</span>
+                </p>
+                <form>
+                    <input class="excludeListInput" type="text" placeholder="Add video link to exclude...">
+                    <span class="excludeInputButton">ADD</span>
+                </form>
+                <form>
+                    <input class="excludeListInput" type="text" placeholder="Add channel link to exclude...">
+                    <span class="excludeInputButton">ADD</span>
+                </form>
             </div>
         </div>
         <div id="inclusionsOutside">
-            <div id="inclusionsBody">
+            <div id="inclusionsBody" class="pageBody">
                 <p class="settingsOption">Bye</p>
             </div>
         </div>
     </body>
 </html>
-
-<!-- <p id="allowOnTabLabel">Allow extension on this tab
-    <label class="switch">
-        <input type="checkbox">
-        <span class="slider round"></span>
-    </label>
-    <span class="switchStatus" style="color: #ff0000;">OFF</span>
-</p> -->

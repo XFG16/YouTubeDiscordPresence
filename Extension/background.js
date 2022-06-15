@@ -35,21 +35,39 @@ if (LOGGING) {
 function saveKey(key, value) {
     let saveObject = new Object();
     saveObject[key] = value;
-    chrome.storage.sync.set(saveObject, function() {
-        if (LOGGING) {
-            console.log(key + " (saved): ", value);
-        }
-    });
+    chrome.storage.sync.set(saveObject);
 }
 
-// STORAGE INITIALIZER FOR POPUP.JS
+// STORAGE INITIALIZER WHEN CHROME IS INSTALLED FOR POPUP.JS
+
+chrome.runtime.onInstalled.addListener(function(details) {
+    if (details.reason == "install") {
+        chrome.storage.sync.get("enableOnStartup", function(result) {
+            saveKey("enableOnStartup", true);
+            saveKey("enabled", true);
+        });
+        chrome.storage.sync.get("enableExclusions", function(result) {
+            saveKey("enableExclusions", false);
+        });
+    }
+});
+
+// STORAGE INITIALIZER WHEN CHROME IS OPENED FOR POPUP.JS
 
 chrome.runtime.onStartup.addListener(function() {
     chrome.storage.sync.get("enableOnStartup", function(result) {
-        saveKey("enableOnStartup", typeof result.enableOnStartup == "undefined");
+        saveKey("enableOnStartup", typeof result.enableOnStartup == "undefined" || result.enableOnStartup == true);
         saveKey("enabled", typeof result.enableOnStartup == "undefined" || result.enableOnStartup == true);
     });
-    chrome.storage.sync.get(null, function(items) { // REMOVE ALL ENABLE ON THIS TAB KEYS
+    chrome.storage.sync.get("enableExclusions", function(result) {
+        if (result == "undefined") {
+            saveKey("enableExclusions", false);
+        }
+        else {
+            saveKey("enableExclusions", result.enableExclusions == true);
+        }
+    });
+    chrome.storage.sync.get(null, function(items) { // REMOVE ALL ENABLE ON THIS TAB KEYS JUST IN CASE THEY HAVEN'T BEEN REMOVED ALREADY
         var allKeys = Object.keys(items);
         for (const key of allKeys) {
             if (key.startsWith("enableOnThisTab")) {
@@ -59,7 +77,14 @@ chrome.runtime.onStartup.addListener(function() {
     });
 });
 
-// INITIALIZE EXTENSIONENABLED
+// REMOVE ENABLEONTHISTAB WHEN TAB IS CLOSED
+
+chrome.tabs.onRemoved.addListener(function(tab) {
+    let storageKey = "enableOnThisTab".concat(tab.toString());
+    chrome.storage.sync.remove(storageKey);
+});
+
+// INITIALIZE EXTENSIONENABLED EVERYTIME BACKGROUND.JS IS LOADED
 
 chrome.storage.sync.get("enabled", function(result) {
     extensionEnabled = typeof result.enabled == "undefined" || result.enabled == true;
@@ -69,6 +94,9 @@ chrome.storage.sync.get("enabled", function(result) {
 
 chrome.storage.onChanged.addListener(function(changes, namespace) {
     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
+        if (LOGGING) {
+            console.log("the key {", key, "} has been changed from", oldValue, "to", newValue)
+        }
         if (key == "enabled") {
             extensionEnabled = newValue;
         }
@@ -93,9 +121,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         }
     }
     else if (message.messageType == UPDATE_TAB_SETTINGS_MESSAGE) {
-        if (LOGGING) {
-            console.log(message.tabId, " set to ", message.value);
-        }
         tabEnabledSettings[message.tabId] = message.value;
         sendResponse(null);
     }
@@ -108,7 +133,7 @@ var pipeInterval = setInterval(function() {
     let delaySinceUpdate = new Date().getTime() - lastUpdated;
     if (nativePort && !isIdle && !extensionEnabled) {
         if (LOGGING) {
-            console.log("Idle data sent: " + NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END);
+            console.log("Idle data sent:", NMF.TITLE, NMF.IDLE, NMF.AUTHOR, NMF.IDLE, NMF.TIME_LEFT, NMF.IDLE, NMF.END);
         }
         nativePort.postMessage(NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END);
         isIdle = true;
@@ -120,7 +145,7 @@ var pipeInterval = setInterval(function() {
         }
         if (isIdle || !(previousMessage.title == currentMessage.title && previousMessage.author == currentMessage.author && skipMessage)) {
             if (LOGGING) {
-                console.log("MESSAGE SENT BY BACKGROUND.JS: ['" + currentMessage.title + "', '" + currentMessage.author + "', '" + Math.round(currentMessage.timeLeft) + "']");
+                console.log("MESSAGE SENT BY BACKGROUND.JS: {TITLE}:", currentMessage.title, "{AUTHOR}:", currentMessage.author, "{TIME LEFT}:", Math.round(currentMessage.timeLeft));
             }
             nativePort.postMessage(NMF.TITLE + currentMessage.title + NMF.AUTHOR + currentMessage.author + NMF.TIME_LEFT + Math.round(currentMessage.timeLeft) + NMF.END);
         }
@@ -134,7 +159,7 @@ var pipeInterval = setInterval(function() {
     }
     else if (nativePort && delaySinceUpdate >= IDLE_TIME_REQUIREMENT + 500 && !isIdle) {
         if (LOGGING) {
-            console.log("Idle data sent: " + NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END);
+            console.log("Idle data sent:", NMF.TITLE, NMF.IDLE, NMF.AUTHOR, NMF.IDLE, NMF.TIME_LEFT, NMF.IDLE, NMF.END);
         }
         nativePort.postMessage(NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END);
         isIdle = true;

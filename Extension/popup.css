@@ -11,16 +11,16 @@ html, body {
     margin: 1px;
 }
 
-#ytdpSettingsOutside {
+.pageOutside {
     width: 100%;
     height: 450px;
     display: flex;
 }
 
-#ytdpSettingsBody {
+.pageBody {
     align-self: center;
-    width: 96%;
-    height: 90%;
+    width: 92%;
+    height: 92%;
     margin: 2%;
     background-color: rgb(50, 50, 50);
     border-radius: 5px;
@@ -55,6 +55,28 @@ div {
     color: rgb(128, 128, 128);
 }
 
+.returnBack {
+    float: right;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    margin: 0px;
+    margin-top: 6px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border: 1px;
+    border-style: solid;
+    border-radius: 100%;
+    color: rgb(128, 128, 128);
+}
+
+.returnBack:hover {
+    color: rgb(207, 207, 207);
+    cursor: pointer;
+}
+
 .settingsOption {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
@@ -71,6 +93,54 @@ div {
     border-top-right-radius: 5px;
     margin: 0px;
 }
+
+.excludeListInput {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgb(210, 210, 210);
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-top: 14px;
+    margin-bottom: 0px;
+    padding: 8px;
+    border-radius: 5px;
+    border-style: none;
+    background-color: rgb(70, 70, 70);
+    width: 270px;
+}
+
+.excludeInputButton {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 9px;
+    border: solid;
+    border-style: none;
+    border-radius: 5px;
+    background-color: rgb(60, 60, 60);
+    color: rgb(90, 90, 90);
+    cursor: pointer;
+}
+
+/* .excludeOption {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgb(210, 210, 210);
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 14px;
+    padding-bottom: 10px;
+    margin: 0px;
+}
+
+.excludeList {
+    color: rgb(210, 210, 210);
+    list-style: none;
+    padding-left: 6px;
+    margin: 0px;
+} */
 
 .switchStatus {
     float: right;
