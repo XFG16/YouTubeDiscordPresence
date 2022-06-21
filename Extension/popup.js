@@ -146,7 +146,21 @@ function handleMainChanges(tab) {
     }
 }
 
-// HANDLE EXCLUSIONs CHANGES
+// CHECK IF ITEM IS ALREADY EXCLUDED
+
+function alreadyExcluded(text) {
+    let exclusionsList = document.getElementById("titleExclusionsBody").querySelector("ul");
+    for (let i = 0; i < exclusionsList.children.length; ++i) {
+        for (let j = 0; j < exclusionsList.children[i].childNodes.length; ++j) {
+            if (exclusionsList.children[i].childNodes[j].nodeType == Node.TEXT_NODE && text == exclusionsList.children[i].childNodes[j].textContent) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+// HANDLE EXCLUSIONS CHANGES
 
 function handleExclusionsChanges() {
     let ytdpSettingsOutside = document.getElementById("ytdpSettingsOutside");
@@ -171,6 +185,54 @@ function handleExclusionsChanges() {
         ytdpSettingsOutside.style.display = "flex";
         exclusionsOutside.style.display = "none";
     }
+
+    let root = document.querySelector(":root");
+    let titleExclusionsInputForm = document.getElementById("titleExclusionsInput");
+    let titleExclusionsInputField = titleExclusionsInputForm.querySelector("input");
+    titleExclusionsInputField.addEventListener("input", function(temp) {
+        if (titleExclusionsInputField.value && !alreadyExcluded(titleExclusionsInputField.value)) {
+            root.style.setProperty("--titleExclusionsInputButtonBackgroundColor", "rgb(35, 155, 77)");
+            root.style.setProperty("--titleExclusionsInputButtonTextColor", "rgb(210, 210, 210)");
+            root.style.setProperty("--titleExclusionsInputButtonBackgroundColorHover", "rgb(35, 180, 77)");
+        }
+        else {
+            root.style.setProperty("--titleExclusionsInputButtonBackgroundColor", "rgb(60, 60, 60)");
+            root.style.setProperty("--titleExclusionsInputButtonTextColor", "rgb(90, 90, 90)");
+            root.style.setProperty("--titleExclusionsInputButtonBackgroundColorHover", "rgb(60, 60, 60)");
+        }
+    });
+
+    let titleExclusionsInputButton = titleExclusionsInputForm.querySelector("span");
+    let exclusionsList = document.getElementById("titleExclusionsBody").querySelector("ul");
+    titleExclusionsInputButton.onclick = function() {
+        if (!titleExclusionsInputField.value || alreadyExcluded(titleExclusionsInputField.value)) {
+            return;
+        }
+
+        let entry = document.createElement("li");
+        let removeButton = document.createElement("div");
+        entry.appendChild(document.createTextNode(titleExclusionsInputField.value));
+        entry.setAttribute("id", "exclusion_" + titleExclusionsInputField.value);
+        removeButton.appendChild(document.createTextNode("REMOVE"));
+        removeButton.classList.add("removeExclusionButton");
+        removeButton.setAttribute("id", "removeExclusion_" + titleExclusionsInputField.value);
+        
+        entry.appendChild(removeButton);
+        exclusionsList.appendChild(entry);
+
+        titleExclusionsInputField.value = "";
+        root.style.setProperty("--titleExclusionsInputButtonBackgroundColor", "rgb(60, 60, 60)");
+        root.style.setProperty("--titleExclusionsInputButtonTextColor", "rgb(90, 90, 90)");
+        root.style.setProperty("--titleExclusionsInputButtonBackgroundColorHover", "rgb(60, 60, 60)");
+    }
+
+    exclusionsList.addEventListener("click", function(element) {
+        if (element.target.className == "removeExclusionButton") {
+            console.log(element.target.id.substring(16));
+            let entry = document.getElementById("exclusion_" + element.target.id.substring(16));
+            entry.remove();
+        }
+    });
 }
 
 // HANDLE INCLUSIONS CHANGES

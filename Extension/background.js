@@ -42,13 +42,10 @@ function saveKey(key, value) {
 
 chrome.runtime.onInstalled.addListener(function(details) {
     if (details.reason == "install") {
-        chrome.storage.sync.get("enableOnStartup", function(result) {
-            saveKey("enableOnStartup", true);
-            saveKey("enabled", true);
-        });
-        chrome.storage.sync.get("enableExclusions", function(result) {
-            saveKey("enableExclusions", false);
-        });
+        saveKey("enableOnStartup", true);
+        saveKey("enabled", true);
+        saveKey("enableExclusions", false);
+        saveKey("exclusionsList", new Array());
     }
 });
 
@@ -73,6 +70,11 @@ chrome.runtime.onStartup.addListener(function() {
             if (key.startsWith("enableOnThisTab")) {
                 chrome.storage.sync.remove(key);
             }
+        }
+    });
+    chrome.storage.sync.get("exclusionsList", function(result) {
+        if (result == "undefined") {
+            saveKey("exclusionsList", new Array());
         }
     });
 });

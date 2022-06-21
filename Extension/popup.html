@@ -58,39 +58,25 @@
                     <span class="switchStatus" style="color: #ff0000;">OFF</span>
                 </p>
                 <div class="separator"></div>
-                <form>
+                <div id="titleExclusionsInput">
                     <input class="excludeListInput" type="text" placeholder="Add video title to exclude...">
-                    <span class="excludeInputButton">ADD</span>
-                </form>
+                    <span class="excludeInputButton" id="titleExclusionInputButton">ADD</span>
+                </div>
                 <div id="titleExclusionsBody" class="exclusionsListBody">
                     <ul class="exclusionsList">
-                        <li>[Breaks] - Noisestorm - Barracuda [Monstercat Release]
+                        <!-- THIS IS A REFERENCE TEMPLATE: Use this format for lists
+                        <li> Noisestorm - Barracuda
                             <div class="removeExclusionButton">REMOVE</div>
                         </li>
-                        <li>"4x404"
-                            <div class="removeExclusionButton">REMOVE</div>
-                        </li>
-                        <li>X5K92
-                            <div class="removeExclusionButton">REMOVE</div>
-                        </li>
+                        -->
                     </ul>
                 </div>
-                <form>
+                <form id="channelExclusionsInput">
                     <input class="excludeListInput" type="text" placeholder="Add channel title to exclude...">
-                    <span class="excludeInputButton">ADD</span>
+                    <span class="excludeInputButton" id="channelExclusionInputButton">ADD</span>
                 </form>
                 <div id="channelExclusionsBody" class="exclusionsListBody">
-                    <ul class="exclusionsList">
-                        <li>XFG16
-                            <div class="removeExclusionButton">REMOVE</div>
-                        </li>
-                        <li>Monstercat
-                            <div class="removeExclusionButton">REMOVE</div>
-                        </li>
-                        <li>123.54me
-                            <div class="removeExclusionButton">REMOVE</div>
-                        </li>
-                    </ul>
+                    <ul class="exclusionsList"></ul>
                 </div>
             </div>
         </div>

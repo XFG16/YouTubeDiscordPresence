@@ -112,6 +112,12 @@ div {
     width: 270px;
 }
 
+:root {
+    --titleExclusionsInputButtonBackgroundColor: rgb(60, 60, 60); 
+    --titleExclusionsInputButtonTextColor: rgb(90, 90, 90); 
+    --titleExclusionsInputButtonBackgroundColorHover: rgb(60, 60, 60); 
+}
+
 .excludeInputButton {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
@@ -120,9 +126,21 @@ div {
     border: solid;
     border-style: none;
     border-radius: 5px;
+    cursor: pointer;
+}
+
+#titleExclusionInputButton {
+    background-color: var(--titleExclusionsInputButtonBackgroundColor);
+    color: var(--titleExclusionsInputButtonTextColor);
+}
+
+#titleExclusionInputButton:hover {
+    background-color: var(--titleExclusionsInputButtonBackgroundColorHover);
+}
+
+#channelExclusionInputButton {
     background-color: rgb(60, 60, 60);
     color: rgb(90, 90, 90);
-    cursor: pointer;
 }
 
 .separator {
@@ -153,7 +171,7 @@ div {
 }
 
 li {
-    background-color: rgb(49, 49, 49);
+    background-color: rgb(50, 45, 50);
     border-radius: 3px;
     padding: 8px;
     max-width: 310px;
