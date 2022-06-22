@@ -174,7 +174,8 @@ li {
     background-color: rgb(50, 45, 50);
     border-radius: 3px;
     padding: 8px;
-    max-width: 310px;
+    width: 100%;
+    max-width: 300px;
     overflow-wrap: break-word;
     margin-top: 8px;
 }

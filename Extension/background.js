@@ -19,10 +19,13 @@ const UPDATE_TAB_SETTINGS_MESSAGE = "ENABLE ON THIS TAB";
 var nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
 var currentMessage = new Object();
 var previousMessage = new Object();
-var tabEnabledSettings = new Object();
-var extensionEnabled = true;
 var lastUpdated = 0;
 var isIdle = true;
+
+var extensionEnabled = true;
+var tabEnabledList = new Object();
+var exclusionsEnabled = false;
+var titleExclusionsList = new Array();
 
 // LOGGING
 
@@ -32,7 +35,7 @@ if (LOGGING) {
 
 // CLEANER CODE
 
-function saveKey(key, value) {
+function saveStorageKey(key, value) {
     let saveObject = new Object();
     saveObject[key] = value;
     chrome.storage.sync.set(saveObject);
@@ -42,10 +45,11 @@ function saveKey(key, value) {
 
 chrome.runtime.onInstalled.addListener(function(details) {
     if (details.reason == "install") {
-        saveKey("enableOnStartup", true);
-        saveKey("enabled", true);
-        saveKey("enableExclusions", false);
-        saveKey("exclusionsList", new Array());
+        saveStorageKey("enabled", true);
+        saveStorageKey("enableOnStartup", true);
+        saveStorageKey("enableExclusions", false);
+        saveStorageKey("tabEnabledList", new Object());
+        saveStorageKey("titleExclusionsList", new Array());
     }
 });
 
@@ -53,28 +57,26 @@ chrome.runtime.onInstalled.addListener(function(details) {
 
 chrome.runtime.onStartup.addListener(function() {
     chrome.storage.sync.get("enableOnStartup", function(result) {
-        saveKey("enableOnStartup", typeof result.enableOnStartup == "undefined" || result.enableOnStartup == true);
-        saveKey("enabled", typeof result.enableOnStartup == "undefined" || result.enableOnStartup == true);
+        saveStorageKey("enableOnStartup", result.enableOnStartup == undefined || result.enableOnStartup == true);
+        saveStorageKey("enabled", result.enableOnStartup == undefined || result.enableOnStartup == true);
     });
     chrome.storage.sync.get("enableExclusions", function(result) {
-        if (result == "undefined") {
-            saveKey("enableExclusions", false);
+        if (result.enableExclusions == undefined) {
+            saveStorageKey("enableExclusions", false);
         }
         else {
-            saveKey("enableExclusions", result.enableExclusions == true);
+            saveStorageKey("enableExclusions", result.enableExclusions == true);
         }
     });
-    chrome.storage.sync.get(null, function(items) { // REMOVE ALL ENABLE ON THIS TAB KEYS JUST IN CASE THEY HAVEN'T BEEN REMOVED ALREADY
-        var allKeys = Object.keys(items);
-        for (const key of allKeys) {
-            if (key.startsWith("enableOnThisTab")) {
-                chrome.storage.sync.remove(key);
-            }
-        }
+    chrome.storage.sync.get("tabEnabledList", function(result) {
+        saveStorageKey("tabEnabledList", new Object());
     });
-    chrome.storage.sync.get("exclusionsList", function(result) {
-        if (result == "undefined") {
-            saveKey("exclusionsList", new Array());
+    chrome.storage.sync.get("titleExclusionsList", function(result) {
+        if (result.titleExclusionsList == undefined) {
+            saveStorageKey("titleExclusionsList", new Array());
+        }
+        else {
+            titleExclusionsList = result.titleExclusionsList;
         }
     });
 });
@@ -82,8 +84,13 @@ chrome.runtime.onStartup.addListener(function() {
 // REMOVE ENABLEONTHISTAB WHEN TAB IS CLOSED
 
 chrome.tabs.onRemoved.addListener(function(tab) {
-    let storageKey = "enableOnThisTab".concat(tab.toString());
-    chrome.storage.sync.remove(storageKey);
+    chrome.storage.sync.get("tabEnabledList", function(result) {
+        let newTabEnabledList = result.tabEnabledList;
+        if (tab in newTabEnabledList) {
+            delete newTabEnabledList[tab];
+        }
+        saveStorageKey("tabEnabledList", newTabEnabledList);
+    });
 });
 
 // INITIALIZE EXTENSIONENABLED EVERYTIME BACKGROUND.JS IS LOADED
@@ -102,6 +109,15 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
         if (key == "enabled") {
             extensionEnabled = newValue;
         }
+        else if (key == "tabEnabledList") {
+            tabEnabledList = newValue;
+        }
+        else if (key == "titleExclusionsList") {
+            titleExclusionsList = newValue;
+        }
+        else if (key == "enableExclusions") {
+            exclusionsEnabled = newValue;
+        }
     }
 });
 
@@ -109,11 +125,11 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 // SELECTION ON WHICH TAB TO DISPLAY IS BASED ON WHICH ONE IS LOADED FIRST BY SETTING CURRENTMESSAGE.SCRIPTID TO NULL
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.messageType == UPDATE_PRESENCE_MESSAGE && (sender.tab.id == currentMessage.scriptId || currentMessage.scriptId == null)) {
-        if (!(sender.tab.id in tabEnabledSettings)) {
-            tabEnabledSettings[sender.tab.id] = true;
+    if (message.messageType == UPDATE_PRESENCE_MESSAGE && (sender.tab.id == currentMessage.scriptId || currentMessage.scriptId == null) && (!exclusionsEnabled || titleExclusionsList.indexOf(message.title) == -1)) {
+        if (!(sender.tab.id in tabEnabledList)) {
+            tabEnabledList[sender.tab.id] = true;
         }
-        if (tabEnabledSettings[sender.tab.id]) {
+        if (tabEnabledList[sender.tab.id]) {
             currentMessage.scriptId = sender.tab.id;    
             currentMessage.title = message.title;
             currentMessage.author = message.author;
@@ -121,10 +137,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             lastUpdated = new Date().getTime();
             sendResponse(null);
         }
-    }
-    else if (message.messageType == UPDATE_TAB_SETTINGS_MESSAGE) {
-        tabEnabledSettings[message.tabId] = message.value;
-        sendResponse(null);
     }
     return true;
 });
