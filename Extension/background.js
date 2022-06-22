@@ -13,8 +13,7 @@ const NMF = { // NMF = NATIVE_MESSAGE_FORMAT (FOR HANDLING BY YTDPwin.exe)
 const IDLE_TIME_REQUIREMENT = 3000;
 const NORMAL_MESSAGE_DELAY = 1000;
 const LIVESTREAM_TIME_ID = -1;
-const UPDATE_PRESENCE_MESSAGE = "UPDATE PRESENCE DATA";
-const UPDATE_TAB_SETTINGS_MESSAGE = "ENABLE ON THIS TAB";
+const UPDATE_PRESENCE_MESSAGE = "UPDATE_PRESENCE_DATA";
 
 var nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
 var currentMessage = new Object();
@@ -39,6 +38,32 @@ function saveStorageKey(key, value) {
     let saveObject = new Object();
     saveObject[key] = value;
     chrome.storage.sync.set(saveObject);
+}
+
+// PARSE YOUTUBE URLS (https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url)
+
+function getVideoId(url){
+    let regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    let match = url.match(regExp);
+    return (match && match[7].length == 11) ? match[7] : null;
+}
+
+// CHECK WHETHER OR NOT VIDEO TITLE OR ID IS EXCLUDED
+
+function isVideoExcluded(title, videoId) {
+    if (exclusionsEnabled == false) {
+        return false;
+    }
+    for (let i = 0; i < titleExclusionsList.length; ++i) {
+        excludedVideoId = getVideoId(titleExclusionsList[i]);
+        if (excludedVideoId && videoId == excludedVideoId) {
+            return true;
+        }
+        if (!excludedVideoId && title == titleExclusionsList[i]) {
+            return true;
+        }
+    }
+    return false;
 }
 
 // STORAGE INITIALIZER WHEN CHROME IS INSTALLED FOR POPUP.JS
@@ -79,6 +104,41 @@ chrome.runtime.onStartup.addListener(function() {
             titleExclusionsList = result.titleExclusionsList;
         }
     });
+});
+
+// MUST RUN EVERY TIME BACKGROUND.JS STARTS
+
+chrome.storage.sync.get("enabled", function(result) {
+    if (result.enabled == undefined) {
+        extensionEnabled = true;
+    }
+    else {
+        extensionEnabled = result.enabled;
+    }
+});
+chrome.storage.sync.get("enableExclusions", function(result) {
+    if (result.enableExclusions == undefined) {
+        exclusionsEnabled = false;
+    }
+    else {
+        exclusionsEnabled = result.enableExclusions;
+    }
+});
+chrome.storage.sync.get("tabEnabledList", function(result) {
+    if (result == undefined) {
+        tabEnabledList = new Object();
+    }
+    else {
+        tabEnabledList = result.tabEnabledList;
+    }
+});
+chrome.storage.sync.get("titleExclusionsList", function(result) {
+    if (result.titleExclusionsList == undefined) {
+        titleExclusionsList = new Array()
+    }
+    else {
+        titleExclusionsList = result.titleExclusionsList;
+    }
 });
 
 // REMOVE ENABLEONTHISTAB WHEN TAB IS CLOSED
@@ -125,7 +185,7 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 // SELECTION ON WHICH TAB TO DISPLAY IS BASED ON WHICH ONE IS LOADED FIRST BY SETTING CURRENTMESSAGE.SCRIPTID TO NULL
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.messageType == UPDATE_PRESENCE_MESSAGE && (sender.tab.id == currentMessage.scriptId || currentMessage.scriptId == null) && (!exclusionsEnabled || titleExclusionsList.indexOf(message.title) == -1)) {
+    if (message.messageType == UPDATE_PRESENCE_MESSAGE && (sender.tab.id == currentMessage.scriptId || currentMessage.scriptId == null) && !isVideoExcluded(message.title, message.videoId)) {
         if (!(sender.tab.id in tabEnabledList)) {
             tabEnabledList[sender.tab.id] = true;
         }

@@ -2,7 +2,7 @@
 
 const LOGGING = false;
 
-const UPDATE_PRESENCE_MESSAGE = "UPDATE PRESENCE DATA";
+const UPDATE_PRESENCE_MESSAGE = "UPDATE_PRESENCE_DATA";
 
 // REDIRECTION OF DATA FROM INJECTED CONTENT.JS TO BACKGROUND.JS
 
@@ -11,10 +11,11 @@ window.addEventListener("SendToLoader", function(message) {
         messageType: UPDATE_PRESENCE_MESSAGE,
         title: message.detail.title,
         author: message.detail.author,
-        timeLeft: message.detail.timeLeft
+        timeLeft: message.detail.timeLeft,
+        videoId: message.detail.videoId
     }, (response) => {
         if (LOGGING) {
-            console.log("Data was sent by content_loader.js and received by background.js: ['" + message.detail.title + "', '" + message.detail.author + "', '" + message.detail.timeLeft + "']");
+            console.log("Data was sent by content_loader.js and received by background.js: ['" + message.detail.title + "', '" + message.detail.author + "', '" + message.detail.timeLeft + "', '" + message.detail.videoId + "']");
         }
     });
 }, false);

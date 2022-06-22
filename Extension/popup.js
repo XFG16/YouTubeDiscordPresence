@@ -6,7 +6,6 @@
 
 const LOGGING = true;
 
-const TAB_SETTINGS_MESSAGE = "ENABLE ON THIS TAB";
 const YOUTUBE_MAIN_URL = "https://www.youtube.com/";
 const YOUTUBE_MUSIC_URL = "https://music.youtube.com/";
 
@@ -162,7 +161,7 @@ function initializeDocument(tab) {
 
     // LIST TITLE EXCLUSIONS
     chrome.storage.sync.get("titleExclusionsList", function(result) {
-        for (let i = 0; result.titleExclusionsList && i < result.titleExclusionsList.length; ++i) {
+        for (let i = 0; i < result.titleExclusionsList.length; ++i) {
             addVideoExclusion(result.titleExclusionsList[i], true);
         }
     });
@@ -266,14 +265,12 @@ function handleExclusionsChanges() {
         if (element.target.className == "removeExclusionButton") {
             let exclusion = element.target.id.substring(16);
             chrome.storage.sync.get("titleExclusionsList", function(result) {
-                if (result.titleExclusionsList) {
-                    let newExclusionsList = result.titleExclusionsList;
-                    let exclusionIndex = newExclusionsList.indexOf(exclusion);
-                    if (exclusionIndex > -1) {
-                        newExclusionsList.splice(exclusionIndex, 1);
-                    }
-                    saveStorageKey("titleExclusionsList", newExclusionsList);
+                let newExclusionsList = result.titleExclusionsList;
+                let exclusionIndex = newExclusionsList.indexOf(exclusion);
+                if (exclusionIndex > -1) {
+                    newExclusionsList.splice(exclusionIndex, 1);
                 }
+                saveStorageKey("titleExclusionsList", newExclusionsList);
             });
             let entry = document.getElementById("exclusion_" + exclusion);
             entry.remove();

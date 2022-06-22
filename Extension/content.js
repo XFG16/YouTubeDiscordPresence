@@ -25,7 +25,7 @@ if (LOGGING) {
     console.log("YouTubeDiscordPresence - content.js created");
 }
 
-// GET VIDEO ID FROM LINK
+// GET VIDEO ID FROM LINK FROM videoPlayer.getVideoUrl()
 
 function getVideoId(link) {
     if (link.includes(VIDEO_ID_SEPARATOR_KEY)) {
@@ -104,7 +104,7 @@ function getTimeData() {
 
 function sendDocumentData() {
     if (documentData.title && documentData.author && documentData.timeLeft) {
-        messageData = {title: documentData.title, author: documentData.author, timeLeft: documentData.timeLeft};
+        messageData = {title: documentData.title, author: documentData.author, timeLeft: documentData.timeLeft, videoId: documentData.videoId};
         var messageEvent = new CustomEvent("SendToLoader", {detail: messageData});
         window.dispatchEvent(messageEvent);
     }
@@ -114,11 +114,8 @@ function sendDocumentData() {
 
 function handleYouTubeData() {
     let livestreamHTML = videoPlayer.querySelector(LIVESTREAM_ELEMENT_SELECTOR);
-    if (videoPlayer.getVideoUrl() && !livestreamHTML) {
-        documentData.videoId = getVideoId(videoPlayer.getVideoUrl());
-        if (!documentData.videoId) {
-            return;
-        }
+    documentData.videoId = getVideoId(videoPlayer.getVideoUrl());
+    if (documentData.videoId && !livestreamHTML) {
         getOEmbedJSON(documentData.videoId).then(data => {
             documentData.title = data.title;
             documentData.author = data.author_name;

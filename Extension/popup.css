@@ -202,7 +202,15 @@ div::-webkit-scrollbar-thumb:hover {
     font-size: 10px;
     color: rgb(128, 128, 128);
     margin-left: 1px;
-    margin-top: 6px;
+    margin-top: 4px;
+}
+
+.urlDetails {
+    position: relative;
+    font-size: 10px;
+    color: rgb(170, 170, 170);
+    margin-left: 1px;
+    margin-top: 4px;
 }
 
 .removeExclusionButton:hover {
