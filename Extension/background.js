@@ -24,7 +24,8 @@ var isIdle = true;
 var extensionEnabled = true;
 var tabEnabledList = new Object();
 var exclusionsEnabled = false;
-var titleExclusionsList = new Array();
+var videoExclusionsList = new Array();
+var keywordExclusionsList = new Array();
 
 // LOGGING
 
@@ -54,12 +55,17 @@ function isVideoExcluded(title, videoId) {
     if (exclusionsEnabled == false) {
         return false;
     }
-    for (let i = 0; i < titleExclusionsList.length; ++i) {
-        excludedVideoId = getVideoId(titleExclusionsList[i]);
-        if (excludedVideoId && videoId == excludedVideoId) {
+    for (let i = 0; i < videoExclusionsList.length; ++i) {
+        excludedVideoId = getVideoId(videoExclusionsList[i]);
+        if (excludedVideoId != null && videoId == excludedVideoId) {
             return true;
         }
-        if (!excludedVideoId && title == titleExclusionsList[i]) {
+        if (!excludedVideoId && title == videoExclusionsList[i]) {
+            return true;
+        }
+    }
+    for (let i = 0; i < keywordExclusionsList.length; ++i) {
+        if (title.toLowerCase().includes(keywordExclusionsList[i].toLowerCase())) {
             return true;
         }
     }
@@ -74,7 +80,8 @@ chrome.runtime.onInstalled.addListener(function(details) {
         saveStorageKey("enableOnStartup", true);
         saveStorageKey("enableExclusions", false);
         saveStorageKey("tabEnabledList", new Object());
-        saveStorageKey("titleExclusionsList", new Array());
+        saveStorageKey("videoExclusionsList", new Array());
+        saveStorageKey("keywordExclusionsList", new Array());
     }
 });
 
@@ -96,20 +103,29 @@ chrome.runtime.onStartup.addListener(function() {
     chrome.storage.sync.get("tabEnabledList", function(result) {
         saveStorageKey("tabEnabledList", new Object());
     });
-    chrome.storage.sync.get("titleExclusionsList", function(result) {
-        if (result.titleExclusionsList == undefined) {
-            saveStorageKey("titleExclusionsList", new Array());
+    chrome.storage.sync.get("videoExclusionsList", function(result) {
+        if (result.videoExclusionsList == undefined) {
+            saveStorageKey("videoExclusionsList", new Array());
         }
         else {
-            titleExclusionsList = result.titleExclusionsList;
+            videoExclusionsList = result.videoExclusionsList;
+        }
+    });
+    chrome.storage.sync.get("keywordExclusionsList", function(result) {
+        if (result.keywordExclusionsList == undefined) {
+            saveStorageKey("keywordExclusionsList", new Array());
+        }
+        else {
+            keywordExclusionsList = result.keywordExclusionsList;
         }
     });
 });
 
-// MUST RUN EVERY TIME BACKGROUND.JS STARTS
+// MUST RUN EVERY TIME BACKGROUND.JS STARTS - INITIALIZES KEYS JUST IN CASE THEY WEREN'T INITIALIZED BEFORE
 
 chrome.storage.sync.get("enabled", function(result) {
     if (result.enabled == undefined) {
+        saveStorageKey("enabled", true);
         extensionEnabled = true;
     }
     else {
@@ -118,6 +134,7 @@ chrome.storage.sync.get("enabled", function(result) {
 });
 chrome.storage.sync.get("enableExclusions", function(result) {
     if (result.enableExclusions == undefined) {
+        saveStorageKey("enableExclusions", false);
         exclusionsEnabled = false;
     }
     else {
@@ -126,18 +143,29 @@ chrome.storage.sync.get("enableExclusions", function(result) {
 });
 chrome.storage.sync.get("tabEnabledList", function(result) {
     if (result == undefined) {
+        saveStorageKey("tabEnabledList", new Object());
         tabEnabledList = new Object();
     }
     else {
         tabEnabledList = result.tabEnabledList;
     }
 });
-chrome.storage.sync.get("titleExclusionsList", function(result) {
-    if (result.titleExclusionsList == undefined) {
-        titleExclusionsList = new Array()
+chrome.storage.sync.get("videoExclusionsList", function(result) {
+    if (result.videoExclusionsList == undefined) {
+        saveStorageKey("videoExclusionsList", new Array());
+        videoExclusionsList = new Array();
     }
     else {
-        titleExclusionsList = result.titleExclusionsList;
+        videoExclusionsList = result.videoExclusionsList;
+    }
+});
+chrome.storage.sync.get("keywordExclusionsList", function(result) {
+    if (result.keywordExclusionsList == undefined) {
+        saveStorageKey("keywordExclusionsList", new Array());
+        keywordExclusionsList = new Array();
+    }
+    else {
+        keywordExclusionsList = result.keywordExclusionsList;
     }
 });
 
@@ -172,11 +200,14 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
         else if (key == "tabEnabledList") {
             tabEnabledList = newValue;
         }
-        else if (key == "titleExclusionsList") {
-            titleExclusionsList = newValue;
-        }
         else if (key == "enableExclusions") {
             exclusionsEnabled = newValue;
+        }
+        else if (key == "videoExclusionsList") {
+            videoExclusionsList = newValue;
+        }
+        else if (key == "keywordExclusionsList") {
+            keywordExclusionsList = newValue;
         }
     }
 });

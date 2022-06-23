@@ -58,28 +58,28 @@
                     <span class="switchStatus" style="color: #ff0000;">OFF</span>
                 </p>
                 <div class="separator"></div>
-                <div id="titleExclusionsInput">
+                <div id="videoExclusionsInput">
                     <input class="excludeListInput" type="text" placeholder="Add video title or URL to exclude...">
-                    <span class="excludeInputButton" id="titleExclusionInputButton">ADD</span>
+                    <span class="excludeInputButton" id="videoExclusionInputButton">ADD</span>
                 </div>
-                <div id="titleExclusionsBody" class="exclusionsListBody">
-                    <ul class="exclusionsList">
+                <div class="exclusionsListBody">
+                    <ul id="videoExclusionsList" class="exclusionsList">
                         <!-- THIS IS A REFERENCE TEMPLATE: Use this format for lists
                         <li> [Breaks] - Noisestorm - Barracuda [Monstercat Release]
                             <div class="removeExclusionButton">REMOVE</div>
                         </li>
                         <li> https://www.youtube.com/watch?v=KKRRWQq5f5E
-                            <div class="urlDetails">[Breaks] - Noisestorm - Barracuda [Monstercat Release] <span style="color:rgb(194, 129, 255)">by</span> Monstercat Uncaged</div>
+                            [OPTIONAL FEATURE, MAY WORK ON IT LATER] <div class="urlDetails">[Breaks] - Noisestorm - Barracuda [Monstercat Release] <span style="color:rgb(194, 129, 255)">by</span> Monstercat Uncaged</div>
                             <div class="removeExclusionButton">REMOVE</div>
                         </li> -->
                     </ul>
                 </div>
-                <form id="channelExclusionsInput">
-                    <input class="excludeListInput" type="text" placeholder="Add channel title or URL to exclude...">
-                    <span class="excludeInputButton" id="channelExclusionInputButton">ADD</span>
-                </form>
-                <div id="channelExclusionsBody" class="exclusionsListBody">
-                    <ul class="exclusionsList"></ul>
+                <div id="keywordExclusionsInput">
+                    <input class="excludeListInput" type="text" placeholder="Add keyword in title to exclude...">
+                    <span class="excludeInputButton" id="keywordExclusionInputButton">ADD</span>
+                </div>
+                <div class="exclusionsListBody">
+                    <ul id="keywordExclusionsList" class="exclusionsList"></ul>
                 </div>
             </div>
         </div>

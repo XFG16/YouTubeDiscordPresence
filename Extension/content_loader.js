@@ -12,7 +12,7 @@ window.addEventListener("SendToLoader", function(message) {
         title: message.detail.title,
         author: message.detail.author,
         timeLeft: message.detail.timeLeft,
-        videoId: message.detail.videoId
+        videoId: message.detail.videoId,
     }, (response) => {
         if (LOGGING) {
             console.log("Data was sent by content_loader.js and received by background.js: ['" + message.detail.title + "', '" + message.detail.author + "', '" + message.detail.timeLeft + "', '" + message.detail.videoId + "']");

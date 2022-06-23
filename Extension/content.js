@@ -9,8 +9,8 @@ const NORMAL_MESSAGE_DELAY = 1000;
 const LIVESTREAM_ELEMENT_SELECTOR = "div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > div.ytp-time-display.notranslate.ytp-live > button"; // VIDEO PLAYER
 const MINIPLAYER_ELEMENT_SELECTOR = "div.ytp-miniplayer-ui"; // VIDEO PLAYER
 const MAIN_LIVESTREAM_TITLE_SELECTOR = "div.ytp-chrome-top > div.ytp-title > div.ytp-title-text > a.ytp-title-link"; // VIDEO PLAYER
-const MAIN_LIVESTREAM_AUTHOR_SELECTOR = "#upload-info > #channel-name > #container > #text-container > #text > a"; // DOCUMENT HTML
-const MINIPLAYER_LIVESTREAM_AUTHOR_SELECTOR = "#info-bar > div.metadata.style-scope.ytd-miniplayer > div.channel.style-scope.ytd-miniplayer > yt-formatted-string"; // DOCUMENT HTML
+const MAIN_LIVESTREAM_AUTHOR_SELECTOR = "#upload-info > #keyword-name > #container > #text-container > #text > a"; // DOCUMENT HTML
+const MINIPLAYER_LIVESTREAM_AUTHOR_SELECTOR = "#info-bar > div.metadata.style-scope.ytd-miniplayer > div.keyword.style-scope.ytd-miniplayer > yt-formatted-string"; // DOCUMENT HTML
 const NO_MINIPLAYER_ATTRIBUTE = "display: none;";
 const YES_MINIPLAYER_ATRRIBUTE = "";
 const LIVESTREAM_TIME_ID = -1;
@@ -27,9 +27,9 @@ if (LOGGING) {
 
 // GET VIDEO ID FROM LINK FROM videoPlayer.getVideoUrl()
 
-function getVideoId(link) {
-    if (link.includes(VIDEO_ID_SEPARATOR_KEY)) {
-        return link.split(VIDEO_ID_SEPARATOR_KEY)[1]
+function getVideoId(url) {
+    if (url.includes(VIDEO_ID_SEPARATOR_KEY)) {
+        return url.split(VIDEO_ID_SEPARATOR_KEY)[1]
     }
     return null;
 }
