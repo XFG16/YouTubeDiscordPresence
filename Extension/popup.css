@@ -101,11 +101,14 @@ div {
 
 .excludeListInput {
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
+    font-size: 11px;
     font-weight: 500;
     color: rgb(210, 210, 210);
     margin: 3px;
-    padding: 8px;
+    padding-top: 10px;
+    padding-bottom: 9px;
+    padding-left: 7px;
+    padding-right: 7px;
     border-radius: 5px;
     border-style: none;
     background-color: rgb(70, 70, 70);
@@ -185,6 +188,7 @@ li {
     max-width: 300px;
     overflow-wrap: break-word;
     margin-top: 8px;
+    font-size: 14px;
 }
 
 div::-webkit-scrollbar {

@@ -49,23 +49,24 @@ function getVideoId(url){
     return (match && match[7].length == 11) ? match[7] : null;
 }
 
-// CHECK WHETHER OR NOT VIDEO TITLE OR ID IS EXCLUDED
+// CHECK WHETHER OR NOT VIDEO/CHANNEL TITLE OR VIDEO ID IS EXCLUDED
 
-function isVideoExcluded(title, videoId) {
+function isExcluded(title, author, videoId) {
     if (exclusionsEnabled == false) {
         return false;
     }
     for (let i = 0; i < videoExclusionsList.length; ++i) {
         excludedVideoId = getVideoId(videoExclusionsList[i]);
-        if (excludedVideoId != null && videoId == excludedVideoId) {
+        if (excludedVideoId && videoId == excludedVideoId) {
             return true;
         }
-        if (!excludedVideoId && title == videoExclusionsList[i]) {
+        if (title == videoExclusionsList[i] || author == videoExclusionsList[i]) {
             return true;
         }
     }
     for (let i = 0; i < keywordExclusionsList.length; ++i) {
-        if (title.toLowerCase().includes(keywordExclusionsList[i].toLowerCase())) {
+        let keyword = keywordExclusionsList[i].toLowerCase();
+        if (title.toLowerCase().includes(keyword) || author.toLowerCase().includes(keyword)) {
             return true;
         }
     }
@@ -216,7 +217,7 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 // SELECTION ON WHICH TAB TO DISPLAY IS BASED ON WHICH ONE IS LOADED FIRST BY SETTING CURRENTMESSAGE.SCRIPTID TO NULL
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.messageType == UPDATE_PRESENCE_MESSAGE && (sender.tab.id == currentMessage.scriptId || currentMessage.scriptId == null) && !isVideoExcluded(message.title, message.videoId)) {
+    if (message.messageType == UPDATE_PRESENCE_MESSAGE && (sender.tab.id == currentMessage.scriptId || currentMessage.scriptId == null) && !isExcluded(message.title, message.author, message.videoId)) {
         if (!(sender.tab.id in tabEnabledList)) {
             tabEnabledList[sender.tab.id] = true;
         }

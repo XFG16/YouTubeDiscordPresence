@@ -9,8 +9,8 @@ const NORMAL_MESSAGE_DELAY = 1000;
 const LIVESTREAM_ELEMENT_SELECTOR = "div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > div.ytp-time-display.notranslate.ytp-live > button"; // VIDEO PLAYER
 const MINIPLAYER_ELEMENT_SELECTOR = "div.ytp-miniplayer-ui"; // VIDEO PLAYER
 const MAIN_LIVESTREAM_TITLE_SELECTOR = "div.ytp-chrome-top > div.ytp-title > div.ytp-title-text > a.ytp-title-link"; // VIDEO PLAYER
-const MAIN_LIVESTREAM_AUTHOR_SELECTOR = "#upload-info > #keyword-name > #container > #text-container > #text > a"; // DOCUMENT HTML
-const MINIPLAYER_LIVESTREAM_AUTHOR_SELECTOR = "#info-bar > div.metadata.style-scope.ytd-miniplayer > div.keyword.style-scope.ytd-miniplayer > yt-formatted-string"; // DOCUMENT HTML
+const MAIN_LIVESTREAM_AUTHOR_SELECTOR = "#upload-info > #channel-name > #container > #text-container > #text > a"; // DOCUMENT HTML
+const MINIPLAYER_LIVESTREAM_AUTHOR_SELECTOR = "#info-bar > div.metadata.style-scope.ytd-miniplayer > div.channel.style-scope.ytd-miniplayer > yt-formatted-string"; // DOCUMENT HTML
 const NO_MINIPLAYER_ATTRIBUTE = "display: none;";
 const YES_MINIPLAYER_ATRRIBUTE = "";
 const LIVESTREAM_TIME_ID = -1;
@@ -115,7 +115,7 @@ function sendDocumentData() {
 function handleYouTubeData() {
     let livestreamHTML = videoPlayer.querySelector(LIVESTREAM_ELEMENT_SELECTOR);
     documentData.videoId = getVideoId(videoPlayer.getVideoUrl());
-    if (documentData.videoId && !livestreamHTML) {
+    if (!livestreamHTML) {
         getOEmbedJSON(documentData.videoId).then(data => {
             documentData.title = data.title;
             documentData.author = data.author_name;
