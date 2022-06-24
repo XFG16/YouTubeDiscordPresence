@@ -40,6 +40,4 @@
  - Maybe have presence display a different icon for YouTube Music
 
 ## License
-Copyright (c) Michael Ren. All rights reserved.
-
 Licensed under the [MIT](https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/LICENSE.txt) license.
