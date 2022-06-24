@@ -6,6 +6,7 @@ const VIDEO_ID_SEPARATOR_KEY = "v=";
 const PLAYLIST_SEPRATOR_KEY = "&";
 const NORMAL_MESSAGE_DELAY = 1000;
 
+const AD_SELECTOR = "div.ytp-ad-player-overlay-instream-info"; // DOCUMENT; THIS HAS TO BE DONE BECAUSE IF AN AD PLAYS IN THE MIDDLE OF A VIDEO, THEN GETPLAYERSTATE WILL STILL RETURN 1
 const LIVESTREAM_ELEMENT_SELECTOR = "div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > div.ytp-time-display.notranslate.ytp-live > button"; // VIDEO PLAYER
 const MINIPLAYER_ELEMENT_SELECTOR = "div.ytp-miniplayer-ui"; // VIDEO PLAYER
 const MAIN_LIVESTREAM_TITLE_SELECTOR = "div.ytp-chrome-top > div.ytp-title > div.ytp-title-text > a.ytp-title-link"; // VIDEO PLAYER
@@ -141,7 +142,7 @@ var transmitterInterval = setInterval(function() {
     if (!videoPlayer) {
         videoPlayer = document.getElementById("movie_player");
     }
-    if (videoPlayer && videoPlayer.getPlayerState() == 1) {
+    if (videoPlayer && videoPlayer.getPlayerState() == 1 && document.querySelector(AD_SELECTOR) == null) {
         handleYouTubeData();
     }
 }, NORMAL_MESSAGE_DELAY);

@@ -44,3 +44,4 @@
 <div align=center>
   <img width="75%" height="auto" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/Screenshots/ytdpScreenshot3.png?raw=true">
 </div>
+<hr></hr>
