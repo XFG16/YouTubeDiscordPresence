@@ -8,7 +8,6 @@
 <div align="center">
   <img width="100%" height="5" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/Screenshots/ytdpScreenshot1.png?raw=true">
 </div>
-<br>
 
 # Installation (no need to download additional libraries)
  1. Download the `YTDPsetup.msi` file in the [**<ins>releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.2) section of this repository and run it on your computer
@@ -40,7 +39,6 @@
  - Maybe add a feature to stop the presence from disappearing when no video is playing; instead, just make the rich presence display idle (let the user choose between original or this)
  - Maybe have presence display a different icon for YouTube Music
 
-<br>
 <hr></hr>
 <br>
 <div align=center>
