@@ -1,13 +1,14 @@
 <p align="center">
   <img width="100%" height="5" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/Screenshots/ytdpScreenshot1.png?raw=true">
 </p>
-<p align="center">
+<div align="center">
   <img width="49%" height="auto" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/Screenshots/ytdpScreenshot1.png?raw=true">
   <img width="49%" height="auto" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/Screenshots/ytdpScreenshot2.png?raw=true">
-</p>
-<p align="center">
+</div>
+<div align="center">
   <img width="100%" height="5" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/Screenshots/ytdpScreenshot1.png?raw=true">
-</p>
+</div>
+<br>
 
 # Installation (no need to download additional libraries)
  1. Download the `YTDPsetup.msi` file in the [**<ins>releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.2) section of this repository and run it on your computer
@@ -27,16 +28,6 @@
    - Chrome Extension ( Source code [v1.3]: `Extension` | Release [v1.2]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) )
    - Desktop Application ( Source code [v1.2]: `Host` | Release [v1.2]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.2) )
 
-<p align="center">
-  <img width="100%" height="5" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/Screenshots/ytdpScreenshot1.png?raw=true">
-</p>
-<p align="center">
-  <img width="49%" height="auto" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/Screenshots/ytdpScreenshot2.png?raw=true">
-</p>
-<p align="center">
-  <img width="100%" height="5" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/Screenshots/ytdpScreenshot1.png?raw=true">
-</p>
-
 ## Troubleshooting/Known Issues
  - It only works alongside the **desktop application** of Discord, not the browser version. Also, make sure to have `Display current activity as status message` in your Discord settings **on.**
  - If Discord is closed and reopened **while the extension is running**, just switch the extension **off and back on**, and the presence should **reappear** on your profile
@@ -48,3 +39,10 @@
  - Press `Alt` + `Enter` to show properties in Visual Studio
  - Maybe add a feature to stop the presence from disappearing when no video is playing; instead, just make the rich presence display idle (let the user choose between original or this)
  - Maybe have presence display a different icon for YouTube Music
+
+<br>
+<hr></hr>
+<br>
+<div align=center>
+  <img width="75%" height="auto" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/Screenshots/ytdpScreenshot3.png?raw=true">
+</div>
