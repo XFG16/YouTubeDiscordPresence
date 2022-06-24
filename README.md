@@ -40,9 +40,3 @@
  - Maybe add a feature to stop the presence from disappearing when no video is playing; instead, just make the rich presence display idle (let the user choose between original or this)
  - Maybe have presence display a different icon for YouTube Music
 
-<br>
-<hr></hr>
-<br>
-<div align=center>
-  <img width="75%" height="auto" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/Screenshots/ytdpScreenshot3.png?raw=true">
-</div>
