@@ -99,7 +99,7 @@ div {
     text-decoration: none;
 }
 
-.excludeListInput {
+.ieListInput {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 11px;
     font-weight: 500;
@@ -122,9 +122,16 @@ div {
     --keywordExclusionsInputButtonBackgroundColor: rgb(60, 60, 60); 
     --keywordExclusionsInputButtonTextColor: rgb(90, 90, 90); 
     --keywordExclusionsInputButtonBackgroundColorHover: rgb(60, 60, 60); 
+
+    --videoInclusionsInputButtonBackgroundColor: rgb(60, 60, 60); 
+    --videoInclusionsInputButtonTextColor: rgb(90, 90, 90); 
+    --videoInclusionsInputButtonBackgroundColorHover: rgb(60, 60, 60); 
+    --keywordInclusionsInputButtonBackgroundColor: rgb(60, 60, 60); 
+    --keywordInclusionsInputButtonTextColor: rgb(90, 90, 90); 
+    --keywordInclusionsInputButtonBackgroundColorHover: rgb(60, 60, 60); 
 }
 
-.excludeInputButton {
+.ieInputButton {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     font-weight: 600;
@@ -153,11 +160,29 @@ div {
     background-color: var(--keywordExclusionsInputButtonBackgroundColorHover);
 }
 
+#videoInclusionInputButton {
+    background-color: var(--videoInclusionsInputButtonBackgroundColor);
+    color: var(--videoInclusionsInputButtonTextColor);
+}
+
+#videoInclusionInputButton:hover {
+    background-color: var(--videoInclusionsInputButtonBackgroundColorHover);
+}
+
+#keywordInclusionInputButton {
+    background-color: var(--keywordInclusionsInputButtonBackgroundColor);
+    color: var(--keywordInclusionsInputButtonTextColor);
+}
+
+#keywordInclusionInputButton:hover {
+    background-color: var(--keywordInclusionsInputButtonBackgroundColorHover);
+}
+
 .separator {
     margin: 10px;
 }
 
-.exclusionsListBody {
+.ieListBody { /* ie is abbreviation for includeExclude */
     margin-top: 8px;
     margin-bottom: 8px;
     margin-left: 3px;
@@ -170,7 +195,7 @@ div {
     overflow-y: scroll;
 }
 
-.exclusionsList {
+.ieList {
     color: rgb(210, 210, 210);
     list-style-type: none;
     margin-bottom: 8px;
@@ -208,7 +233,7 @@ div::-webkit-scrollbar-thumb:hover {
     background: rgb(177, 177, 177);
 }
 
-.removeExclusionButton {
+.removeIeButton {
     position: relative;
     font-size: 10px;
     color: rgb(128, 128, 128);
@@ -224,7 +249,7 @@ div::-webkit-scrollbar-thumb:hover {
     margin-top: 4px;
 }
 
-.removeExclusionButton:hover {
+.removeIeButton:hover {
     cursor: pointer;
     color: red;
     font-weight: 500;
@@ -245,6 +270,12 @@ div::-webkit-scrollbar-thumb:hover {
 	border-top: 5px solid transparent;
 	border-left: 10px solid white;
 	border-bottom: 5px solid transparent;
+}
+
+#troubleshootingLabel {
+    display: inline-block;
+    margin: 100px;
+    padding: 0;
 }
 
 .subpageButton {

@@ -41,9 +41,10 @@
                     <span class="triangle subpageButton">
                 </p>
                 <p class="settingsCategory">TROUBLESHOOTING</p>
-                <p id="troubleShootingLabel" class="subpageButtonBody settingsOption">Visit the troubleshooting guide on GitHub
-                    <span class="triangle subpageButton">
-                </p>
+                <div id="troubleShootingLabel" class="subpageButtonBody settingsOption">
+                    <span><a href="https://github.com/XFG16/YouTubeDiscordPresence#troubleshootingknown-issues" target="_blank">Visit the troubleshooting guide on GitHub</a></span>
+                    <a class="triangle subpageButton" href="https://github.com/XFG16/YouTubeDiscordPresence#troubleshootingknown-issues" target="_blank"></a>
+                </div>
             </div>
         </div>
         <div id="exclusionsOutside" class="pageOutside">
@@ -59,33 +60,67 @@
                 </p>
                 <div class="separator"></div>
                 <div id="videoExclusionsInput">
-                    <input class="excludeListInput" type="text" placeholder="Add video title, video URL, or channel title to exclude...">
-                    <span class="excludeInputButton" id="videoExclusionInputButton">ADD</span>
+                    <input class="ieListInput" type="text" placeholder="Add video title, video URL, or channel title to exclude...">
+                    <span class="ieInputButton" id="videoExclusionInputButton">ADD</span>
                 </div>
-                <div class="exclusionsListBody">
-                    <ul id="videoExclusionsList" class="exclusionsList">
+                <div class="ieListBody">
+                    <ul id="videoExclusionsList" class="ieList">
                         <!-- THIS IS A REFERENCE TEMPLATE: Use this format for lists
                         <li> [Breaks] - Noisestorm - Barracuda [Monstercat Release]
-                            <div class="removeExclusionButton">REMOVE</div>
+                            <div class="removeIeButton">REMOVE</div>
                         </li>
                         <li> https://www.youtube.com/watch?v=KKRRWQq5f5E
                             [OPTIONAL FEATURE, MAY WORK ON IT LATER] <div class="urlDetails">[Breaks] - Noisestorm - Barracuda [Monstercat Release] <span style="color:rgb(194, 129, 255)">by</span> Monstercat Uncaged</div>
-                            <div class="removeExclusionButton">REMOVE</div>
+                            <div class="removeIeButton">REMOVE</div>
                         </li> -->
                     </ul>
                 </div>
                 <div id="keywordExclusionsInput">
-                    <input class="excludeListInput" type="text" placeholder="Add keyword in title or channel to exclude...">
-                    <span class="excludeInputButton" id="keywordExclusionInputButton">ADD</span>
+                    <input class="ieListInput" type="text" placeholder="Add keyword in title or channel to exclude...">
+                    <span class="ieInputButton" id="keywordExclusionInputButton">ADD</span>
                 </div>
-                <div class="exclusionsListBody">
-                    <ul id="keywordExclusionsList" class="exclusionsList"></ul>
+                <div class="ieListBody">
+                    <ul id="keywordExclusionsList" class="ieList"></ul>
                 </div>
             </div>
         </div>
         <div id="inclusionsOutside">
             <div id="inclusionsBody" class="pageBody">
-                <p class="settingsOption">Bye</p>
+                <span id="returnFromInclusionsLabel" class="returnBack">&#10006</span>
+                <p class="settingsCategory">INCLUSIONS</p>
+                <p id="enableInclusionsLabel" class="settingsOption">Only display certain videos
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                    <span class="switchStatus" style="color: #ff0000;">OFF</span>
+                </p>
+                <div class="separator"></div>
+                <div id="videoInclusionsInput">
+                    <input class="ieListInput" type="text" placeholder="Add video title, video URL, or channel title to include...">
+                    <span class="ieInputButton" id="videoInclusionInputButton">ADD</span>
+                </div>
+                <div class="ieListBody">
+                    <ul id="videoInclusionsList" class="ieList">
+                        <!-- THIS IS A REFERENCE TEMPLATE: Use this format for lists
+                        <li> [Breaks] - Noisestorm - Barracuda [Monstercat Release]
+                            <div class="removeInclusionButton">REMOVE</div>
+                        </li>
+                        <li> https://www.youtube.com/watch?v=KKRRWQq5f5E
+                            [OPTIONAL FEATURE, MAY WORK ON IT LATER] <div class="urlDetails">[Breaks] - Noisestorm - Barracuda [Monstercat Release] <span style="color:rgb(194, 129, 255)">by</span> Monstercat Uncaged</div>
+                            <div class="removeInclusionButton">REMOVE</div>
+                        </li> -->
+                    </ul>
+                </div>
+                <div id="keywordInclusionsInput">
+                    <input class="ieListInput" type="text" placeholder="Add keyword in title or channel to include...">
+                    <span class="ieInputButton" id="keywordInclusionInputButton">ADD</span>
+                </div>
+                <div class="ieListBody">
+                    <ul id="keywordInclusionsList" class="ieList"></ul>
+                </div>
+            </div>
+        </div>
             </div>
         </div>
     </body>
