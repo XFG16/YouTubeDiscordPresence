@@ -18,7 +18,7 @@
 
 # YouTubeDiscordPresence for Windows (x64)
 ## General Notes 
- - This is an extension used to create a **detailed rich presence** for YouTube videos and livestreams on Discord.
+ - This is an extension used to create a **detailed rich presence** for YouTube videos and livestreams on Discord. It is a project I decided to take on towards the end of my freshman year.
  - Currently, the application only supports **Windows**, although more operating systems will be supported in the future
  - Supports both **normal** and **livestream/premiere** videos on YouTube as well as **YouTube Music** songs
  - No, this is not a bootleg copy of PreMiD. The way it displays the rich presence and what it decides to display are **different** from PreMiD and everything here was written from scratch. Look at the next note below. Also, the desktop component of PreMiD is built on **Node.js** and several other libraries, while YouTubeDiscordPresence uses **C++** and the [<ins>**Discord Game SDK**</ins>](https://discord.com/developers/docs/game-sdk/sdk-starter-guide), which means that **no additional libraries** are required for building.
@@ -26,6 +26,16 @@
  - There are **two** components:
    - Chrome Extension ( Source code [v1.3]: `Extension` | Release [v1.2]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) )
    - Desktop Application ( Source code [v1.2]: `Host` | Release [v1.2]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.2) )
+
+<p align="center">
+  <img width="100%" height="5" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/Screenshots/ytdpScreenshot1.png?raw=true">
+</p>
+<p align="center">
+  <img width="49%" height="auto" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/Screenshots/ytdpScreenshot2.png?raw=true">
+</p>
+<p align="center">
+  <img width="100%" height="5" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/YouTubeDiscordPresenceWin/Screenshots/ytdpScreenshot1.png?raw=true">
+</p>
 
 ## Troubleshooting/Known Issues
  - It only works alongside the **desktop application** of Discord, not the browser version. Also, make sure to have `Display current activity as status message` in your Discord settings **on.**
