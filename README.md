@@ -19,12 +19,13 @@
 # YouTubeDiscordPresence for Windows (x64)
 ## General Notes 
  - This is an extension used to create a **detailed rich presence** for YouTube videos and livestreams on Discord. It is a project I decided to take on towards the end of my freshman year.
+ - To access the **personalizatio**n page, you need to click on the small icon on the **top right of the browser** under the **extensions icon**. It would also be easier to access if you **pinned** the extension.
  - Currently, the application only supports **Windows**, although more operating systems will be supported in the future
  - Supports both **normal** and **livestream/premiere** videos on YouTube as well as **YouTube Music** songs
  - No, this is not a bootleg copy of PreMiD. The way it displays the rich presence and what it decides to display are **different** from PreMiD and everything here was written from scratch. Look at the next note below. Also, the desktop component of PreMiD is built on **Node.js** and several other libraries, while YouTubeDiscordPresence uses **C++** and the [<ins>**Discord Game SDK**</ins>](https://discord.com/developers/docs/game-sdk/sdk-starter-guide), which means that **no additional libraries** are required for building.
  - On a more **technical note**, it works similar to the **Spotify rich presence**—it only appears **when a video is playing** and **disappears when there is no video or the video is paused**. In addition, it only displays the presence for videos. Idling and searching are **not displayed**.
  - There are **two** components:
-   - Chrome Extension ( Source code [v1.3]: `Extension` | Release [v1.2]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) )
+   - Chrome Extension ( Source code [v1.3]: `Extension` | Release [v1.3]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) )
    - Desktop Application ( Source code [v1.2]: `Host` | Release [v1.2]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.2) )
 
 ## Troubleshooting/Known Issues
