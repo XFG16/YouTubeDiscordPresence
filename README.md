@@ -34,6 +34,7 @@
  - The appearance and disappearance of the rich presence on your profile can be delayed because Discord limits the processing of rich presence update requests to 15 seconds
  - The rich presence can also randomly disappear and reappear within a few seconds because Chrome forcibly unloads and reloads the `background.js` in Manifest v3
  - If you enable and disable the extension too much within a short period of time through the pop-up interface, it will overload the Discord refresh limit and the extension will be prevented by Discord from displaying. To fix this, reload your Discord and turn the extension off and back on
+ - I have had an instance of **UI (interface) failure** reported to me. If you have an issue, please open an issue and give me a short description on what happened and how I could try and **recreate** your issue
 
 ## Other Notes/Suggestions
  - Press `Alt` + `Enter` to show properties in Visual Studio
