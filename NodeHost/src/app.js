@@ -2,19 +2,27 @@
 // MAIN VARIABLE INITIALIZATION
 
 var rpc = require("discord-rpc");
-const client = new rpc.Client({ transport: "ipc" });
+var client = new rpc.Client({ transport: "ipc" });
 
+const APPLICATION_ID = "847682519214456862";
 const IDLE_MESSAGE = "#*IDLE*#";
 const LIVESTREAM_TIME_ID = -1;
 
-var presenceReady = false;
+// SEND MESSAGE
+
+function sendExtensionMessage(msg) {
+    let dataObject = {"data": msg};
+    let buffer = Buffer.from(JSON.stringify(dataObject));
+    let header = Buffer.alloc(4);
+
+    header.writeUInt32LE(buffer.length, 0);
+    let data = Buffer.concat([header, buffer]);
+    process.stdout.write(data);
+};
 
 // PRESENCE HANDLERS
 
-function updatePresence(title, author, timeLeft, videoUrl) {
-    if (!presenceReady) {
-        return;
-    }
+async function updatePresence(title, author, timeLeft, videoUrl, layer) {
     let stateData = "by " + author;
     let assetsData = {
         large_image: "youtube3",
@@ -30,7 +38,28 @@ function updatePresence(title, author, timeLeft, videoUrl) {
             start: Date.now()
         };
     }
-    client.request("SET_ACTIVITY", {
+
+    let result = null;
+    setTimeout(() => {
+        if (result == null) {
+            presenceReady = false;
+            sendExtensionMessage("CLIENT_ERROR");
+            client = new rpc.Client({ transport: "ipc" });
+            client.login({ clientId : APPLICATION_ID }).then(() => {
+                if (layer == 0) {
+                    updatePresence(title, author, timeLeft, videoUrl, 1);
+                }
+            }).catch((err) => {
+                console.error(err);
+                sendExtensionMessage("CLIENT_ERROR");
+            });
+        }
+        else {
+            sendExtensionMessage("PRESENCE_UPDATED");
+        }
+        return;
+    }, 1000);
+    result = await client.request("SET_ACTIVITY", {
         pid: process.pid,
         activity: {
             details: title.substring(0, 128),
@@ -48,21 +77,22 @@ function updatePresence(title, author, timeLeft, videoUrl) {
 }
 
 function clearPresence() {
-    if (!presenceReady) {
-        return;
-    }
     client.request("SET_ACTIVITY", {
         pid: process.pid
     });
+    sendExtensionMessage("PRESENCE_CLEARED");
 }
 
 // CLIENT CONNECTION
 
 client.on("ready", () => {
-    presenceReady = true;
+    sendExtensionMessage("CLIENT_READY");
 });
 
-client.login({ clientId : "847682519214456862" }).catch(console.error);
+client.login({ clientId : APPLICATION_ID }).catch((err) => {
+    console.error(err);
+    sendExtensionMessage("CLIENT_ERROR");
+});
 
 // READING DATA FROM BROWSER EXTENSION
 // REFERENCED FROM: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_messaging#app_side
@@ -88,7 +118,7 @@ const processData = () => {
             clearPresence();
         }
         else {
-            updatePresence(json.jsTitle, json.jsAuthor, json.jsTimeLeft, json.jsVideoUrl);
+            updatePresence(json.jsTitle, json.jsAuthor, json.jsTimeLeft, json.jsVideoUrl, 0);
         }
     }
 };

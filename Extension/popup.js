@@ -124,6 +124,21 @@ function addIeElement(text, key, isDocumentInitializing) {
 // SECTION 3: DOCUMENT INITIALIZATION AND INTERACTION
 // ==================================================
 
+// // CLIENT ERROR HANDLER FOR NODE CLIENT
+
+// chrome.storage.onChanged.addListener(function(changes, namespace) {
+//     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
+//         if (key == "isNodeClientReady") {
+//             if (newValue == false) {
+//                 document.getElementById("clientErrorContainer").style.display = "block";
+//             }
+//             else {
+//                 document.getElementById("clientErrorContainer").style.display = "none";
+//             }
+//         }
+//     }
+// });
+
 // SET KNOWN VALUES WHEN POP.JS IS INITIALIZED
 
 function initializeDocument(tab) {
@@ -137,6 +152,13 @@ function initializeDocument(tab) {
             document.getElementById("updateMessageContainer").style.display = "block";
         }
     });
+
+    // NODE CONNECTION ERROR
+    // chrome.storage.sync.get("isNodeClientReady", function(result) {
+    //     if (result.isNodeClientReady == false) {
+    //         document.getElementById("clientErrorContainer").style.display = "block";
+    //     }
+    // });
 
     // OVERALL EXTENSION ENABLED
     let enabledLabel = document.getElementById("enabledLabel");

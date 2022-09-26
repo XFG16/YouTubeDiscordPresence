@@ -14,11 +14,26 @@ html, body {
     width: 100%;
     height: auto;
     margin: 1px;
+    margin-bottom: -3.5px;
+}
+
+#clientErrorContainer {
+    background-color: rgb(240, 50, 50);
+    padding-top: 10px;
+    padding-bottom: 12px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: white;
+    font-size: 15px;
+}
+
+#clientErrorContainer h1 {
+    font-size: 20px;
+    padding-bottom: 5px;
 }
 
 #updateMessageContainer {
     width: 100%;
-    margin-top: -5px;
     margin-bottom: 5px;
     background-color: rgb(254, 115, 46);
 }
@@ -72,6 +87,7 @@ html, body {
 }
 
 .pageOutside {
+    margin-top: 4px;
     width: 100%;
     height: 450px;
     display: flex;

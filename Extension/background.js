@@ -219,12 +219,6 @@ chrome.tabs.onRemoved.addListener(function(tab) {
     });
 });
 
-// // INITIALIZE EXTENSIONENABLED EVERYTIME BACKGROUND.JS IS LOADED
-
-// chrome.storage.sync.get("enabled", function(result) {
-//     extensionEnabled = typeof result.enabled == "undefined" || result.enabled == true;
-// });
-
 // DETECT CHANGE IN ENABLED SETTING
 
 chrome.storage.onChanged.addListener(function(changes, namespace) {
@@ -282,9 +276,25 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 // TESTING NODE.JS
 
-nativePort.onMessage.addListener((message) => {
-    console.log(`Received: ${message.data}`);
-});
+const handleNativeMessage = (msg) => {
+    if (LOGGING) {
+        console.log(`Received: ${msg.data}`);
+    }
+    // if (msg.data == "CLIENT_ERROR") {
+    //     saveStorageKey("isNodeClientReady", false);
+    //     // nativePort.disconnect();
+    //     // nativePort = null;
+    //     // setTimeout(() => {
+    //     //     nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
+    //     //     nativePort.onMessage.addListener(handleNativeMessage);
+    //     // }, 5000);
+    // }
+    // else if (msg.data == "CLIENT_READY") {
+    //     saveStorageKey("isNodeClientReady", true);
+    // }
+}
+
+nativePort.onMessage.addListener(handleNativeMessage);
 
 // NATIVE MESSAGING HANDLER
 
