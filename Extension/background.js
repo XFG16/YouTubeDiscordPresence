@@ -272,6 +272,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             currentMessage.title = message.title;
             currentMessage.author = message.author;
             currentMessage.timeLeft = message.timeLeft;
+            currentMessage.videoUrl = "https://youtube.com/watch?v=" + message.videoId;
             lastUpdated = new Date().getTime();
             sendResponse(null);
         }
@@ -279,15 +280,29 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
 });
 
+// TESTING NODE.JS
+
+nativePort.onMessage.addListener((message) => {
+    console.log(`Received: ${message.data}`);
+});
+
 // NATIVE MESSAGING HANDLER
+
+const IDLE_DATA_OBJECT = {
+    "cppData": NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END,
+    "jsTitle": NMF.IDLE,
+    "jsAuthor": NMF.IDLE,
+    "jsTimeLeft": NMF.IDLE,
+    "jsVideoUrl": NMF.IDLE
+};
 
 var pipeInterval = setInterval(function() {
     let delaySinceUpdate = new Date().getTime() - lastUpdated;
     if (nativePort && !isIdle && !extensionEnabled) {
         if (LOGGING) {
-            console.log("Idle data sent:", NMF.TITLE, NMF.IDLE, NMF.AUTHOR, NMF.IDLE, NMF.TIME_LEFT, NMF.IDLE, NMF.END);
+            console.log(IDLE_DATA_OBJECT);
         }
-        nativePort.postMessage(NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END);
+        nativePort.postMessage(IDLE_DATA_OBJECT);
         isIdle = true;
     }
     else if (nativePort && delaySinceUpdate <= NORMAL_MESSAGE_DELAY + 500 && extensionEnabled) {
@@ -296,10 +311,17 @@ var pipeInterval = setInterval(function() {
             skipMessage = true;
         }
         if (isIdle || !(previousMessage.title == currentMessage.title && previousMessage.author == currentMessage.author && skipMessage)) {
+            let dataObject = {
+                "cppData": NMF.TITLE + currentMessage.title + NMF.AUTHOR + currentMessage.author + NMF.TIME_LEFT + Math.round(currentMessage.timeLeft) + NMF.END,
+                "jsTitle": currentMessage.title,
+                "jsAuthor": currentMessage.author,
+                "jsTimeLeft": currentMessage.timeLeft,
+                "jsVideoUrl": currentMessage.videoUrl
+            };
             if (LOGGING) {
-                console.log("MESSAGE SENT BY BACKGROUND.JS: {TITLE}:", currentMessage.title, "{AUTHOR}:", currentMessage.author, "{TIME LEFT}:", Math.round(currentMessage.timeLeft));
+                console.log(dataObject);
             }
-            nativePort.postMessage(NMF.TITLE + currentMessage.title + NMF.AUTHOR + currentMessage.author + NMF.TIME_LEFT + Math.round(currentMessage.timeLeft) + NMF.END);
+            nativePort.postMessage(dataObject);
         }
         previousMessage.title = currentMessage.title;
         previousMessage.author = currentMessage.author;
@@ -311,9 +333,9 @@ var pipeInterval = setInterval(function() {
     }
     else if (nativePort && delaySinceUpdate >= IDLE_TIME_REQUIREMENT + 500 && !isIdle) {
         if (LOGGING) {
-            console.log("Idle data sent:", NMF.TITLE, NMF.IDLE, NMF.AUTHOR, NMF.IDLE, NMF.TIME_LEFT, NMF.IDLE, NMF.END);
+            console.log(IDLE_DATA_OBJECT);
         }
-        nativePort.postMessage(NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END);
+        nativePort.postMessage(IDLE_DATA_OBJECT);
         isIdle = true;
     }
 }, NORMAL_MESSAGE_DELAY);

@@ -1,0 +1,15 @@
+{
+  "name": "youtube-discord-presence",
+  "version": "1.0.0",
+  "description": "NodeJS version of the YouTubeDiscordPresence desktop component",
+  "main": "app.js",
+  "scripts": {
+    "test": "node ./src/app.js"
+  },
+  "author": "Michael Ren",
+  "license": "MIT",
+  "dependencies": {
+    "discord-rpc": "^4.0.1"
+  },
+  "devDependencies": {}
+}

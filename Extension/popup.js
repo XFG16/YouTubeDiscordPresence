@@ -127,6 +127,17 @@ function addIeElement(text, key, isDocumentInitializing) {
 // SET KNOWN VALUES WHEN POP.JS IS INITIALIZED
 
 function initializeDocument(tab) {
+    // UPDATE MESSAGE
+    chrome.storage.sync.get("nodeUpdateMessage", function(result) {
+        // saveStorageKey("nodeUpdateMessage", true);
+        if (result.nodeUpdateMessage == undefined) {
+            saveStorageKey("nodeUpdateMessage", true);
+        }
+        if (result.nodeUpdateMessage != false) {
+            document.getElementById("updateMessageContainer").style.display = "block";
+        }
+    });
+
     // OVERALL EXTENSION ENABLED
     let enabledLabel = document.getElementById("enabledLabel");
     chrome.storage.sync.get("enabled", function(result) {
@@ -258,6 +269,12 @@ function handleMainChanges(tab) {
             handleSwitchStatusAndStorage(status.innerHTML == "OFF", status, null);
         });
     });
+
+    let updateMessageContainer = document.getElementById("updateMessageContainer");
+    updateMessageContainer.querySelector("span.returnBack").onclick = function() {
+        saveStorageKey("nodeUpdateMessage", false);
+        document.getElementById("updateMessageContainer").style.display = "none";
+    };
 }
 
 // HANDLE CHANGES TO EXCLUSIONS SECTION
