@@ -10,7 +10,8 @@
 </div>
 
 # Installation (no need to download additional libraries)
- 1. Download the `YTDPsetup.msi` file in the [**<ins>releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.3) section of this repository and run it on your computer
+ 1. Download the `YTDPsetup.msi` file in the [**<ins>releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.3) section of this repository and run it on your computer.
+    - If you added the extension on 9/26/2022 or before, download the file from [**<ins>here</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.2) instead
     - It's gonna say Windows **blocked an unknown app** because the publisher is unknown. Just click more info and run anyway. If you run it through **VirusTotal**, there will be several **false positives**, so my word is really the only thing I can offer for now, until I find an alternative.
     - Otherwise, you can just **build** the whole thing yourself with **Visual Studio 2022**. Just download the `Host` directory from this repository and open `YTDPwin.sln` under `Host/YTDPwin` in Visual Studio. Also, make sure to have the **Microsoft Visual Studio Installer Project** extension installed
   2. Add the [<ins>**Chrome Extension**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) from the **Chrome Web Store** and turn it on **after installing the desktop component.** If you installed the extension before installing the desktop component, just turn it **off and back on** after the desktop component is installed
