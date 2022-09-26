@@ -310,7 +310,7 @@ var pipeInterval = setInterval(function() {
     let delaySinceUpdate = new Date().getTime() - lastUpdated;
     if (nativePort && !isIdle && !extensionEnabled) {
         if (LOGGING) {
-            console.log(IDLE_DATA_OBJECT);
+            console.log("Idle data sent: #*IDLE*#");
         }
         nativePort.postMessage(IDLE_DATA_OBJECT);
         isIdle = true;
@@ -329,7 +329,7 @@ var pipeInterval = setInterval(function() {
                 "jsVideoUrl": currentMessage.videoUrl
             };
             if (LOGGING) {
-                console.log(dataObject);
+                console.log("Presence data:", dataObject.jsTitle, dataObject.jsAuthor, dataObject.jsTimeLeft, dataObject.jsVideoUrl);
             }
             nativePort.postMessage(dataObject);
         }
@@ -343,7 +343,7 @@ var pipeInterval = setInterval(function() {
     }
     else if (nativePort && delaySinceUpdate >= IDLE_TIME_REQUIREMENT + 500 && !isIdle) {
         if (LOGGING) {
-            console.log(IDLE_DATA_OBJECT);
+            console.log("Idle data sent: #*IDLE*#");
         }
         nativePort.postMessage(IDLE_DATA_OBJECT);
         isIdle = true;

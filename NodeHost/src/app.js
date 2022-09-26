@@ -4,6 +4,8 @@
 var rpc = require("discord-rpc");
 var client = new rpc.Client({ transport: "ipc" });
 
+const LOGGING = true;
+
 const APPLICATION_ID = "847682519214456862";
 const IDLE_MESSAGE = "#*IDLE*#";
 const LIVESTREAM_TIME_ID = -1;
@@ -11,6 +13,10 @@ const LIVESTREAM_TIME_ID = -1;
 // SEND MESSAGE
 
 function sendExtensionMessage(msg) {
+    if (!LOGGING) {
+        return;
+    }
+
     let dataObject = {"data": msg};
     let buffer = Buffer.from(JSON.stringify(dataObject));
     let header = Buffer.alloc(4);
