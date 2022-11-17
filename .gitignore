@@ -20,3 +20,7 @@ Host/YTDPwin/YTDPsetup/Release
 NodeHost/node_modules
 NodeHost/src/app-linux
 NodeHost/src/app-macos
+!YTDPwin.exe
+test.js
+config.json
+test.bat

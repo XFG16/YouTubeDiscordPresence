@@ -349,3 +349,10 @@ var pipeInterval = setInterval(function() {
         isIdle = true;
     }
 }, NORMAL_MESSAGE_DELAY);
+
+// EXTENSION UPDATE HANDLER
+
+chrome.runtime.onUpdateAvailable.addListener(function(details) {
+    console.log("YTDP IS updating to " + details.version);
+    chrome.runtime.reload();
+});

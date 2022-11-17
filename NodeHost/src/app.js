@@ -84,7 +84,8 @@ async function updatePresence(title, author, timeLeft, videoUrl, layer) {
 
 function clearPresence() {
     client.request("SET_ACTIVITY", {
-        pid: process.pid
+        pid: process.pid,
+        activity: null
     });
     sendExtensionMessage("PRESENCE_CLEARED");
 }
