@@ -10,7 +10,6 @@ const NMF = { // NMF = NATIVE_MESSAGE_FORMAT (FOR HANDLING BY YTDPwin.exe)
     IDLE: "#*IDLE*#"
 }
 
-const IDLE_TIME_REQUIREMENT = 3000;
 const NORMAL_MESSAGE_DELAY = 1000;
 const LIVESTREAM_TIME_ID = -1;
 const UPDATE_PRESENCE_MESSAGE = "UPDATE_PRESENCE_DATA";
@@ -18,7 +17,7 @@ const UPDATE_PRESENCE_MESSAGE = "UPDATE_PRESENCE_DATA";
 var nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
 var currentMessage = new Object();
 var previousMessage = new Object();
-var lastUpdated = 0;
+var lastUpdated = 9007199254740991;
 var isIdle = true;
 
 var extensionEnabled = true;
@@ -56,13 +55,13 @@ function getVideoId(url){
 
 // CHECK WHETHER OR NOT VIDEO/CHANNEL TITLE OR VIDEO ID IS EXCLUDED
 
-function isExcluded(title, author, videoId) {
+function isExcluded(title, author, videoUrl) {
     if (exclusionsEnabled == false) {
         return false;
     }
     for (let i = 0; i < videoExclusionsList.length; ++i) {
         excludedVideoId = getVideoId(videoExclusionsList[i]);
-        if (excludedVideoId && videoId == excludedVideoId) {
+        if (excludedVideoId && getVideoId(videoUrl) == excludedVideoId) {
             return true;
         }
         if (title == videoExclusionsList[i] || author == videoExclusionsList[i]) {
@@ -80,13 +79,13 @@ function isExcluded(title, author, videoId) {
 
 // CHECK WHETHER OR NOT VIDEO/CHANNEL TITLE OR VIDEO ID IS INCLUDED
 
-function isIncluded(title, author, videoId) {
+function isIncluded(title, author, videoUrl) {
     if (inclusionsEnabled == false) {
         return true;
     }
     for (let i = 0; i < videoInclusionsList.length; ++i) {
         includedVideoId = getVideoId(videoInclusionsList[i]);
-        if (includedVideoId && videoId == includedVideoId) {
+        if (includedVideoId && getVideoId(videoUrl) == includedVideoId) {
             return true;
         }
         if (title == videoInclusionsList[i] || author == videoInclusionsList[i]) {
@@ -276,11 +275,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 // TESTING NODE.JS
 
-const handleNativeMessage = (msg) => {
+const handleNativeMessage = (message) => {
     if (LOGGING) {
-        console.log(`Received: ${msg.data}`);
+        console.log(`Received from application:   ${message.data}`);
     }
-    // if (msg.data == "CLIENT_ERROR") {
+    // if (message.data == "CLIENT_ERROR") {
     //     saveStorageKey("isNodeClientReady", false);
     //     // nativePort.disconnect();
     //     // nativePort = null;
@@ -289,7 +288,7 @@ const handleNativeMessage = (msg) => {
     //     //     nativePort.onMessage.addListener(handleNativeMessage);
     //     // }, 5000);
     // }
-    // else if (msg.data == "CLIENT_READY") {
+    // else if (message.data == "CLIENT_READY") {
     //     saveStorageKey("isNodeClientReady", true);
     // }
 }
@@ -307,47 +306,51 @@ const IDLE_DATA_OBJECT = {
 };
 
 var pipeInterval = setInterval(function() {
+    if (!nativePort) {
+        return;
+    }
+
+    let inclusionExclusionStatus = false;
+    if (!(Object.keys(currentMessage).length == 0) && (isExcluded(currentMessage.title, currentMessage.author, currentMessage.videoUrl) || !isIncluded(currentMessage.title, currentMessage.author, currentMessage.videoUrl))) {
+        inclusionExclusionStatus = true;
+    }
     let delaySinceUpdate = new Date().getTime() - lastUpdated;
-    if (nativePort && !isIdle && !extensionEnabled) {
-        if (LOGGING) {
-            console.log("Idle data sent: #*IDLE*#");
+    if (!extensionEnabled || !(currentMessage.scriptId in tabEnabledList) || delaySinceUpdate >= 3 * NORMAL_MESSAGE_DELAY || inclusionExclusionStatus) {
+        if (!isIdle) {
+            if (LOGGING) console.log("Idle data sent: #*IDLE*#");
+            nativePort.postMessage(IDLE_DATA_OBJECT);
+            currentMessage.scriptId = null;
+            previousMessage = {};
+            isIdle = true;
         }
-        nativePort.postMessage(IDLE_DATA_OBJECT);
-        isIdle = true;
+        return;
     }
-    else if (nativePort && delaySinceUpdate <= NORMAL_MESSAGE_DELAY + 500 && extensionEnabled) {
-        let skipMessage = false;
-        if (previousMessage.timeLeft >= currentMessage.timeLeft && ((previousMessage.timeLeft - currentMessage.timeLeft < NORMAL_MESSAGE_DELAY / 1000 + 0.5) || (previousMessage.timeLeft == LIVESTREAM_TIME_ID && currentMessage.timeLeft != LIVESTREAM_TIME_ID))) {
-            skipMessage = true;
-        }
-        if (isIdle || !(previousMessage.title == currentMessage.title && previousMessage.author == currentMessage.author && skipMessage)) {
-            let dataObject = {
-                "cppData": NMF.TITLE + currentMessage.title + NMF.AUTHOR + currentMessage.author + NMF.TIME_LEFT + Math.round(currentMessage.timeLeft) + NMF.END,
-                "jsTitle": currentMessage.title,
-                "jsAuthor": currentMessage.author,
-                "jsTimeLeft": currentMessage.timeLeft,
-                "jsVideoUrl": currentMessage.videoUrl
-            };
-            if (LOGGING) {
-                console.log("Presence data:", dataObject.jsTitle, dataObject.jsAuthor, dataObject.jsTimeLeft, dataObject.jsVideoUrl);
-            }
-            nativePort.postMessage(dataObject);
-        }
-        previousMessage.title = currentMessage.title;
-        previousMessage.author = currentMessage.author;
-        previousMessage.timeLeft = currentMessage.timeLeft;
-        isIdle = false;
-    }
-    else if (delaySinceUpdate <= 2 * NORMAL_MESSAGE_DELAY + 500) {
+    if (delaySinceUpdate >= 2 * NORMAL_MESSAGE_DELAY) {
         currentMessage.scriptId = null;
     }
-    else if (nativePort && delaySinceUpdate >= IDLE_TIME_REQUIREMENT + 500 && !isIdle) {
-        if (LOGGING) {
-            console.log("Idle data sent: #*IDLE*#");
-        }
-        nativePort.postMessage(IDLE_DATA_OBJECT);
-        isIdle = true;
+
+    let skipMessage = false;
+    if (previousMessage.timeLeft >= currentMessage.timeLeft && ((1000 * (previousMessage.timeLeft - currentMessage.timeLeft) < 2 * NORMAL_MESSAGE_DELAY) || (previousMessage.timeLeft == LIVESTREAM_TIME_ID && currentMessage.timeLeft != LIVESTREAM_TIME_ID))) {
+        skipMessage = true;
     }
+    if (!(previousMessage.title == currentMessage.title && previousMessage.author == currentMessage.author && skipMessage)) {
+        let dataObject = {
+            "cppData": NMF.TITLE + currentMessage.title + NMF.AUTHOR + currentMessage.author + NMF.TIME_LEFT + Math.round(currentMessage.timeLeft) + NMF.END,
+            "jsTitle": currentMessage.title,
+            "jsAuthor": currentMessage.author,
+            "jsTimeLeft": currentMessage.timeLeft,
+            "jsVideoUrl": currentMessage.videoUrl
+        };
+        if (LOGGING) {
+            console.log("Presence data:", dataObject.jsTitle, dataObject.jsAuthor, dataObject.jsTimeLeft, dataObject.jsVideoUrl);
+        }
+        nativePort.postMessage(dataObject);
+    }
+    previousMessage.title = currentMessage.title;
+    previousMessage.author = currentMessage.author;
+    previousMessage.timeLeft = currentMessage.timeLeft;
+    isIdle = false;
+
 }, NORMAL_MESSAGE_DELAY);
 
 // EXTENSION UPDATE HANDLER
@@ -356,3 +359,47 @@ chrome.runtime.onUpdateAvailable.addListener(function(details) {
     console.log("YTDP IS updating to " + details.version);
     chrome.runtime.reload();
 });
+
+
+    // let delaySinceUpdate = new Date().getTime() - lastUpdated;
+    // if (nativePort && !isIdle && !extensionEnabled) {
+    //     if (LOGGING) {
+    //         console.log("Idle data sent: #*IDLE*#");
+    //     }
+    //     nativePort.postMessage(IDLE_DATA_OBJECT);
+    //     isIdle = true;
+    // }
+    // else if (nativePort && delaySinceUpdate <= 2 * NORMAL_MESSAGE_DELAY + 500 && extensionEnabled) {
+    //     let skipMessage = false;
+    //     if (previousMessage.timeLeft >= currentMessage.timeLeft && ((previousMessage.timeLeft - currentMessage.timeLeft < NORMAL_MESSAGE_DELAY / 1000 + 0.5) || (previousMessage.timeLeft == LIVESTREAM_TIME_ID && currentMessage.timeLeft != LIVESTREAM_TIME_ID))) {
+    //         skipMessage = true;
+    //     }
+    //     if (isIdle || !(previousMessage.title == currentMessage.title && previousMessage.author == currentMessage.author && skipMessage)) {
+    //         let dataObject = {
+    //             "cppData": NMF.TITLE + currentMessage.title + NMF.AUTHOR + currentMessage.author + NMF.TIME_LEFT + Math.round(currentMessage.timeLeft) + NMF.END,
+    //             "jsTitle": currentMessage.title,
+    //             "jsAuthor": currentMessage.author,
+    //             "jsTimeLeft": currentMessage.timeLeft,
+    //             "jsVideoUrl": currentMessage.videoUrl
+    //         };
+    //         if (LOGGING) {
+    //             console.log("Presence data:", dataObject.jsTitle, dataObject.jsAuthor, dataObject.jsTimeLeft, dataObject.jsVideoUrl);
+    //         }
+    //         nativePort.postMessage(dataObject);
+    //     }
+    //     previousMessage.title = currentMessage.title;
+    //     previousMessage.author = currentMessage.author;
+    //     previousMessage.timeLeft = currentMessage.timeLeft;
+    //     isIdle = false;
+    // }
+    // else if (delaySinceUpdate <= 3 * NORMAL_MESSAGE_DELAY + 500) {
+    //     currentMessage.scriptId = null;
+    // }
+    // else if (nativePort && !isIdle) {
+    //     if (LOGGING) {
+    //         console.log("Idle data sent: #*IDLE*#");
+    //     }
+    //     nativePort.postMessage(IDLE_DATA_OBJECT);
+    //     currentMessage.scriptId = null;
+    //     isIdle = true;
+    // }

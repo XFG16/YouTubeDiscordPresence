@@ -1,23 +1,26 @@
 // Node.js version of YouTubeDiscordPresence (buttons and no watermark!)
 // MAIN VARIABLE INITIALIZATION
 
-var rpc = require("discord-rpc");
-var client = new rpc.Client({ transport: "ipc" });
+let rpc = require("discord-rpc");
+let client = new rpc.Client({ transport: "ipc" });
 
 const LOGGING = true;
 
 const APPLICATION_ID = "847682519214456862";
-const IDLE_MESSAGE = "#*IDLE*#";
 const LIVESTREAM_TIME_ID = -1;
+
+const IDLE_MESSAGE = "#*IDLE*#";
+const SUCCESS_MESSAGE = "0_SUCCESS";
+const CLIENT_ERROR_MESSAGE = "1_CLIENT_ERROR";
 
 // SEND MESSAGE
 
-function sendExtensionMessage(msg) {
+function sendExtensionMessage(message) {
     if (!LOGGING) {
         return;
     }
 
-    let dataObject = {"data": msg};
+    let dataObject = { "data": message };
     let buffer = Buffer.from(JSON.stringify(dataObject));
     let header = Buffer.alloc(4);
 
@@ -44,50 +47,53 @@ async function updatePresence(title, author, timeLeft, videoUrl, layer) {
             start: Date.now()
         };
     }
-
-    let result = null;
-    setTimeout(() => {
-        if (result == null) {
-            presenceReady = false;
-            sendExtensionMessage("CLIENT_ERROR");
-            client = new rpc.Client({ transport: "ipc" });
+    
+    try {
+        let result = await client.request("SET_ACTIVITY", {
+            pid: process.pid,
+            activity: {
+                details: title.substring(0, 128),
+                state: stateData.substring(0, 128),
+                assets: assetsData,
+                timestamps: timeStampsData,
+                buttons: [
+                    {
+                        label : "Watch Video",
+                        url : videoUrl
+                    }
+                ]
+            } 
+        });
+        if (result) {
+            sendExtensionMessage(`PRESENCE_UPDATED: ${SUCCESS_MESSAGE}`);
+        }
+        else {
+            sendExtensionMessage(`PRESENCE_UPDATED: ${CLIENT_ERROR_MESSAGE}`);
+        }
+    } catch (err) {
+        if (layer == 0) {
             client.login({ clientId : APPLICATION_ID }).then(() => {
-                if (layer == 0) {
-                    updatePresence(title, author, timeLeft, videoUrl, 1);
-                }
-            }).catch((err) => {
-                console.error(err);
-                sendExtensionMessage("CLIENT_ERROR");
+                updatePresence(title, author, timeLeft, videoUrl, 1);
+            }).catch((loginErr) => {
+                console.error(loginErr);
+                sendExtensionMessage(`PRESENCE_UPDATED: ${CLIENT_ERROR_MESSAGE} ${loginErr}`);
             });
         }
         else {
-            sendExtensionMessage("PRESENCE_UPDATED");
+            sendExtensionMessage(`PRESENCE_UPDATED: ${CLIENT_ERROR_MESSAGE} ${err}`)
         }
-        return;
-    }, 1000);
-    result = await client.request("SET_ACTIVITY", {
-        pid: process.pid,
-        activity: {
-            details: title.substring(0, 128),
-            state: stateData.substring(0, 128),
-            assets: assetsData,
-            timestamps: timeStampsData,
-            buttons: [
-                {
-                    label : "Watch Video",
-                    url : videoUrl
-                }
-            ]
-        } 
-    });
+    }
 }
 
 function clearPresence() {
     client.request("SET_ACTIVITY", {
         pid: process.pid,
         activity: null
+    }).then(() => {
+        sendExtensionMessage(`PRESENCE_CLEARED: ${SUCCESS_MESSAGE}`);
+    }).catch((err) => {
+        sendExtensionMessage(`PRESENCE_CLEARED: ${CLIENT_ERROR_MESSAGE} ${err}`)
     });
-    sendExtensionMessage("PRESENCE_CLEARED");
 }
 
 // CLIENT CONNECTION
@@ -97,12 +103,11 @@ client.on("ready", () => {
 });
 
 client.login({ clientId : APPLICATION_ID }).catch((err) => {
-    console.error(err);
-    sendExtensionMessage("CLIENT_ERROR");
+    sendExtensionMessage(`CLIENT_ERROR: {${err}}`);
 });
 
-// READING DATA FROM BROWSER EXTENSION
-// REFERENCED FROM: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_messaging#app_side
+// // READING DATA FROM BROWSER EXTENSION
+// // REFERENCED FROM: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_messaging#app_side
 
 let payloadSize = null;
 let chunks = [];
@@ -137,3 +142,24 @@ process.stdin.on("readable", () => {
     }
     processData();
 });
+
+    // let result = null;
+    // setTimeout(() => {
+    //     if (result == null) {
+    //         presenceReady = false;
+    //         sendExtensionMessage("CLIENT_ERROR");
+    //         client = new rpc.Client({ transport: "ipc" });
+    //         client.login({ clientId : APPLICATION_ID }).then(() => {
+    //             if (layer == 0) {
+    //                 updatePresence(title, author, timeLeft, videoUrl, 1);
+    //             }
+    //         }).catch((err) => {
+    //             console.error(err);
+    //             sendExtensionMessage("CLIENT_ERROR");
+    //         });
+    //     }
+    //     else {
+    //         sendExtensionMessage("PRESENCE_UPDATED");
+    //     }
+    //     return;
+    // }, 1500);

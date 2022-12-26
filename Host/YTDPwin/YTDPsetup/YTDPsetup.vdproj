@@ -27,7 +27,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_FAAFD3A7F3334C96877C2CD8EC919966"
+        "MsmKey" = "8:_F375405B1B7D46F68E26C0B0D7266A9F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -158,7 +158,7 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FAAFD3A7F3334C96877C2CD8EC919966"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F375405B1B7D46F68E26C0B0D7266A9F"
             {
             "SourcePath" = "8:..\\..\\..\\NodeHost\\src\\YTDPwin.exe"
             "TargetName" = "8:YTDPwin.exe"
@@ -235,7 +235,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:YouTubeDiscordPresence"
         "ProductCode" = "8:{B3BBF08D-D0F2-4155-AC82-25F2EA99DD4B}"
-        "PackageCode" = "8:{E1F743D2-1177-427D-80B5-7C003491449D}"
+        "PackageCode" = "8:{717F0FD2-35D2-4982-A1D6-2219D8918C10}"
         "UpgradeCode" = "8:{E382DBD1-8EDE-47B6-A376-403178519F67}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"

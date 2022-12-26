@@ -143,15 +143,15 @@ function addIeElement(text, key, isDocumentInitializing) {
 
 function initializeDocument(tab) {
     // UPDATE MESSAGE
-    chrome.storage.sync.get("nodeUpdateMessage", function(result) {
-        // saveStorageKey("nodeUpdateMessage", true);
-        if (result.nodeUpdateMessage == undefined) {
-            saveStorageKey("nodeUpdateMessage", true);
-        }
-        if (result.nodeUpdateMessage != false) {
-            document.getElementById("updateMessageContainer").style.display = "block";
-        }
-    });
+    // chrome.storage.sync.get("nodeUpdateMessage", function(result) {
+    //     // saveStorageKey("nodeUpdateMessage", true);
+    //     if (result.nodeUpdateMessage == undefined) {
+    //         saveStorageKey("nodeUpdateMessage", true);
+    //     }
+    //     if (result.nodeUpdateMessage != false) {
+    //         document.getElementById("updateMessageContainer").style.display = "block";
+    //     }
+    // });
 
     // NODE CONNECTION ERROR
     // chrome.storage.sync.get("isNodeClientReady", function(result) {
@@ -292,11 +292,11 @@ function handleMainChanges(tab) {
         });
     });
 
-    let updateMessageContainer = document.getElementById("updateMessageContainer");
-    updateMessageContainer.querySelector("span.returnBack").onclick = function() {
-        saveStorageKey("nodeUpdateMessage", false);
-        document.getElementById("updateMessageContainer").style.display = "none";
-    };
+    // let updateMessageContainer = document.getElementById("updateMessageContainer");
+    // updateMessageContainer.querySelector("span.returnBack").onclick = function() {
+    //     saveStorageKey("nodeUpdateMessage", false);
+    //     document.getElementById("updateMessageContainer").style.display = "none";
+    // };
 }
 
 // HANDLE CHANGES TO EXCLUSIONS SECTION

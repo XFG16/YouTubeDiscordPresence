@@ -15,7 +15,7 @@ window.addEventListener("SendToLoader", function(message) {
         videoId: message.detail.videoId,
     }, (response) => {
         if (LOGGING) {
-            console.log("Data was sent by content_loader.js and received by background.js: ['" + message.detail.title + "', '" + message.detail.author + "', '" + message.detail.timeLeft + "', '" + message.detail.videoId + "']");
+            console.log(`Data was sent by content_loader.js and received by background.js: ${message.detail}`);
         }
     });
 }, false);
