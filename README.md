@@ -16,6 +16,15 @@
   3. You should be all set and ready to go! To access the **personalization** page, you need to click on the small icon on the **top right of the browser** under the **extensions icon**. It would also be easier to access if you **pinned** the extension. It would be **greatly appreciated** if you could leave a **rating and review** describing your experience on the Chrome Web Store! It would also help a lot if you could **recommend** this to others! Thank you for your consideration and enjoy the extension to its fullest!
 
 # YouTubeDiscordPresence for Windows (x64)
+
+<p align="left">
+    <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Chrome Extension">
+        <img src="https://img.shields.io/badge/Chrome%20Web%20Store-300%2B%20Users-blue" /></a>
+    <a href="https://github.com/XFG16/YouTubeDiscordPresence" alt="YouTubeDiscordPresence">
+        <img src="https://img.shields.io/badge/dynamic/json?color=yellowgreen&label=Github%20Repository&query=stargazers_count&suffix=%20Stars&url=https%3A%2F%2Fapi.github.com%2Frepos%2FXFG16%2FYouTubeDiscordPresence" /></a>
+    <img src="https://img.shields.io/badge/Amogus-What%20the%20sus%3F%3F%3F-red" />
+</p>
+
 ## General Notes 
  - This is an extension used to create a **detailed rich presence** for YouTube videos and livestreams on Discord. It is a project that I decided to take on towards the end of my freshman year.
  - This extension also appears to work on the Opera web browser
