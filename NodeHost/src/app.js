@@ -1,16 +1,17 @@
 // Node.js version of YouTubeDiscordPresence (buttons and no watermark!)
 // MAIN VARIABLE INITIALIZATION
 
+let bundle = require("./bundle");
 let rpc = require("discord-rpc");
 let client = new rpc.Client({ transport: "ipc" });
 
 const LOGGING = true;
 
-const APPLICATION_ID = "847682519214456862";
+const APPLICATION_ID = bundle.YTDP_APPLICATION_ID;
 const LIVESTREAM_TIME_ID = -1;
 
 const IDLE_MESSAGE = "#*IDLE*#";
-const SUCCESS_MESSAGE = "0_SUCCESS";
+const CLIENT_SUCCESS_MESSAGE = "0_SUCCESS";
 const CLIENT_ERROR_MESSAGE = "1_CLIENT_ERROR";
 
 // SEND MESSAGE
@@ -20,7 +21,7 @@ function sendExtensionMessage(message) {
         return;
     }
 
-    let dataObject = { "data": message };
+    let dataObject = { data: message };
     let buffer = Buffer.from(JSON.stringify(dataObject));
     let header = Buffer.alloc(4);
 
@@ -32,24 +33,36 @@ function sendExtensionMessage(message) {
 // PRESENCE HANDLERS
 
 async function updatePresence(title, author, timeLeft, videoUrl, layer) {
-    let stateData = "by " + author;
-    let assetsData = {
-        large_image: "youtube3",
-        large_text: title.substring(0, 128)
-    };
-    let timeStampsData = {
-        end: Date.now() + (timeLeft * 1000)
-    };
-    if (timeLeft == LIVESTREAM_TIME_ID) {
-        stateData = "[LIVE] on " + author;
-        assetsData.large_image = "youtubelive1";
-        timeStampsData = {
-            start: Date.now()
-        };
-    }
-    
     try {
-        let result = await client.request("SET_ACTIVITY", {
+        let stateData = "by " + author;
+        let assetsData = {
+            large_image: "youtube3",
+            large_text: title.substring(0, 128)
+        };
+        let timeStampsData = {
+            end: Date.now() + (timeLeft * 1000)
+        };
+        if (timeLeft == LIVESTREAM_TIME_ID) {
+            stateData = "[LIVE] on " + author;
+            assetsData.large_image = "youtubelive1";
+            timeStampsData = {
+                start: Date.now()
+            };
+        }
+        
+        let successfulUpdate = false;
+        setTimeout(() => {
+            if (!successfulUpdate && layer == 0) {
+                client = new rpc.Client({ transport: "ipc" });
+                client.login({ clientId : APPLICATION_ID }).then(() => {
+                    updatePresence(title, author, timeLeft, videoUrl, 1);
+                }).catch((loginErr) => {
+                    sendExtensionMessage(`${CLIENT_ERROR_MESSAGE}: CLIENT_CONNECTION_ERROR: ${loginErr}`);
+                });
+            }
+        }, 1500);
+        
+        client.request("SET_ACTIVITY", {
             pid: process.pid,
             activity: {
                 details: title.substring(0, 128),
@@ -63,25 +76,14 @@ async function updatePresence(title, author, timeLeft, videoUrl, layer) {
                     }
                 ]
             } 
+        }).then(() => {
+            successfulUpdate = true;
+            sendExtensionMessage(`${CLIENT_SUCCESS_MESSAGE}: PRESENCE_UPDATED`);
+        }).catch((err) => {
+            sendExtensionMessage(`${CLIENT_ERROR_MESSAGE}: PRESENCE_UPDATING_ERROR: [Discord is likely not running] ${err}`);
         });
-        if (result) {
-            sendExtensionMessage(`PRESENCE_UPDATED: ${SUCCESS_MESSAGE}`);
-        }
-        else {
-            sendExtensionMessage(`PRESENCE_UPDATED: ${CLIENT_ERROR_MESSAGE}`);
-        }
     } catch (err) {
-        if (layer == 0) {
-            client.login({ clientId : APPLICATION_ID }).then(() => {
-                updatePresence(title, author, timeLeft, videoUrl, 1);
-            }).catch((loginErr) => {
-                console.error(loginErr);
-                sendExtensionMessage(`PRESENCE_UPDATED: ${CLIENT_ERROR_MESSAGE} ${loginErr}`);
-            });
-        }
-        else {
-            sendExtensionMessage(`PRESENCE_UPDATED: ${CLIENT_ERROR_MESSAGE} ${err}`)
-        }
+        sendExtensionMessage(`${CLIENT_ERROR_MESSAGE}: FATAL_RUNTIME_ERROR: ${err}`);
     }
 }
 
@@ -90,20 +92,21 @@ function clearPresence() {
         pid: process.pid,
         activity: null
     }).then(() => {
-        sendExtensionMessage(`PRESENCE_CLEARED: ${SUCCESS_MESSAGE}`);
+        sendExtensionMessage(`${CLIENT_SUCCESS_MESSAGE}: PRESENCE_CLEARED`);
     }).catch((err) => {
-        sendExtensionMessage(`PRESENCE_CLEARED: ${CLIENT_ERROR_MESSAGE} ${err}`)
+        sendExtensionMessage(`${CLIENT_ERROR_MESSAGE}: PRESENCE_CLEARING_ERROR: ${err}`)
     });
 }
 
 // CLIENT CONNECTION
 
 client.on("ready", () => {
-    sendExtensionMessage("CLIENT_READY");
+    sendExtensionMessage(`${CLIENT_SUCCESS_MESSAGE}: CLIENT_READY`);
 });
 
 client.login({ clientId : APPLICATION_ID }).catch((err) => {
-    sendExtensionMessage(`CLIENT_ERROR: {${err}}`);
+    sendExtensionMessage(`Hola ${APPLICATION_ID}`);
+    sendExtensionMessage(`${CLIENT_ERROR_MESSAGE}: CLIENT_CONNECTION_ERROR: ${err}`);
 });
 
 // // READING DATA FROM BROWSER EXTENSION
@@ -142,24 +145,3 @@ process.stdin.on("readable", () => {
     }
     processData();
 });
-
-    // let result = null;
-    // setTimeout(() => {
-    //     if (result == null) {
-    //         presenceReady = false;
-    //         sendExtensionMessage("CLIENT_ERROR");
-    //         client = new rpc.Client({ transport: "ipc" });
-    //         client.login({ clientId : APPLICATION_ID }).then(() => {
-    //             if (layer == 0) {
-    //                 updatePresence(title, author, timeLeft, videoUrl, 1);
-    //             }
-    //         }).catch((err) => {
-    //             console.error(err);
-    //             sendExtensionMessage("CLIENT_ERROR");
-    //         });
-    //     }
-    //     else {
-    //         sendExtensionMessage("PRESENCE_UPDATED");
-    //     }
-    //     return;
-    // }, 1500);
