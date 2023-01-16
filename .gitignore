@@ -25,3 +25,4 @@ NodeHost/src/bundle.js
 test.js
 config.json
 test.bat
+.env

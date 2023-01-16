@@ -20,8 +20,6 @@
 <p align="left">
     <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Chrome Extension">
         <img src="https://img.shields.io/badge/Chrome%20Web%20Store-300%2B%20Users-blue" /></a>
-    <a href="https://github.com/XFG16/YouTubeDiscordPresence" alt="YouTubeDiscordPresence">
-        <img src="https://img.shields.io/badge/dynamic/json?color=yellowgreen&label=Github%20Repository&query=stargazers_count&suffix=%20Stars&url=https%3A%2F%2Fapi.github.com%2Frepos%2FXFG16%2FYouTubeDiscordPresence" /></a>
     <img src="https://img.shields.io/badge/Amogus-What%20the%20sus%3F%3F%3F-red" />
 </p>
 
@@ -32,8 +30,8 @@
  - Supports both **normal** and **livestream/premiere** videos on YouTube as well as **YouTube Music** songs
  - No, this is not a bootleg copy of PreMiD. On a more **technical note**, it works similar to the **Spotify rich presence**—it only appears **when a video is playing** and **disappears when there is no video or the video is paused**. In addition, it only displays the presence for videos. Idling and searching are **not displayed**.
  - There are **two** components:
-   - Chrome Extension << Source code [v1.4.2]: `Extension` || Release [v1.4.2]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) >>
-   - Desktop Application << Source code [v1.3.2]: `Host` || Release [v1.3.2]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.3.2) >>
+   - Chrome Extension << Source code [v1.5.0]: `Extension` || Release [v1.4.2]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) >>
+   - Desktop Application << Source code [v1.4.0]: `Host` || Release [v1.3.2]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.3.2) >>
 
 ## Detailed Installation Instructions
 

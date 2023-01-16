@@ -11,14 +11,14 @@ const LIVESTREAM_ELEMENT_SELECTOR = "div.ytp-chrome-bottom > div.ytp-chrome-cont
 const MINIPLAYER_ELEMENT_SELECTOR = "div.ytp-miniplayer-ui"; // VIDEO PLAYER
 const MAIN_LIVESTREAM_TITLE_SELECTOR = "div.ytp-chrome-top > div.ytp-title > div.ytp-title-text > a.ytp-title-link"; // VIDEO PLAYER
 const MAIN_LIVESTREAM_AUTHOR_SELECTOR = "#upload-info > #channel-name > #container > #text-container > #text > a"; // DOCUMENT HTML
-const MINIPLAYER_LIVESTREAM_AUTHOR_SELECTOR = "#info-bar > div.metadata.style-scope.ytd-miniplayer > div.channel.style-scope.ytd-miniplayer > yt-formatted-string"; // DOCUMENT HTML
+const MINIPLAYER_LIVESTREAM_AUTHOR_SELECTOR = "#video-container #info-bar #owner-name"; // DOCUMENT HTML
 const NO_MINIPLAYER_ATTRIBUTE = "display: none;";
 const YES_MINIPLAYER_ATRRIBUTE = "";
 const LIVESTREAM_TIME_ID = -1;
 
-var documentData = new Object();
-var videoPlayer = document.getElementById("movie_player");
-var shouldSendData = 0;
+let documentData = new Object();
+let videoPlayer = document.getElementById("movie_player");
+let shouldSendData = 0;
 
 // LOGGING
 
@@ -48,7 +48,7 @@ const getOEmbedJSON = async videoId => {
 }
 
 // DOCUMENT SCANNING IF VIDEO IS LIVESTREAM OR OEMBED DOESN'T WORK (https://developers.google.com/youtube/iframe_api_reference)
-// ALSO SEE (https://stackoverflow.com/questions/9515704/use-a-content-script-to-access-the-page-context-variables-and-functions)
+// ALSO SEE (https://stackoverflow.com/questions/9515704/use-a-content-script-to-access-the-page-context-letiables-and-functions)
 
 function getLivestreamData() {
     let miniplayerHTML = videoPlayer.querySelector(MINIPLAYER_ELEMENT_SELECTOR);
@@ -63,6 +63,7 @@ function getLivestreamData() {
         }
         if (authorHTML) {
             documentData.author = authorHTML.innerText;
+            documentData.channelUrl = `https://youtube.com/${authorHTML.href}`;
         }
         else {
             documentData.author = null;
@@ -79,6 +80,7 @@ function getLivestreamData() {
         }
         if (authorHTML) {
             documentData.author = authorHTML.innerText;
+            documentData.channelUrl = `https://youtube.com/${authorHTML.href}`;
         }
         else {
             documentData.author = null;
@@ -105,8 +107,7 @@ function getTimeData() {
 
 function sendDocumentData() {
     if (documentData.title && documentData.author && documentData.timeLeft) {
-        messageData = {title: documentData.title, author: documentData.author, timeLeft: documentData.timeLeft, videoId: documentData.videoId};
-        var messageEvent = new CustomEvent("SendToLoader", {detail: messageData});
+        let messageEvent = new CustomEvent("SendToLoader", { detail: documentData });
         window.dispatchEvent(messageEvent);
     }
 }
@@ -116,10 +117,12 @@ function sendDocumentData() {
 function handleYouTubeData() {
     let livestreamHTML = videoPlayer.querySelector(LIVESTREAM_ELEMENT_SELECTOR);
     documentData.videoId = getVideoId(videoPlayer.getVideoUrl());
+    documentData.applicationType = window.location.href.includes("music.youtube") ? "youtubeMusic" : "youtube";
     if (!livestreamHTML) {
         getOEmbedJSON(documentData.videoId).then(data => {
             documentData.title = data.title;
             documentData.author = data.author_name;
+            documentData.channelUrl = data.author_url;
             getTimeData();
             sendDocumentData();
         }).catch(error => {
@@ -138,7 +141,7 @@ function handleYouTubeData() {
 
 // SENDER OF DATA TO CONTENT_LOADER.JS FOR REDIRECTION TO BACKGROUND.JS
 
-var transmitterInterval = setInterval(function() {
+setInterval(function () {
     if (!videoPlayer) {
         videoPlayer = document.getElementById("movie_player");
     }

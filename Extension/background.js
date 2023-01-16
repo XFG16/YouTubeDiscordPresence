@@ -2,42 +2,50 @@
 
 const LOGGING = true;
 
-const NMF = { // NMF = NATIVE_MESSAGE_FORMAT (FOR HANDLING BY YTDPwin.exe)
+const NMF = Object.freeze({ // NMF = NATIVE_MESSAGE_FORMAT (FOR HANDLING BY YTDPwin.exe)
     TITLE: ":TITLE001:",
     AUTHOR: ":AUTHOR002:",
     TIME_LEFT: ":TIMELEFT003:",
     END: ":END004:",
     IDLE: "#*IDLE*#"
-}
+});
 
 const NORMAL_MESSAGE_DELAY = 1000;
 const LIVESTREAM_TIME_ID = -1;
 const UPDATE_PRESENCE_MESSAGE = "UPDATE_PRESENCE_DATA";
 
-var nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
-var currentMessage = new Object();
-var previousMessage = new Object();
-var lastUpdated = 9007199254740991;
-var isIdle = true;
+let nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
+let currentMessage = new Object();
+let previousMessage = new Object();
+let lastUpdated = 9007199254740991;
+let isIdle = true;
 
-var extensionEnabled = true;
-var tabEnabledList = new Object();
+let settings = {
+    enabled: true,
+    enableOnStartup: true,
+    tabEnabledList: new Object(),
 
-var exclusionsEnabled = false;
-var videoExclusionsList = new Array();
-var keywordExclusionsList = new Array();
+    enableExclusions: false,
+    videoExclusionsList: new Array(),
+    keywordExclusionsList: new Array(),
 
-var inclusionsEnabled = false;
-var videoInclusionsList = new Array();
-var keywordInclusionsList = new Array();
+    enableInclusions: false,
+    videoInclusionsList: new Array(),
+    keywordInclusionsList: new Array(),
 
-// LOGGING
+    enableVideoButton: true,
+    enableChannelButton: false,
+    enablePlayingIcon: false,
+    addByAuthor: true
+}
+
+// START MESSAGE
 
 if (LOGGING) {
     console.log("background.js created");
 }
 
-// CLEANER CODE
+// STORAGE SAVING HANDLER
 
 function saveStorageKey(key, value) {
     let saveObject = new Object();
@@ -47,7 +55,7 @@ function saveStorageKey(key, value) {
 
 // PARSE YOUTUBE URLS (https://stackoverflow.com/questions/3452546/how-do-i-get-the-youtube-video-id-from-a-url)
 
-function getVideoId(url){
+function getVideoId(url) {
     let regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
     let match = url.match(regExp);
     return (match && match[7].length == 11) ? match[7] : null;
@@ -56,20 +64,20 @@ function getVideoId(url){
 // CHECK WHETHER OR NOT VIDEO/CHANNEL TITLE OR VIDEO ID IS EXCLUDED
 
 function isExcluded(title, author, videoUrl) {
-    if (exclusionsEnabled == false) {
+    if (settings.enableExclusions == false) {
         return false;
     }
-    for (let i = 0; i < videoExclusionsList.length; ++i) {
-        excludedVideoId = getVideoId(videoExclusionsList[i]);
+    for (let i = 0; i < settings.videoExclusionsList.length; ++i) {
+        excludedVideoId = getVideoId(settings.videoExclusionsList[i]);
         if (excludedVideoId && getVideoId(videoUrl) == excludedVideoId) {
             return true;
         }
-        if (title == videoExclusionsList[i] || author == videoExclusionsList[i]) {
+        if (title == settings.videoExclusionsList[i] || author == settings.videoExclusionsList[i]) {
             return true;
         }
     }
-    for (let i = 0; i < keywordExclusionsList.length; ++i) {
-        let keyword = keywordExclusionsList[i].toLowerCase();
+    for (let i = 0; i < settings.keywordExclusionsList.length; ++i) {
+        let keyword = settings.keywordExclusionsList[i].toLowerCase();
         if (title.toLowerCase().includes(keyword) || author.toLowerCase().includes(keyword)) {
             return true;
         }
@@ -80,20 +88,20 @@ function isExcluded(title, author, videoUrl) {
 // CHECK WHETHER OR NOT VIDEO/CHANNEL TITLE OR VIDEO ID IS INCLUDED
 
 function isIncluded(title, author, videoUrl) {
-    if (inclusionsEnabled == false) {
+    if (settings.enableInclusions == false) {
         return true;
     }
-    for (let i = 0; i < videoInclusionsList.length; ++i) {
-        includedVideoId = getVideoId(videoInclusionsList[i]);
+    for (let i = 0; i < settings.videoInclusionsList.length; ++i) {
+        includedVideoId = getVideoId(settings.videoInclusionsList[i]);
         if (includedVideoId && getVideoId(videoUrl) == includedVideoId) {
             return true;
         }
-        if (title == videoInclusionsList[i] || author == videoInclusionsList[i]) {
+        if (title == settings.videoInclusionsList[i] || author == settings.videoInclusionsList[i]) {
             return true;
         }
     }
-    for (let i = 0; i < keywordInclusionsList.length; ++i) {
-        let keyword = keywordInclusionsList[i].toLowerCase();
+    for (let i = 0; i < settings.keywordInclusionsList.length; ++i) {
+        let keyword = settings.keywordInclusionsList[i].toLowerCase();
         if (title.toLowerCase().includes(keyword) || author.toLowerCase().includes(keyword)) {
             return true;
         }
@@ -101,115 +109,35 @@ function isIncluded(title, author, videoUrl) {
     return false;
 }
 
-// STORAGE INITIALIZER WHEN CHROME IS INSTALLED FOR POPUP.JS
-
-chrome.runtime.onInstalled.addListener(function(details) {
-    if (details.reason == "install") {
-        saveStorageKey("enabled", true);
-        saveStorageKey("enableOnStartup", true);
-        saveStorageKey("enableExclusions", false);
-        saveStorageKey("enableInclusions", false);
-        saveStorageKey("tabEnabledList", new Object());
-        saveStorageKey("videoExclusionsList", new Array());
-        saveStorageKey("keywordExclusionsList", new Array());
-        saveStorageKey("videoInclusionsList", new Array());
-        saveStorageKey("keywordInclusionsList", new Array());
-    }
-});
-
-// STORAGE INITIALIZER WHEN CHROME IS OPENED FOR POPUP.JS
-
-chrome.runtime.onStartup.addListener(function() {
-    chrome.storage.sync.get("enableOnStartup", function(result) {
-        saveStorageKey("enableOnStartup", result.enableOnStartup == undefined || result.enableOnStartup == true);
-        saveStorageKey("enabled", result.enableOnStartup == undefined || result.enableOnStartup == true);
-        extensionEnabled = (result.enableOnStartup == undefined || result.enableOnStartup == true);
-    });
-    chrome.storage.sync.get("tabEnabledList", function(result) {
-        saveStorageKey("tabEnabledList", new Object());
-        tabEnabledList = new Object();
-    });
-});
-
 // MUST RUN EVERY TIME BACKGROUND.JS STARTS - INITIALIZES KEYS JUST IN CASE THEY WEREN'T INITIALIZED BEFORE
 
-chrome.storage.sync.get("enabled", function(result) {
-    if (result.enabled == undefined) {
-        saveStorageKey("enabled", true);
-        extensionEnabled = true;
-    }
-    else {
-        extensionEnabled = result.enabled;
-    }
-});
-chrome.storage.sync.get("enableExclusions", function(result) {
-    if (result.enableExclusions == undefined) {
-        saveStorageKey("enableExclusions", false);
-        exclusionsEnabled = false;
-    }
-    else {
-        exclusionsEnabled = result.enableExclusions;
-    }
-});
-chrome.storage.sync.get("enableInclusions", function(result) {
-    if (result.enableInclusions == undefined) {
-        saveStorageKey("enableInclusions", false);
-        inclusionsEnabled = false;
-    }
-    else {
-        inclusionsEnabled = result.enableInclusions;
-    }
-});
-chrome.storage.sync.get("tabEnabledList", function(result) {
-    if (result == undefined) {
-        saveStorageKey("tabEnabledList", new Object());
-        tabEnabledList = new Object();
-    }
-    else {
-        tabEnabledList = result.tabEnabledList;
-    }
-});
-chrome.storage.sync.get("videoExclusionsList", function(result) {
-    if (result.videoExclusionsList == undefined) {
-        saveStorageKey("videoExclusionsList", new Array());
-        videoExclusionsList = new Array();
-    }
-    else {
-        videoExclusionsList = result.videoExclusionsList;
-    }
-});
-chrome.storage.sync.get("keywordExclusionsList", function(result) {
-    if (result.keywordExclusionsList == undefined) {
-        saveStorageKey("keywordExclusionsList", new Array());
-        keywordExclusionsList = new Array();
-    }
-    else {
-        keywordExclusionsList = result.keywordExclusionsList;
-    }
-});
-chrome.storage.sync.get("videoInclusionsList", function(result) {
-    if (result.videoInclusionsList == undefined) {
-        saveStorageKey("videoInclusionsList", new Array());
-        videoInclusionsList = new Array();
-    }
-    else {
-        videoInclusionsList = result.videoInclusionsList;
-    }
-});
-chrome.storage.sync.get("keywordInclusionsList", function(result) {
-    if (result.keywordInclusionsList == undefined) {
-        saveStorageKey("keywordInclusionsList", new Array());
-        keywordInclusionsList = new Array();
-    }
-    else {
-        keywordInclusionsList = result.keywordInclusionsList;
-    }
+for (const key of Object.keys(settings)) {
+    chrome.storage.sync.get(key, function (result) {
+        if (result[key] == undefined) {
+            saveStorageKey(key, settings[key]);
+        }
+        else {
+            settings[key] = result[key];
+        }
+    });
+}
+
+// STORAGE INITIALIZER WHEN CHROME IS OPENED
+
+chrome.runtime.onStartup.addListener(function () {
+    chrome.storage.sync.get("enableOnStartup", function (result) {
+        saveStorageKey("enableOnStartup", result.enableOnStartup == undefined || result.enableOnStartup == true);
+        saveStorageKey("enabled", result.enableOnStartup == undefined || result.enableOnStartup == true);
+        settings.enabled = (result.enableOnStartup == undefined || result.enableOnStartup == true);
+    });
+    saveStorageKey("tabEnabledList", new Object());
+    settings.tabEnabledList = new Object();
 });
 
 // REMOVE ENABLEONTHISTAB WHEN TAB IS CLOSED
 
-chrome.tabs.onRemoved.addListener(function(tab) {
-    chrome.storage.sync.get("tabEnabledList", function(result) {
+chrome.tabs.onRemoved.addListener(function (tab) {
+    chrome.storage.sync.get("tabEnabledList", function (result) {
         let newTabEnabledList = result.tabEnabledList;
         if (tab in newTabEnabledList) {
             delete newTabEnabledList[tab];
@@ -220,35 +148,12 @@ chrome.tabs.onRemoved.addListener(function(tab) {
 
 // DETECT CHANGE IN ENABLED SETTING
 
-chrome.storage.onChanged.addListener(function(changes, namespace) {
+chrome.storage.onChanged.addListener(function (changes, namespace) {
     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
         if (LOGGING) {
             console.log("the key {", key, "} has been changed from", oldValue, "to", newValue)
         }
-        if (key == "enabled") {
-            extensionEnabled = newValue;
-        }
-        else if (key == "tabEnabledList") {
-            tabEnabledList = newValue;
-        }
-        else if (key == "enableExclusions") {
-            exclusionsEnabled = newValue;
-        }
-        else if (key == "enableInclusions") {
-            inclusionsEnabled = newValue;
-        }
-        else if (key == "videoExclusionsList") {
-            videoExclusionsList = newValue;
-        }
-        else if (key == "keywordExclusionsList") {
-            keywordExclusionsList = newValue;
-        }
-        else if (key == "videoInclusionsList") {
-            videoInclusionsList = newValue;
-        }
-        else if (key == "keywordInclusionsList") {
-            keywordInclusionsList = newValue;
-        }
+        settings[key] = newValue;
     }
 });
 
@@ -257,15 +162,17 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.messageType == UPDATE_PRESENCE_MESSAGE && (sender.tab.id == currentMessage.scriptId || currentMessage.scriptId == null) && !isExcluded(message.title, message.author, message.videoId) && isIncluded(message.title, message.author, message.videoId)) {
-        if (!(sender.tab.id in tabEnabledList)) {
-            tabEnabledList[sender.tab.id] = true;
+        if (!(sender.tab.id in settings.tabEnabledList)) {
+            settings.tabEnabledList[sender.tab.id] = true;
         }
-        if (tabEnabledList[sender.tab.id]) {
-            currentMessage.scriptId = sender.tab.id;    
+        if (settings.tabEnabledList[sender.tab.id]) {
+            currentMessage.scriptId = sender.tab.id;
             currentMessage.title = message.title;
             currentMessage.author = message.author;
             currentMessage.timeLeft = message.timeLeft;
             currentMessage.videoUrl = "https://youtube.com/watch?v=" + message.videoId;
+            currentMessage.channelUrl = message.channelUrl;
+            currentMessage.applicationType = message.applicationType;
             lastUpdated = new Date().getTime();
             sendResponse(null);
         }
@@ -273,14 +180,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
 });
 
-// TESTING NODE.JS
+// NODE.JS APPLICATION LOGGER
 
 const handleNativeMessage = (message) => {
     if (LOGGING) {
-        console.log(`Received from application:  ${message.data}`);
+        console.log(`Received from application:\n    ${message.data}`);
     }
 }
-
 nativePort.onMessage.addListener(handleNativeMessage);
 
 // NATIVE MESSAGING HANDLER
@@ -290,10 +196,13 @@ const IDLE_DATA_OBJECT = {
     "jsTitle": NMF.IDLE,
     "jsAuthor": NMF.IDLE,
     "jsTimeLeft": NMF.IDLE,
-    "jsVideoUrl": NMF.IDLE
+    "jsVideoUrl": NMF.IDLE,
+    "jsChannelUrl": NMF.IDLE,
+    "jsPresenceSettings": NMF.IDLE,
+    "jsApplicationType": NMF.IDLE
 };
 
-var pipeInterval = setInterval(function() {
+let pipeInterval = setInterval(function () {
     if (!nativePort) {
         return;
     }
@@ -303,10 +212,10 @@ var pipeInterval = setInterval(function() {
         inclusionExclusionStatus = true;
     }
     let delaySinceUpdate = new Date().getTime() - lastUpdated;
-    if (!extensionEnabled || !(currentMessage.scriptId in tabEnabledList) || delaySinceUpdate >= 3 * NORMAL_MESSAGE_DELAY || inclusionExclusionStatus) {
+    if (!settings.enabled || !(currentMessage.scriptId in settings.tabEnabledList) || delaySinceUpdate >= 3 * NORMAL_MESSAGE_DELAY || inclusionExclusionStatus) {
         if (!isIdle) {
             if (LOGGING) {
-                console.log("Idle data sent: #*IDLE*#");
+                console.log("Idle data sent:\n    #*IDLE*#");
             }
             nativePort.postMessage(IDLE_DATA_OBJECT);
             currentMessage.scriptId = null;
@@ -329,10 +238,18 @@ var pipeInterval = setInterval(function() {
             "jsTitle": currentMessage.title,
             "jsAuthor": currentMessage.author,
             "jsTimeLeft": currentMessage.timeLeft,
-            "jsVideoUrl": currentMessage.videoUrl
+            "jsVideoUrl": currentMessage.videoUrl,
+            "jsChannelUrl": currentMessage.channelUrl,
+            "jsPresenceSettings": {
+                "enableVideoButton": settings.enableVideoButton,
+                "enableChannelButton": settings.enableChannelButton,
+                "enablePlayingIcon": settings.enablePlayingIcon,
+                "addByAuthor": settings.addByAuthor
+            },
+            "jsApplicationType": currentMessage.applicationType
         };
         if (LOGGING) {
-            console.log("Presence data:", dataObject.jsTitle, dataObject.jsAuthor, dataObject.jsTimeLeft, dataObject.jsVideoUrl);
+            console.log("Presence data:", dataObject);
         }
         nativePort.postMessage(dataObject);
     }
@@ -345,7 +262,7 @@ var pipeInterval = setInterval(function() {
 
 // EXTENSION UPDATE HANDLER
 
-chrome.runtime.onUpdateAvailable.addListener(function(details) {
-    console.log("YTDP IS updating to " + details.version);
+chrome.runtime.onUpdateAvailable.addListener(function (details) {
+    console.log(`YTDP IS updating to ${details.version}`);
     chrome.runtime.reload();
 });

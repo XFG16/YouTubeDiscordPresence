@@ -39,7 +39,7 @@ async function getCurrentTab() {
 function saveStorageKey(key, value) {
     let saveObject = new Object();
     saveObject[key] = value;
-    chrome.storage.sync.set(saveObject, function() {
+    chrome.storage.sync.set(saveObject, function () {
         if (LOGGING) {
             console.log(key + " (saved): ", value);
         }
@@ -84,7 +84,7 @@ function createListHtml(text, mainKey, removeKey) {
 
     removeButton.appendChild(document.createTextNode("REMOVE"));
     removeButton.classList.add("removeIeButton");
-    removeButton.setAttribute("id", removeKey + text);    
+    removeButton.setAttribute("id", removeKey + text);
 
     entry.setAttribute("id", mainKey + text);
     entry.appendChild(document.createTextNode(text));
@@ -110,7 +110,7 @@ function addIeElement(text, key, isDocumentInitializing) {
         ieList.appendChild(createListHtml(text, KEYWORD_INCLUSION_KEY, KEYWORD_INCLUSION_REMOVE_KEY));
     }
     if (!isDocumentInitializing) {
-        chrome.storage.sync.get(key, function(result) {
+        chrome.storage.sync.get(key, function (result) {
             let newIeList = result[key];
             if (newIeList && newIeList.indexOf(text) == -1) {
                 newIeList.push(text);
@@ -142,16 +142,15 @@ function addIeElement(text, key, isDocumentInitializing) {
 // SET KNOWN VALUES WHEN POP.JS IS INITIALIZED
 
 function initializeDocument(tab) {
-    // UPDATE MESSAGE
-    // chrome.storage.sync.get("nodeUpdateMessage", function(result) {
-    //     // saveStorageKey("nodeUpdateMessage", true);
-    //     if (result.nodeUpdateMessage == undefined) {
-    //         saveStorageKey("nodeUpdateMessage", true);
-    //     }
-    //     if (result.nodeUpdateMessage != false) {
-    //         document.getElementById("updateMessageContainer").style.display = "block";
-    //     }
-    // });
+    //UPDATE MESSAGE
+    chrome.storage.sync.get("nodeUpdateMessage_two", function (result) {
+        if (result.nodeUpdateMessage_two == undefined) {
+            saveStorageKey("nodeUpdateMessage_two", true);
+        }
+        if (result.nodeUpdateMessage_two != false) {
+            document.getElementById("updateMessageContainer").style.display = "block";
+        }
+    });
 
     // NODE CONNECTION ERROR
     // chrome.storage.sync.get("isNodeClientReady", function(result) {
@@ -162,7 +161,7 @@ function initializeDocument(tab) {
 
     // OVERALL EXTENSION ENABLED
     let enabledLabel = document.getElementById("enabledLabel");
-    chrome.storage.sync.get("enabled", function(result) {
+    chrome.storage.sync.get("enabled", function (result) {
         let status = enabledLabel.querySelector("span.switchStatus");
         let statusSwitch = enabledLabel.querySelector("label.switch > input");
         if (result.enabled) {
@@ -173,7 +172,7 @@ function initializeDocument(tab) {
 
     // ENABLE EXTENSION ON STARTUP
     let enableOnStartupLabel = document.getElementById("enableOnStartupLabel");
-    chrome.storage.sync.get("enableOnStartup", function(result) {
+    chrome.storage.sync.get("enableOnStartup", function (result) {
         let status = enableOnStartupLabel.querySelector("span.switchStatus");
         let statusSwitch = enableOnStartupLabel.querySelector("label.switch > input");
         if (result.enableOnStartup) {
@@ -185,7 +184,7 @@ function initializeDocument(tab) {
     // ENABLE EXTENSION ON CURRENT TAB
     let enableOnThisTabLabel = document.getElementById("enableOnThisTabLabel");
     if (tab.url.startsWith(YOUTUBE_MAIN_URL) || tab.url.startsWith(YOUTUBE_MUSIC_URL)) {
-        chrome.storage.sync.get("tabEnabledList", function(result) {
+        chrome.storage.sync.get("tabEnabledList", function (result) {
             let status = enableOnThisTabLabel.querySelector("span.switchStatus");
             let statusSwitch = enableOnThisTabLabel.querySelector("label.switch > input");
             let newTabEnabledList = result.tabEnabledList;
@@ -210,7 +209,7 @@ function initializeDocument(tab) {
 
     // ENABLE VIDEO/KEYWORD EXCLUSIONS
     let enableExclusionsLabel = document.getElementById("enableExclusionsLabel");
-    chrome.storage.sync.get("enableExclusions", function(result) {
+    chrome.storage.sync.get("enableExclusions", function (result) {
         let status = enableExclusionsLabel.querySelector("span.switchStatus");
         let statusSwitch = enableExclusionsLabel.querySelector("label.switch > input");
         if (result.enableExclusions) {
@@ -221,7 +220,7 @@ function initializeDocument(tab) {
 
     // ENABLE VIDEO/KEYWORD INCLUSIONS
     let enableInclusionsLabel = document.getElementById("enableInclusionsLabel");
-    chrome.storage.sync.get("enableInclusions", function(result) {
+    chrome.storage.sync.get("enableInclusions", function (result) {
         let status = enableInclusionsLabel.querySelector("span.switchStatus");
         let statusSwitch = enableInclusionsLabel.querySelector("label.switch > input");
         if (result.enableInclusions) {
@@ -231,31 +230,75 @@ function initializeDocument(tab) {
     });
 
     // LIST VIDEO EXCLUSIONS
-    chrome.storage.sync.get("videoExclusionsList", function(result) {
+    chrome.storage.sync.get("videoExclusionsList", function (result) {
         for (let i = 0; i < result.videoExclusionsList.length; ++i) {
             addIeElement(result.videoExclusionsList[i], "videoExclusionsList", true);
         }
     });
 
     // LIST KEYWORD EXCLUSIONS
-    chrome.storage.sync.get("keywordExclusionsList", function(result) {
+    chrome.storage.sync.get("keywordExclusionsList", function (result) {
         for (let i = 0; i < result.keywordExclusionsList.length; ++i) {
             addIeElement(result.keywordExclusionsList[i], "keywordExclusionsList", true);
         }
     })
 
     // LIST VIDEO INCLUSIONS
-    chrome.storage.sync.get("videoInclusionsList", function(result) {
+    chrome.storage.sync.get("videoInclusionsList", function (result) {
         for (let i = 0; i < result.videoInclusionsList.length; ++i) {
             addIeElement(result.videoInclusionsList[i], "videoInclusionsList", true);
         }
     });
 
     // LIST KEYWORD INCLUSIONS
-    chrome.storage.sync.get("keywordInclusionsList", function(result) {
+    chrome.storage.sync.get("keywordInclusionsList", function (result) {
         for (let i = 0; i < result.keywordInclusionsList.length; ++i) {
             addIeElement(result.keywordInclusionsList[i], "keywordInclusionsList", true);
         }
+    });
+
+    // ENABLE VIDEO BUTTON IN PRESENCE
+    let enableVideoButtonLabel = document.getElementById("enableVideoButtonLabel");
+    chrome.storage.sync.get("enableVideoButton", function (result) {
+        let status = enableVideoButtonLabel.querySelector("span.switchStatus");
+        let statusSwitch = enableVideoButtonLabel.querySelector("label.switch > input");
+        if (result.enableVideoButton) {
+            statusSwitch.checked = "checked";
+        }
+        handleSwitchStatusAndStorage(result.enableVideoButton, status, null);
+    });
+
+    // ENABLE CHANNEL BUTTON IN PRESENCE
+    let enableChannelButtonLabel = document.getElementById("enableChannelButtonLabel");
+    chrome.storage.sync.get("enableChannelButton", function (result) {
+        let status = enableChannelButtonLabel.querySelector("span.switchStatus");
+        let statusSwitch = enableChannelButtonLabel.querySelector("label.switch > input");
+        if (result.enableChannelButton) {
+            statusSwitch.checked = "checked";
+        }
+        handleSwitchStatusAndStorage(result.enableChannelButton, status, null);
+    });
+
+    // ENABLE PLAYING ICON IN PRESENCE
+    let enablePlayingIconLabel = document.getElementById("enablePlayingIconLabel");
+    chrome.storage.sync.get("enablePlayingIcon", function (result) {
+        let status = enablePlayingIconLabel.querySelector("span.switchStatus");
+        let statusSwitch = enablePlayingIconLabel.querySelector("label.switch > input");
+        if (result.enablePlayingIcon) {
+            statusSwitch.checked = "checked";
+        }
+        handleSwitchStatusAndStorage(result.enablePlayingIcon, status, null);
+    });
+
+    // ADD "BY" BEFORE AUTHOR IN PRESENCE
+    let addByAuthorLabel = document.getElementById("addByAuthorLabel");
+    chrome.storage.sync.get("addByAuthor", function (result) {
+        let status = addByAuthorLabel.querySelector("span.switchStatus");
+        let statusSwitch = addByAuthorLabel.querySelector("label.switch > input");
+        if (result.addByAuthor) {
+            statusSwitch.checked = "checked";
+        }
+        handleSwitchStatusAndStorage(result.addByAuthor, status, null);
     });
 }
 
@@ -264,8 +307,8 @@ function initializeDocument(tab) {
 function handleMainChanges(tab) {
     // OVERALL EXTENSION ENABLED
     let enabledLabel = document.getElementById("enabledLabel");
-    enabledLabel.querySelector("label.switch").addEventListener("change", function() {
-        chrome.storage.sync.get("enabled", function(result) {
+    enabledLabel.querySelector("label.switch").addEventListener("change", function () {
+        chrome.storage.sync.get("enabled", function (result) {
             let status = enabledLabel.querySelector("span.switchStatus");
             handleSwitchStatusAndStorage(status.innerHTML == "OFF", status, "enabled");
         });
@@ -273,8 +316,8 @@ function handleMainChanges(tab) {
 
     // ENABLE EXTENSION ON STARTUP
     let enableOnStartupLabel = document.getElementById("enableOnStartupLabel");
-    enableOnStartupLabel.querySelector("label.switch").addEventListener("change", function() {
-        chrome.storage.sync.get("enableOnStartup", function(result) {
+    enableOnStartupLabel.querySelector("label.switch").addEventListener("change", function () {
+        chrome.storage.sync.get("enableOnStartup", function (result) {
             let status = enableOnStartupLabel.querySelector("span.switchStatus");
             handleSwitchStatusAndStorage(status.innerHTML == "OFF", status, "enableOnStartup");
         });
@@ -282,8 +325,8 @@ function handleMainChanges(tab) {
 
     // ENABLE EXTENSION ON CURRENT TAB
     let enableOnThisTabLabel = document.getElementById("enableOnThisTabLabel");
-    enableOnThisTabLabel.querySelector("label.switch").addEventListener("change", function() {
-        chrome.storage.sync.get("tabEnabledList", function(result) {
+    enableOnThisTabLabel.querySelector("label.switch").addEventListener("change", function () {
+        chrome.storage.sync.get("tabEnabledList", function (result) {
             let status = enableOnThisTabLabel.querySelector("span.switchStatus");
             let newTabEnabledList = result.tabEnabledList;
             newTabEnabledList[tab.id] = (status.innerHTML == "OFF"); // THIS FUNCTION HAS TO COME FIRST, BECAUSE handleSwitchStatusAndStorage CHANGES THE INNERHTML
@@ -292,11 +335,12 @@ function handleMainChanges(tab) {
         });
     });
 
-    // let updateMessageContainer = document.getElementById("updateMessageContainer");
-    // updateMessageContainer.querySelector("span.returnBack").onclick = function() {
-    //     saveStorageKey("nodeUpdateMessage", false);
-    //     document.getElementById("updateMessageContainer").style.display = "none";
-    // };
+    // UPDATE MESSAGE CLICK
+    let updateMessageContainer = document.getElementById("updateMessageContainer");
+    updateMessageContainer.querySelector("span.returnBack").onclick = function () {
+        saveStorageKey("nodeUpdateMessage_two", false);
+        document.getElementById("updateMessageContainer").style.display = "none";
+    };
 }
 
 // HANDLE CHANGES TO EXCLUSIONS SECTION
@@ -306,21 +350,21 @@ function handleExclusionsChanges() {
     let ytdpSettingsOutside = document.getElementById("ytdpSettingsOutside");
     let exclusionsOutside = document.getElementById("exclusionsOutside");
     let addExclusionsLabel = document.getElementById("addExclusionsLabel");
-    addExclusionsLabel.onclick = function() {
+    addExclusionsLabel.onclick = function () {
         ytdpSettingsOutside.style.display = "none";
         exclusionsOutside.style.display = "flex";
     }
 
     // EXCLUSIONS ENABLING
     let enableExclusionsLabel = document.getElementById("enableExclusionsLabel");
-    enableExclusionsLabel.querySelector("label.switch").addEventListener("change", function() {
+    enableExclusionsLabel.querySelector("label.switch").addEventListener("change", function () {
         let status = enableExclusionsLabel.querySelector("span.switchStatus");
         handleSwitchStatusAndStorage(status.innerHTML == "OFF", status, "enableExclusions");
     });
 
     // X BUTTON TO RETURN BACK TO MAIN PAGE FROM EXCLUSIONS
     let returnFromExclusionsLabel = document.getElementById("returnFromExclusionsLabel");
-    returnFromExclusionsLabel.onclick = function() {
+    returnFromExclusionsLabel.onclick = function () {
         ytdpSettingsOutside.style.display = "flex";
         exclusionsOutside.style.display = "none";
     }
@@ -329,7 +373,7 @@ function handleExclusionsChanges() {
     let root = document.querySelector(":root");
     let videoExclusionsInputForm = document.getElementById("videoExclusionsInput");
     let videoExclusionsInputField = videoExclusionsInputForm.querySelector("input");
-    videoExclusionsInputField.addEventListener("input", function(temp) {
+    videoExclusionsInputField.addEventListener("input", function (temp) {
         if (videoExclusionsInputField.value && !isAlreadyInList(videoExclusionsInputField.value, "videoExclusionsList")) {
             root.style.setProperty("--videoExclusionsInputButtonBackgroundColor", "rgb(35, 155, 77)");
             root.style.setProperty("--videoExclusionsInputButtonTextColor", "rgb(210, 210, 210)");
@@ -344,7 +388,7 @@ function handleExclusionsChanges() {
 
     // ADD VIDEO EXCLUSION WHEN ADD BUTTON IS CLICKED
     let videoExclusionsInputButton = videoExclusionsInputForm.querySelector("span");
-    videoExclusionsInputButton.onclick = function() {
+    videoExclusionsInputButton.onclick = function () {
         if (!videoExclusionsInputField.value || isAlreadyInList(videoExclusionsInputField.value, "videoExclusionsList")) {
             return;
         };
@@ -357,10 +401,10 @@ function handleExclusionsChanges() {
 
     // HANDLE ANY VIDEO EXCLUSION REMOVALS
     let videoExclusionsList = document.getElementById("videoExclusionsList");
-    videoExclusionsList.addEventListener("click", function(element) {
+    videoExclusionsList.addEventListener("click", function (element) {
         if (element.target.className == "removeIeButton") {
             let exclusion = element.target.id.substring(VIDEO_EXCLUSION_REMOVE_KEY.length);
-            chrome.storage.sync.get("videoExclusionsList", function(result) {
+            chrome.storage.sync.get("videoExclusionsList", function (result) {
                 let newExclusionsList = result.videoExclusionsList;
                 let exclusionIndex = newExclusionsList.indexOf(exclusion);
                 if (exclusionIndex > -1) {
@@ -376,7 +420,7 @@ function handleExclusionsChanges() {
     // ADD KEYWORD EXCLUSION BUTTON COLOR HANDLING
     let keywordExclusionsInputForm = document.getElementById("keywordExclusionsInput");
     let keywordExclusionsInputField = keywordExclusionsInputForm.querySelector("input");
-    keywordExclusionsInputField.addEventListener("input", function(temp) {
+    keywordExclusionsInputField.addEventListener("input", function (temp) {
         if (keywordExclusionsInputField.value && !isAlreadyInList(keywordExclusionsInputField.value, "keywordExclusionsList")) {
             root.style.setProperty("--keywordExclusionsInputButtonBackgroundColor", "rgb(35, 155, 77)");
             root.style.setProperty("--keywordExclusionsInputButtonTextColor", "rgb(210, 210, 210)");
@@ -391,7 +435,7 @@ function handleExclusionsChanges() {
 
     // ADD KEYWORD EXCLUSION WHEN ADD BUTTON IS CLICKED
     let keywordExclusionsInputButton = keywordExclusionsInputForm.querySelector("span");
-    keywordExclusionsInputButton.onclick = function() {
+    keywordExclusionsInputButton.onclick = function () {
         if (!keywordExclusionsInputField.value || isAlreadyInList(keywordExclusionsInputField.value, "keywordExclusionsList")) {
             return;
         };
@@ -404,10 +448,10 @@ function handleExclusionsChanges() {
 
     // HANDLE ANY KEYWORD EXCLUSION REMOVALS
     let keywordExclusionsList = document.getElementById("keywordExclusionsList");
-    keywordExclusionsList.addEventListener("click", function(element) {
+    keywordExclusionsList.addEventListener("click", function (element) {
         if (element.target.className == "removeIeButton") {
             let exclusion = element.target.id.substring(KEYWORD_EXCLUSION_REMOVE_KEY.length);
-            chrome.storage.sync.get("keywordExclusionsList", function(result) {
+            chrome.storage.sync.get("keywordExclusionsList", function (result) {
                 let newExclusionsList = result.keywordExclusionsList;
                 let exclusionIndex = newExclusionsList.indexOf(exclusion);
                 if (exclusionIndex > -1) {
@@ -428,21 +472,21 @@ function handleInclusionsChanges() {
     let ytdpSettingsOutside = document.getElementById("ytdpSettingsOutside");
     let inclusionsOutside = document.getElementById("inclusionsOutside");
     let addInclusionsLabel = document.getElementById("addInclusionsLabel");
-    addInclusionsLabel.onclick = function() {
+    addInclusionsLabel.onclick = function () {
         ytdpSettingsOutside.style.display = "none";
         inclusionsOutside.style.display = "flex";
     }
 
     // INCLUSIONS ENABLING
     let enableInclusionsLabel = document.getElementById("enableInclusionsLabel");
-    enableInclusionsLabel.querySelector("label.switch").addEventListener("change", function() {
+    enableInclusionsLabel.querySelector("label.switch").addEventListener("change", function () {
         let status = enableInclusionsLabel.querySelector("span.switchStatus");
         handleSwitchStatusAndStorage(status.innerHTML == "OFF", status, "enableInclusions");
     });
 
     // X BUTTON TO RETURN BACK TO MAIN PAGE FROM INCLUSIONS
     let returnFromInclusionsLabel = document.getElementById("returnFromInclusionsLabel");
-    returnFromInclusionsLabel.onclick = function() {
+    returnFromInclusionsLabel.onclick = function () {
         ytdpSettingsOutside.style.display = "flex";
         inclusionsOutside.style.display = "none";
     }
@@ -451,7 +495,7 @@ function handleInclusionsChanges() {
     let root = document.querySelector(":root");
     let videoInclusionsInputForm = document.getElementById("videoInclusionsInput");
     let videoInclusionsInputField = videoInclusionsInputForm.querySelector("input");
-    videoInclusionsInputField.addEventListener("input", function(temp) {
+    videoInclusionsInputField.addEventListener("input", function (temp) {
         if (videoInclusionsInputField.value && !isAlreadyInList(videoInclusionsInputField.value, "videoInclusionsList")) {
             root.style.setProperty("--videoInclusionsInputButtonBackgroundColor", "rgb(35, 155, 77)");
             root.style.setProperty("--videoInclusionsInputButtonTextColor", "rgb(210, 210, 210)");
@@ -466,7 +510,7 @@ function handleInclusionsChanges() {
 
     // ADD VIDEO INCLUSION WHEN ADD BUTTON IS CLICKED
     let videoInclusionsInputButton = videoInclusionsInputForm.querySelector("span");
-    videoInclusionsInputButton.onclick = function() {
+    videoInclusionsInputButton.onclick = function () {
         if (!videoInclusionsInputField.value || isAlreadyInList(videoInclusionsInputField.value, "videoInclusionsList")) {
             return;
         };
@@ -479,10 +523,10 @@ function handleInclusionsChanges() {
 
     // HANDLE ANY VIDEO INCLUSION REMOVALS
     let videoInclusionsList = document.getElementById("videoInclusionsList");
-    videoInclusionsList.addEventListener("click", function(element) {
+    videoInclusionsList.addEventListener("click", function (element) {
         if (element.target.className == "removeIeButton") {
             let inclusion = element.target.id.substring(VIDEO_INCLUSION_REMOVE_KEY.length);
-            chrome.storage.sync.get("videoInclusionsList", function(result) {
+            chrome.storage.sync.get("videoInclusionsList", function (result) {
                 let newInclusionsList = result.videoInclusionsList;
                 let inclusionIndex = newInclusionsList.indexOf(inclusion);
                 if (inclusionIndex > -1) {
@@ -498,7 +542,7 @@ function handleInclusionsChanges() {
     // ADD KEYWORD INCLUSION BUTTON COLOR HANDLING
     let keywordInclusionsInputForm = document.getElementById("keywordInclusionsInput");
     let keywordInclusionsInputField = keywordInclusionsInputForm.querySelector("input");
-    keywordInclusionsInputField.addEventListener("input", function(temp) {
+    keywordInclusionsInputField.addEventListener("input", function (temp) {
         if (keywordInclusionsInputField.value && !isAlreadyInList(keywordInclusionsInputField.value, "keywordInclusionsList")) {
             root.style.setProperty("--keywordInclusionsInputButtonBackgroundColor", "rgb(35, 155, 77)");
             root.style.setProperty("--keywordInclusionsInputButtonTextColor", "rgb(210, 210, 210)");
@@ -513,7 +557,7 @@ function handleInclusionsChanges() {
 
     // ADD KEYWORD INCLUSION WHEN ADD BUTTON IS CLICKED
     let keywordInclusionsInputButton = keywordInclusionsInputForm.querySelector("span");
-    keywordInclusionsInputButton.onclick = function() {
+    keywordInclusionsInputButton.onclick = function () {
         if (!keywordInclusionsInputField.value || isAlreadyInList(keywordInclusionsInputField.value, "keywordInclusionsList")) {
             return;
         };
@@ -526,10 +570,10 @@ function handleInclusionsChanges() {
 
     // HANDLE ANY KEYWORD INCLUSION REMOVALS
     let keywordInclusionsList = document.getElementById("keywordInclusionsList");
-    keywordInclusionsList.addEventListener("click", function(element) {
+    keywordInclusionsList.addEventListener("click", function (element) {
         if (element.target.className == "removeIeButton") {
             let inclusion = element.target.id.substring(KEYWORD_INCLUSION_REMOVE_KEY.length);
-            chrome.storage.sync.get("keywordInclusionsList", function(result) {
+            chrome.storage.sync.get("keywordInclusionsList", function (result) {
                 let newInclusionsList = result.keywordInclusionsList;
                 let inclusionIndex = newInclusionsList.indexOf(inclusion);
                 if (inclusionIndex > -1) {
@@ -543,22 +587,79 @@ function handleInclusionsChanges() {
     });
 }
 
+// HANDLE PRESENCE EDITING CHANGES
+
+function handleEditPresenceChanges() {
+    // CHANGE PAGE FROM MAIN TO EDIT PRESENCE WHEN CLICKED
+    let ytdpSettingsOutside = document.getElementById("ytdpSettingsOutside");
+    let editPresenceOutside = document.getElementById("editPresenceOutside");
+    let editPresenceLabel = document.getElementById("editPresenceLabel");
+    editPresenceLabel.onclick = function () {
+        ytdpSettingsOutside.style.display = "none";
+        editPresenceOutside.style.display = "flex";
+    }
+
+    // X BUTTON TO RETURN BACK TO MAIN PAGE FROM EDIT PRESENCE
+    let returnFromEditPresenceLabel = document.getElementById("returnFromEditPresenceLabel");
+    returnFromEditPresenceLabel.onclick = function () {
+        ytdpSettingsOutside.style.display = "flex";
+        editPresenceOutside.style.display = "none";
+    }
+
+    // VIDEO BUTTON
+    let enableVideoButtonLabel = document.getElementById("enableVideoButtonLabel");
+    enableVideoButtonLabel.querySelector("label.switch").addEventListener("change", function () {
+        chrome.storage.sync.get("enableVideoButton", function (result) {
+            let status = enableVideoButtonLabel.querySelector("span.switchStatus");
+            handleSwitchStatusAndStorage(status.innerHTML == "OFF", status, "enableVideoButton");
+        });
+    });
+
+    // CHANNEL BUTTON
+    let enableChannelButtonLabel = document.getElementById("enableChannelButtonLabel");
+    enableChannelButtonLabel.querySelector("label.switch").addEventListener("change", function () {
+        chrome.storage.sync.get("enableChannelButton", function (result) {
+            let status = enableChannelButtonLabel.querySelector("span.switchStatus");
+            handleSwitchStatusAndStorage(status.innerHTML == "OFF", status, "enableChannelButton");
+        });
+    });
+
+    // PLAYING ICON
+    let enablePlayingIconLabel = document.getElementById("enablePlayingIconLabel");
+    enablePlayingIconLabel.querySelector("label.switch").addEventListener("change", function () {
+        chrome.storage.sync.get("enablePlayingIcon", function (result) {
+            let status = enablePlayingIconLabel.querySelector("span.switchStatus");
+            handleSwitchStatusAndStorage(status.innerHTML == "OFF", status, "enablePlayingIcon");
+        });
+    });
+
+    // ADD "BY" BEFORE AUTHOR
+    let addByAuthorLabel = document.getElementById("addByAuthorLabel");
+    addByAuthorLabel.querySelector("label.switch").addEventListener("change", function () {
+        chrome.storage.sync.get("addByAuthor", function (result) {
+            let status = addByAuthorLabel.querySelector("span.switchStatus");
+            handleSwitchStatusAndStorage(status.innerHTML == "OFF", status, "addByAuthor");
+        });
+    });
+}
+
 // ========================
 // SECTION 4: PROGRAM ENTRY
 // ========================
 
 // LOAD DOCUMENT WHEN ALL ELEMENTS ARE READY
 
-window.onload = function() {
-    getCurrentTab().then(tab => { 
+window.onload = function () {
+    getCurrentTab().then(tab => {
         if (LOGGING) {
             console.log(tab.id);
             console.log(tab.url);
-        } 
+        }
         initializeDocument(tab);
         handleMainChanges(tab);
         handleExclusionsChanges();
         handleInclusionsChanges();
+        handleEditPresenceChanges();
     }).catch(error => {
         console.error(error);
     });

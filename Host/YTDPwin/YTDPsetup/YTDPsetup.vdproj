@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_55A9CF98B40C4E2FBB81B228432CE856"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6B301B626CF14E41AFC478258D1BB7CF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -22,12 +28,6 @@
         "Entry"
         {
         "MsmKey" = "8:_B0C7DA1524844F76A68B5FD5DB65EB7F"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_D3A4B21A1E674C118E4F1FF6BDA71963"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -118,6 +118,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_55A9CF98B40C4E2FBB81B228432CE856"
+            {
+            "SourcePath" = "8:..\\..\\..\\..\\ReleaseYTDP\\src\\YTDPwin.exe"
+            "TargetName" = "8:YTDPwin.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_56A3632D70DB4D05A6394C0929BF78F7"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6B301B626CF14E41AFC478258D1BB7CF"
             {
             "SourcePath" = "8:..\\..\\YTDPlogo.ico"
@@ -142,26 +162,6 @@
             {
             "SourcePath" = "8:..\\..\\main.json"
             "TargetName" = "8:main.json"
-            "Tag" = "8:"
-            "Folder" = "8:_56A3632D70DB4D05A6394C0929BF78F7"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D3A4B21A1E674C118E4F1FF6BDA71963"
-            {
-            "SourcePath" = "8:..\\..\\..\\NodeHost\\src\\YTDPwin.exe"
-            "TargetName" = "8:YTDPwin.exe"
             "Tag" = "8:"
             "Folder" = "8:_56A3632D70DB4D05A6394C0929BF78F7"
             "Condition" = "8:"
