@@ -23,8 +23,8 @@ const CEM = "1_CLIENT_ERROR"; // CLIENT_ERROR_MESSAGE
 
 const isValidUrl = (s) => {
     try {
-        new URL(s);
-        return true;
+        let temp = new URL(s);
+        return temp.hostname.endsWith("youtube.com");
     } catch (err) {
         return false;
     }
@@ -79,7 +79,7 @@ async function updatePresence(title, author, timeLeft, videoUrl, channelUrl, pre
             assetsData.large_image = "youtube-music";
         }
         if (presenceSettings && presenceSettings.enablePlayingIcon) {
-            assetsData.small_image = "playing-icon-3";
+            assetsData.small_image = "playing-icon-6";
             assetsData.small_text = "YouTubeDiscordPresence on GitHub"
         }
 
@@ -87,7 +87,12 @@ async function updatePresence(title, author, timeLeft, videoUrl, channelUrl, pre
             end: Date.now() + (timeLeft * 1000)
         };
         if (timeLeft == LIVESTREAM_TIME_ID) {
-            stateData = "[LIVE] on " + author;
+            if (presenceSettings) {
+                stateData = presenceSettings.addByAuthor ? `[LIVE] on ${author}` : author;
+            }
+            else {
+                stateData = `[LIVE] on ${author}`;
+            }
             assetsData.large_image = "youtubelive1";
             timeStampsData = {
                 start: Date.now()
@@ -96,17 +101,35 @@ async function updatePresence(title, author, timeLeft, videoUrl, channelUrl, pre
 
         let buttonsData = [];
         if (presenceSettings && Object.keys(presenceSettings).length > 0) {
-            if (presenceSettings.enableVideoButton && videoUrl && isValidUrl(videoUrl)) {
-                buttonsData.push({
-                    label: "Watch Video",
-                    url: videoUrl
-                });
+            if (presenceSettings.enableVideoButton && videoUrl) {
+                if (isValidUrl(videoUrl)) {
+                    if (currentApplication == "youtubeMusic") {
+                        buttonsData.push({
+                            label: "Listen Along",
+                            url: videoUrl
+                        });
+                    }
+                    else {
+                        buttonsData.push({
+                            label: "Watch Video",
+                            url: videoUrl
+                        });
+                    }
+                }
+                else {
+                    sendExtensionMessage(false, "INVALID_URL_ERROR", videoUrl);
+                }
             }
-            if (presenceSettings.enableChannelButton && channelUrl && isValidUrl(channelUrl) && !channelUrl.endsWith("undefined")) {
-                buttonsData.push({
-                    label: "View Channel",
-                    url: channelUrl
-                });
+            if (presenceSettings.enableChannelButton && channelUrl) {
+                if (isValidUrl(channelUrl) && !channelUrl.endsWith("undefined")) {
+                    buttonsData.push({
+                        label: "View Channel",
+                        url: channelUrl
+                    });
+                }
+                else {
+                    sendExtensionMessage(false, "INVALID_URL_ERROR", channelUrl);
+                }
             }
         }
         else {
@@ -211,11 +234,15 @@ const processData = () => {
                 currentApplication = json.jsApplicationType;
 
                 function resetPresence() {
-                    client = new rpc.Client({ transport: "ipc" });
-                    client.login({ clientId: currentApplicationId }).then(() => {
-                        updatePresence(json.jsTitle, json.jsAuthor, json.jsTimeLeft, json.jsVideoUrl, json.jsChannelUrl, json.jsPresenceSettings, 0);
+                    client.destroy().then(() => {
+                        client = new rpc.Client({ transport: "ipc" });
+                        client.login({ clientId: currentApplicationId }).then(() => {
+                            updatePresence(json.jsTitle, json.jsAuthor, json.jsTimeLeft, json.jsVideoUrl, json.jsChannelUrl, json.jsPresenceSettings, 0);
+                        }).catch((err) => {
+                            sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", err);
+                        });
                     }).catch((err) => {
-                        sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", err);
+                        sendExtensionMessage(false, "CLIENT_DESTRUCTION_ERROR", err);
                     });
                 }
                 clearPresence(resetPresence);

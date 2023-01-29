@@ -63,7 +63,7 @@ function getLivestreamData() {
         }
         if (authorHTML) {
             documentData.author = authorHTML.innerText;
-            documentData.channelUrl = `https://youtube.com/${authorHTML.href}`;
+            documentData.channelUrl = authorHTML.href;
         }
         else {
             documentData.author = null;
@@ -80,7 +80,7 @@ function getLivestreamData() {
         }
         if (authorHTML) {
             documentData.author = authorHTML.innerText;
-            documentData.channelUrl = `https://youtube.com/${authorHTML.href}`;
+            documentData.channelUrl = authorHTML.href;
         }
         else {
             documentData.author = null;

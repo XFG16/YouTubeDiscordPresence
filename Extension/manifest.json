@@ -2,12 +2,17 @@
     "name": "YouTubeDiscordPresence",
     "author": "Michael Ren",
     "description": "An extension used to create a detailed rich presence for YouTube videos on Discord.",
-    "version": "1.4.2",
+    "version": "1.5.0",
     "manifest_version": 3,
     "content_scripts": [
         {
-            "matches": ["https://www.youtube.com/*", "https://music.youtube.com/*"],
-            "js": ["content_loader.js"]
+            "matches": [
+                "https://www.youtube.com/*",
+                "https://music.youtube.com/*"
+            ],
+            "js": [
+                "content_loader.js"
+            ]
         }
     ],
     "background": {
@@ -19,8 +24,13 @@
     },
     "web_accessible_resources": [
         {
-            "resources": ["content.js"],
-            "matches": ["https://www.youtube.com/*", "https://music.youtube.com/*"]
+            "resources": [
+                "content.js"
+            ],
+            "matches": [
+                "https://www.youtube.com/*",
+                "https://music.youtube.com/*"
+            ]
         }
     ],
     "permissions": [
@@ -29,9 +39,9 @@
         "storage",
         "tabs"
     ],
-    "icons": { 
+    "icons": {
         "16": "/Images/icon16.png",
         "48": "/Images/icon48.png",
-        "128": "/Images/icon128.png" 
+        "128": "/Images/icon128.png"
     }
 }

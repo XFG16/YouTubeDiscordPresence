@@ -34,8 +34,8 @@ let settings = {
     keywordInclusionsList: new Array(),
 
     enableVideoButton: true,
-    enableChannelButton: false,
-    enablePlayingIcon: false,
+    enableChannelButton: true,
+    enablePlayingIcon: true,
     addByAuthor: true
 }
 
