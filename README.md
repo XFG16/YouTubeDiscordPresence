@@ -35,8 +35,8 @@
  - Supports both **normal** and **livestream/premiere** videos on YouTube as well as **YouTube Music** songs
  - No, this is not a bootleg copy of PreMiD. In fact, on a more **technical note**, it works similar to the **Spotify rich presence**—it only appears **when a video is playing** and **disappears when there is no video or the video is paused**. In addition, it only displays the presence for videos. Idling and searching are **not displayed**.
  - There are **two** components:
-   - Chrome Extension << Source code [v1.5.0]: `Extension` || Release [v1.4.2]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) >>
-   - Desktop Application << Source code [v1.4.0]: `Host` || Release [v1.3.2]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.3.2) >>
+   - Chrome Extension << Source code [v1.5.0]: `Extension` || Release [v1.5.0]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) >>
+   - Desktop Application << Source code [v1.4.0]: `Host` || Release [v1.4.0]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.4.0) >>
 
 ## Detailed Installation Instructions
 
