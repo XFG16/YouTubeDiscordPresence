@@ -10,7 +10,7 @@
 </div>
 
 # Installation
- 1. Download the latest `YTDPsetup.msi` file in the [**<ins>releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.3.2) section of this repository and run it on your computer
+ 1. Download the latest `YTDPsetup.msi` file in the [**<ins>releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.4.0) section of this repository and run it on your computer
     - If Windows SmartScreen appears, then simply click `More Info` and continue the installation from there
  2. Add the [<ins>**Chrome Extension**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) from the **Chrome Web Store** and turn it on **after installing the desktop component.** If you installed the extension before installing the desktop component, just turn it **off and back on** after the desktop component is installed
   3. You should be all set and ready to go! To access the **personalization** page, you need to click on the small icon on the **top right of the browser** under the **extensions icon**. It would also be easier to access if you **pinned** the extension. It would be **greatly appreciated** if you could leave a **rating and review** describing your experience on the Chrome Web Store! It would also help a lot if you could **recommend** this to others! Thank you for your consideration and enjoy the extension to its fullest!
