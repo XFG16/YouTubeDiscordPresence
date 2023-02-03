@@ -132,21 +132,21 @@ body {
 .pageOutside {
     margin-top: 4px;
     width: 100%;
-    height: 495px;
+    height: 500px;
     display: flex;
 }
 
 .pageBody {
     align-self: center;
     width: 92%;
-    height: 91%;
+    height: 92%;
     margin: 2%;
     background-color: rgb(50, 50, 50);
     border-radius: 5px;
     padding-right: 5%;
     padding-left: 5%;
     padding-top: 3%;
-    padding-bottom: 3%;
+    padding-bottom: 4%;
 }
 
 #exclusionsOutside {

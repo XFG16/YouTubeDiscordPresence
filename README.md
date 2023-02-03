@@ -49,7 +49,8 @@
 ## Troubleshooting/Known Issues
  - It only works alongside the **desktop application** of Discord, not the browser version. Also, make sure to have `Display current activity as status message` in your Discord settings **on.**
  - The appearance and disappearance of the rich presence on your profile **can be delayed** because Discord limits the processing of rich presence update requests to once every 15 seconds
- - If the presence gets stuck at some video at `00:00 left`, then go to `chrome://extensions` and switch the extension off and back on. This is simply a problem with the client socket API that occurs randomly.
+ - If the presence gets stuck at some video at `00:00 left`, then go to `chrome://extensions` and switch the extension off and back on. This is simply a problem with the client socket API in the way that Discord handles presence update requests.
+ - If you need more details and have the ability to open an issue, then before that, please head to `chrome://extensions`, **turn on developer mode**, and click **"inspect views <ins>service worker</ins>"**. This should open a developer window. From there, head to the **console** section and describe what the debug log shows.
  - The rich presence can also randomly disappear and reappear within a few seconds because Chrome forcibly unloads and reloads the `background.js` in Manifest v3
  - If you enable and disable the extension too much within a short period of time through the pop-up interface (please don't do this), it will overload the Discord refresh limit and the extension will be prevented by Discord from displaying. To fix this, reload your Discord and turn the extension off and back on in `chrome://extensions`
  - Don't hesistate to open an issue if there's something wrong with YouTubeDiscordPresence. In fact, you should also open one if you have any suggestions for a new feature to be added.
