@@ -153,11 +153,11 @@ function initializeDocument(tab) {
     });
 
     // NODE CONNECTION ERROR
-    // chrome.storage.sync.get("isNodeClientReady", function(result) {
-    //     if (result.isNodeClientReady == false) {
-    //         document.getElementById("clientErrorContainer").style.display = "block";
-    //     }
-    // });
+    chrome.storage.sync.get("isNativeConnected", function (result) {
+        if (result.isNativeConnected == false) {
+            document.getElementById("clientErrorContainer").style.display = "block";
+        }
+    });
 
     // OVERALL EXTENSION ENABLED
     let enabledLabel = document.getElementById("enabledLabel");

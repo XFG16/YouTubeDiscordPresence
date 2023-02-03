@@ -30,3 +30,13 @@ mainScript.src = chrome.runtime.getURL("content.js");
 mainScript.onload = function () {
     this.remove();
 };
+
+// NATIVE APP NOT CONNECTED WARNING
+
+chrome.storage.sync.get("isNativeConnected", function (result) {
+    if (result.isNativeConnected == false) {
+        fetch(chrome.runtime.getURL('/warning.html')).then(r => r.text()).then(html => {
+            document.body.insertAdjacentHTML('beforeend', html);
+        });
+    }
+});

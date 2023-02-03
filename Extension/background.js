@@ -14,7 +14,6 @@ const NORMAL_MESSAGE_DELAY = 1000;
 const LIVESTREAM_TIME_ID = -1;
 const UPDATE_PRESENCE_MESSAGE = "UPDATE_PRESENCE_DATA";
 
-let nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
 let currentMessage = new Object();
 let previousMessage = new Object();
 let lastUpdated = 9007199254740991;
@@ -36,14 +35,51 @@ let settings = {
     enableVideoButton: true,
     enableChannelButton: true,
     enablePlayingIcon: true,
-    addByAuthor: true
+    addByAuthor: true,
 }
 
-// START MESSAGE
+// MUST RUN EVERY TIME BACKGROUND.JS STARTS - INITIALIZES KEYS JUST IN CASE THEY WEREN'T INITIALIZED BEFORE
+// isNativeConnected is saved separately
 
-if (LOGGING) {
-    console.log("background.js created");
+for (const key of Object.keys(settings)) {
+    chrome.storage.sync.get(key, function (result) {
+        if (result[key] == undefined) {
+            saveStorageKey(key, settings[key]);
+        }
+        else {
+            settings[key] = result[key];
+        }
+    });
 }
+
+// NODE.JS APPLICATION LOGGER
+
+const handleNativeMessage = (message) => {
+    if (LOGGING) {
+        console.log(`Received from application:\n    ${message.data}`);
+    }
+}
+
+// CONNECTING TO DESKTOP APP
+
+let isNativeConnected = true;
+let nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
+
+function handleDisconnect() {
+    if (chrome.runtime.lastError) {
+        isNativeConnected = false;
+        saveStorageKey("isNativeConnected", false);
+        console.log("The YouTubeDiscordPresence desktop component was not properly installed.\nVisit https://github.com/XFG16/YouTubeDiscordPresence#installation");
+    }
+}
+
+nativePort.onDisconnect.addListener(handleDisconnect);
+setTimeout(() => {
+    if (isNativeConnected) {
+        saveStorageKey("isNativeConnected", true);
+        nativePort.onMessage.addListener(handleNativeMessage);
+    }
+}, 400);
 
 // STORAGE SAVING HANDLER
 
@@ -109,19 +145,6 @@ function isIncluded(title, author, videoUrl) {
     return false;
 }
 
-// MUST RUN EVERY TIME BACKGROUND.JS STARTS - INITIALIZES KEYS JUST IN CASE THEY WEREN'T INITIALIZED BEFORE
-
-for (const key of Object.keys(settings)) {
-    chrome.storage.sync.get(key, function (result) {
-        if (result[key] == undefined) {
-            saveStorageKey(key, settings[key]);
-        }
-        else {
-            settings[key] = result[key];
-        }
-    });
-}
-
 // STORAGE INITIALIZER WHEN CHROME IS OPENED
 
 chrome.runtime.onStartup.addListener(function () {
@@ -180,15 +203,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true;
 });
 
-// NODE.JS APPLICATION LOGGER
-
-const handleNativeMessage = (message) => {
-    if (LOGGING) {
-        console.log(`Received from application:\n    ${message.data}`);
-    }
-}
-nativePort.onMessage.addListener(handleNativeMessage);
-
 // NATIVE MESSAGING HANDLER
 
 const IDLE_DATA_OBJECT = {
@@ -202,11 +216,58 @@ const IDLE_DATA_OBJECT = {
     "jsApplicationType": NMF.IDLE
 };
 
-let pipeInterval = setInterval(function () {
-    if (!nativePort) {
-        return;
-    }
+function assertNativeExistence(callback) {
+    if (!isNativeConnected) {
+        isNativeConnected = true;
+        nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
+        nativePort.onDisconnect.addListener(handleDisconnect);
 
+        setTimeout(() => {
+            if (isNativeConnected) {
+                saveStorageKey("isNativeConnected", true);
+                nativePort.onMessage.addListener(handleNativeMessage);
+                callback();
+            }
+        }, 400);
+    }
+    else {
+        callback();
+    }
+}
+
+function idleCallback() {
+    if (LOGGING) {
+        console.log("Idle data sent:\n    #*IDLE*#");
+    }
+    nativePort.postMessage(IDLE_DATA_OBJECT);
+    currentMessage.scriptId = null;
+    previousMessage = {};
+    isIdle = true;
+}
+
+function updateCallback() {
+    let dataObject = {
+        "cppData": NMF.TITLE + currentMessage.title + NMF.AUTHOR + currentMessage.author + NMF.TIME_LEFT + Math.round(currentMessage.timeLeft) + NMF.END,
+        "jsTitle": currentMessage.title,
+        "jsAuthor": currentMessage.author,
+        "jsTimeLeft": currentMessage.timeLeft,
+        "jsVideoUrl": currentMessage.videoUrl,
+        "jsChannelUrl": currentMessage.channelUrl,
+        "jsPresenceSettings": {
+            "enableVideoButton": settings.enableVideoButton,
+            "enableChannelButton": settings.enableChannelButton,
+            "enablePlayingIcon": settings.enablePlayingIcon,
+            "addByAuthor": settings.addByAuthor
+        },
+        "jsApplicationType": currentMessage.applicationType
+    };
+    if (LOGGING) {
+        console.log("Presence data:", dataObject);
+    }
+    nativePort.postMessage(dataObject);
+}
+
+let pipeInterval = setInterval(function () {
     let inclusionExclusionStatus = false;
     if (!(Object.keys(currentMessage).length == 0) && (isExcluded(currentMessage.title, currentMessage.author, currentMessage.videoUrl) || !isIncluded(currentMessage.title, currentMessage.author, currentMessage.videoUrl))) {
         inclusionExclusionStatus = true;
@@ -214,13 +275,7 @@ let pipeInterval = setInterval(function () {
     let delaySinceUpdate = new Date().getTime() - lastUpdated;
     if (!settings.enabled || !(currentMessage.scriptId in settings.tabEnabledList) || delaySinceUpdate >= 3 * NORMAL_MESSAGE_DELAY || inclusionExclusionStatus) {
         if (!isIdle) {
-            if (LOGGING) {
-                console.log("Idle data sent:\n    #*IDLE*#");
-            }
-            nativePort.postMessage(IDLE_DATA_OBJECT);
-            currentMessage.scriptId = null;
-            previousMessage = {};
-            isIdle = true;
+            assertNativeExistence(idleCallback);
         }
         return;
     }
@@ -233,31 +288,13 @@ let pipeInterval = setInterval(function () {
         skipMessage = true;
     }
     if (!(previousMessage.title == currentMessage.title && previousMessage.author == currentMessage.author && skipMessage)) {
-        let dataObject = {
-            "cppData": NMF.TITLE + currentMessage.title + NMF.AUTHOR + currentMessage.author + NMF.TIME_LEFT + Math.round(currentMessage.timeLeft) + NMF.END,
-            "jsTitle": currentMessage.title,
-            "jsAuthor": currentMessage.author,
-            "jsTimeLeft": currentMessage.timeLeft,
-            "jsVideoUrl": currentMessage.videoUrl,
-            "jsChannelUrl": currentMessage.channelUrl,
-            "jsPresenceSettings": {
-                "enableVideoButton": settings.enableVideoButton,
-                "enableChannelButton": settings.enableChannelButton,
-                "enablePlayingIcon": settings.enablePlayingIcon,
-                "addByAuthor": settings.addByAuthor
-            },
-            "jsApplicationType": currentMessage.applicationType
-        };
-        if (LOGGING) {
-            console.log("Presence data:", dataObject);
-        }
-        nativePort.postMessage(dataObject);
+        assertNativeExistence(updateCallback);
     }
+
     previousMessage.title = currentMessage.title;
     previousMessage.author = currentMessage.author;
     previousMessage.timeLeft = currentMessage.timeLeft;
     isIdle = false;
-
 }, NORMAL_MESSAGE_DELAY);
 
 // EXTENSION UPDATE HANDLER

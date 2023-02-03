@@ -11,6 +11,14 @@
     <div>
         <img src="/Images/ytdpSettings.png" alt="YouTubeDiscordPresence Settings" id="ytdpSettingsTitle">
     </div>
+    <div id="clientErrorContainer" style="display: none;">
+        <h1>ERROR: Desktop app not detected</h1>
+        <p>YouTubeDiscordPresence was unable to connect to its secondary desktop application. Please ensure that you
+            have properly installed the secondary desktop application by visiting <a
+                href="https://github.com/XFG16/YouTubeDiscordPresence#installation" target="_blank">the GitHub page</a>.
+            If correctly installed, then this error will disappear after you watch your first YouTube video.
+        <h6>YouTubeDiscordPresence for Windows (x64)</h6>
+    </div>
     <div id="updateMessageContainer" style="display: none;">
         <span id="closeUpdateMessage" class="returnBack">&#10006</span>
         <h1>ATTENTION TO ALL USERS:</h1>
@@ -18,7 +26,8 @@
             If you downloaded YTDP before 1/28/2023, then I recommend uninstalling the current version of YTDP that
             you downloaded onto your desktop and downloading the more recent
             version from <a href="https://github.com/XFG16/YouTubeDiscordPresence/releases/" target="blank">Github</a>,
-            which contains new features and functionality.
+            which contains new features and functionality. Before you uninstall, make sure to turn YTDP off in
+            chrome://extensions because Windows won't let you uninstall a program while it's running.
         </p>
         <p>
             You won't be able to use the "Edit presence details" tab without the new update, but everything else should

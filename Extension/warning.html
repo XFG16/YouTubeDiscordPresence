@@ -1,0 +1,53 @@
+<style>
+  #clientErrorContainer {
+    width: 350px;
+    background-color: rgb(214, 40, 40);
+    padding-top: 15px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: rgb(240, 240, 240);
+    font-size: 14px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border: solid 2px white;
+    border-bottom: none;
+  }
+
+  #clientErrorContainer h1 {
+    font-size: 18px;
+    padding-bottom: 8px;
+    border-bottom: solid 2px white;
+    margin-bottom: 7px;
+    width: fit-content;
+  }
+
+  #clientErrorContainer h6 {
+    margin-top: 10px;
+    text-align: right;
+    font-size: 12px;
+    font-family: monospace;
+  }
+
+  #clientErrorContainer a {
+    display: inline-block;
+    color: rgb(151, 180, 229);
+    transition: color 200ms ease-in-out;
+    font-weight: 500;
+  }
+
+  #clientErrorContainer a:hover {
+    color: rgb(90, 225, 255);
+  }
+</style>
+<div id="clientErrorContainer" style="position: fixed; right: 20%; bottom: 0; z-index: 1000000000; display: block;">
+  <h1>ERROR: Desktop app not detected</h1>
+  <p>YouTubeDiscordPresence was unable to connect to its secondary desktop application. Please ensure that you
+    have properly installed the secondary desktop application by visiting <a
+      href="https://github.com/XFG16/YouTubeDiscordPresence#installation" target="_blank">the GitHub page</a>.
+    Try reloading YouTube after the installation is finished.
+    <br><br>
+    If your OS isn't Windows (x64), then feel free to remove this extension. However, do note that support for other
+    operating systems will be available in the future!
+  <h6>YouTubeDiscordPresence for Windows (x64)</h6>
+</div>
