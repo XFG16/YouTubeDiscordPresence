@@ -15,7 +15,7 @@ const LIVESTREAM_TIME_ID = -1;
 const UPDATE_PRESENCE_MESSAGE = "UPDATE_PRESENCE_DATA";
 const REQUIRED_NATIVE_VERSION = "1.4.1";
 
-let nativeVersion = null;
+let nativeVersionStatus = -2;
 let currentMessage = new Object();
 let previousMessage = new Object();
 let lastUpdated = 9007199254740991;
@@ -111,8 +111,8 @@ const handleNativeMessage = (message) => {
         console.log(`Received from application:\n    ${message.data}`);
     }
     else if (message.nativeVersion) {
-        nativeVersion = message.nativeVersion;
-        saveStorageKey("nativeVersionStatus", versionCompare(nativeVersion, REQUIRED_NATIVE_VERSION));
+        nativeVersionStatus = versionCompare(message.nativeVersion, REQUIRED_NATIVE_VERSION);
+        saveStorageKey("nativeVersionStatus", nativeVersionStatus);
     }
 }
 
@@ -136,7 +136,7 @@ setTimeout(() => {
         nativePort.onMessage.addListener(handleNativeMessage);
         nativePort.postMessage({ getNativeVersion: true });
     }
-    if (nativeVersion == null) {
+    if (nativeVersionStatus == -2) {
         saveStorageKey("nativeVersionStatus", -1);
     }
 }, 400);
@@ -432,6 +432,9 @@ let pipeInterval = setInterval(function () {
         skipMessage = true;
     }
     if (!(previousMessage.title == currentMessage.title && previousMessage.author == currentMessage.author && previousMessage.thumbnailUrl == currentMessage.thumbnailUrl && skipMessage)) {
+        if (nativeVersionStatus < 0) {
+            nativePort.postMessage({ getNativeVersion: true });
+        }
         assertNativeExistence(updateCallback);
     }
 
