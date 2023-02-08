@@ -129,6 +129,59 @@ body {
     opacity: 0.7;
 }
 
+#versionWarningContainer {
+    width: 100%;
+    margin-bottom: 5px;
+    background-color: rgb(254, 115, 46);
+}
+
+#versionWarningContainer h1 {
+    padding-top: 15px;
+    padding-left: 20px;
+    padding-bottom: 5px;
+    color: white;
+    font-size: 18px;
+}
+
+#versionWarningContainer p {
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: rgb(240, 240, 240);
+    font-size: 14px;
+}
+
+#versionWarningContainer a {
+    color: rgb(215, 240, 255);
+    transition: color 200ms ease-in-out;
+}
+
+#versionWarningContainer a:hover {
+    color: rgb(90, 225, 255);
+}
+
+#versionWarningContainer h6 {
+    border-top: solid 2px white;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    color: white;
+    font-weight: 400;
+    font-size: 12px;
+}
+
+#versionWarningContainer .returnBack {
+    color: white;
+    border-color: white;
+    margin-top: 15px;
+    margin-right: 20px;
+}
+
+#versionWarningContainer .returnBack:hover {
+    opacity: 0.7;
+}
+
 .pageOutside {
     margin-top: 4px;
     width: 100%;

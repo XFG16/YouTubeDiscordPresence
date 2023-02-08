@@ -13,7 +13,9 @@ const NMF = Object.freeze({ // NMF = NATIVE_MESSAGE_FORMAT (FOR HANDLING BY YTDP
 const NORMAL_MESSAGE_DELAY = 1000;
 const LIVESTREAM_TIME_ID = -1;
 const UPDATE_PRESENCE_MESSAGE = "UPDATE_PRESENCE_DATA";
+const REQUIRED_NATIVE_VERSION = "1.4.1";
 
+let nativeVersion = null;
 let currentMessage = new Object();
 let previousMessage = new Object();
 let lastUpdated = 9007199254740991;
@@ -36,6 +38,7 @@ let settings = {
     enableChannelButton: true,
     enablePlayingIcon: true,
     addByAuthor: true,
+    useAlbumThumbnail: true
 }
 
 // MUST RUN EVERY TIME BACKGROUND.JS STARTS - INITIALIZES KEYS JUST IN CASE THEY WEREN'T INITIALIZED BEFORE
@@ -52,11 +55,64 @@ for (const key of Object.keys(settings)) {
     });
 }
 
-// NODE.JS APPLICATION LOGGER
+// VERSION COMPARER (REFERENCE: https://gist.github.com/TheDistantSea/8021359)
+
+function versionCompare(v1, v2, options) { // CHECKS IF V1 IS GREATER THAN (1), EQUAL (0), OR LESS THAN V2 (-1)
+    var lexicographical = options && options.lexicographical,
+        zeroExtend = options && options.zeroExtend,
+        v1parts = v1.split('.'),
+        v2parts = v2.split('.');
+
+    function isValidPart(x) {
+        return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
+    }
+
+    if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
+        return NaN;
+    }
+
+    if (zeroExtend) {
+        while (v1parts.length < v2parts.length) v1parts.push("0");
+        while (v2parts.length < v1parts.length) v2parts.push("0");
+    }
+
+    if (!lexicographical) {
+        v1parts = v1parts.map(Number);
+        v2parts = v2parts.map(Number);
+    }
+
+    for (var i = 0; i < v1parts.length; ++i) {
+        if (v2parts.length == i) {
+            return 1;
+        }
+
+        if (v1parts[i] == v2parts[i]) {
+            continue;
+        }
+        else if (v1parts[i] > v2parts[i]) {
+            return 1;
+        }
+        else {
+            return -1;
+        }
+    }
+
+    if (v1parts.length != v2parts.length) {
+        return -1;
+    }
+
+    return 0;
+}
+
+// NODE.JS APPLICATION HANDLER
 
 const handleNativeMessage = (message) => {
-    if (LOGGING) {
+    if (LOGGING && message.data) {
         console.log(`Received from application:\n    ${message.data}`);
+    }
+    else if (message.nativeVersion) {
+        nativeVersion = message.nativeVersion;
+        saveStorageKey("nativeVersionStatus", versionCompare(nativeVersion, REQUIRED_NATIVE_VERSION));
     }
 }
 
@@ -78,6 +134,10 @@ setTimeout(() => {
     if (isNativeConnected) {
         saveStorageKey("isNativeConnected", true);
         nativePort.onMessage.addListener(handleNativeMessage);
+        nativePort.postMessage({ getNativeVersion: true });
+    }
+    if (nativeVersion == null) {
+        saveStorageKey("nativeVersionStatus", -1);
     }
 }, 400);
 
@@ -196,6 +256,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             currentMessage.videoUrl = "https://youtube.com/watch?v=" + message.videoId;
             currentMessage.channelUrl = message.channelUrl;
             currentMessage.applicationType = message.applicationType;
+            currentMessage.thumbnailUrl = message.thumbnailUrl;
             lastUpdated = new Date().getTime();
             sendResponse(null);
         }
@@ -206,14 +267,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 // NATIVE MESSAGING HANDLER
 
 const IDLE_DATA_OBJECT = {
-    "cppData": NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END,
-    "jsTitle": NMF.IDLE,
-    "jsAuthor": NMF.IDLE,
-    "jsTimeLeft": NMF.IDLE,
-    "jsVideoUrl": NMF.IDLE,
-    "jsChannelUrl": NMF.IDLE,
-    "jsPresenceSettings": NMF.IDLE,
-    "jsApplicationType": NMF.IDLE
+    cppData: NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END,
+    jsTitle: NMF.IDLE,
+    jsAuthor: NMF.IDLE,
+    jsTimeLeft: NMF.IDLE,
+    jsVideoUrl: NMF.IDLE,
+    jsChannelUrl: NMF.IDLE,
+    jsPresenceSettings: NMF.IDLE,
+    jsApplicationType: NMF.IDLE,
+    presenceData: NMF.IDLE
 };
 
 function assertNativeExistence(callback) {
@@ -245,21 +307,103 @@ function idleCallback() {
     isIdle = true;
 }
 
+// FOR 1.5.2 OR ABOVE, ALL PRESENCE DATA WILL BE HANDLED AND SENT IN THE EXTENSION UNDER presenceData. OTHER OBJECT KEY PAIRS ARE FOR BACKWARDS COMPATIBILITY
+
+function generatePresenceData() {
+    let stateData = "";
+    if (currentMessage.timeLeft != LIVESTREAM_TIME_ID) {
+        stateData = settings.addByAuthor ? `by ${currentMessage.author}` : currentMessage.author;
+    }
+    else {
+        stateData = settings.addByAuthor ? `[LIVE] on ${currentMessage.author}` : currentMessage.author;
+    }
+
+    let assetsData = {
+        large_image: "youtube3",
+        large_text: currentMessage.title.substring(0, 128)
+    };
+    if (currentMessage.applicationType == "youtubeMusic") {
+        if (settings.useAlbumThumbnail && currentMessage.thumbnailUrl) {
+            assetsData.large_image = currentMessage.thumbnailUrl;
+        }
+        else {
+            assetsData.large_image = "youtube-music";
+        }
+    }
+    else if (currentMessage.timeLeft == LIVESTREAM_TIME_ID) {
+        assetsData.large_image = "youtubelive1";
+    }
+    if (settings.enablePlayingIcon) {
+        assetsData.small_image = "playing-icon-6";
+        assetsData.small_text = "YouTubeDiscordPresence on GitHub" // MAYBE ADD FEATURE TO CHANGE THIS
+    }
+
+    let timeStampsData = {};
+    if (currentMessage.timeLeft != LIVESTREAM_TIME_ID) {
+        timeStampsData.end = Date.now() + (currentMessage.timeLeft * 1000);
+    }
+    else {
+        timeStampsData.start = Date.now();
+    }
+
+    let buttonsData = [];
+    if (settings.enableVideoButton && currentMessage.videoUrl) {
+        if (currentMessage.applicationType == "youtubeMusic") {
+            buttonsData.push({
+                label: "Listen Along",
+                url: currentMessage.videoUrl
+            });
+        }
+        else if (currentMessage.timeLeft == LIVESTREAM_TIME_ID) {
+            buttonsData.push({
+                label: "Watch Livestream",
+                url: currentMessage.videoUrl
+            });
+        }
+        else {
+            buttonsData.push({
+                label: "Watch Video",
+                url: currentMessage.videoUrl
+            });
+        }
+    }
+    if (settings.enableChannelButton && currentMessage.channelUrl && !currentMessage.channelUrl.endsWith("undefined")) {
+        buttonsData.push({
+            label: "View Channel",
+            url: currentMessage.channelUrl
+        });
+    }
+
+    let presenceData = {
+        details: currentMessage.title.substring(0, 128),
+        state: stateData.substring(0, 128),
+        assets: assetsData,
+        timestamps: timeStampsData,
+    };
+    if (buttonsData.length > 0) {
+        presenceData.buttons = buttonsData;
+    }
+
+    return presenceData;
+}
+
 function updateCallback() {
     let dataObject = {
-        "cppData": NMF.TITLE + currentMessage.title + NMF.AUTHOR + currentMessage.author + NMF.TIME_LEFT + Math.round(currentMessage.timeLeft) + NMF.END,
-        "jsTitle": currentMessage.title,
-        "jsAuthor": currentMessage.author,
-        "jsTimeLeft": currentMessage.timeLeft,
-        "jsVideoUrl": currentMessage.videoUrl,
-        "jsChannelUrl": currentMessage.channelUrl,
-        "jsPresenceSettings": {
-            "enableVideoButton": settings.enableVideoButton,
-            "enableChannelButton": settings.enableChannelButton,
-            "enablePlayingIcon": settings.enablePlayingIcon,
-            "addByAuthor": settings.addByAuthor
+        cppData: NMF.TITLE + currentMessage.title + NMF.AUTHOR + currentMessage.author + NMF.TIME_LEFT + Math.round(currentMessage.timeLeft) + NMF.END,
+        jsTitle: currentMessage.title,
+        jsAuthor: currentMessage.author,
+        jsTimeLeft: currentMessage.timeLeft,
+        jsVideoUrl: currentMessage.videoUrl,
+        jsChannelUrl: currentMessage.channelUrl,
+        jsPresenceSettings: {
+            enableVideoButton: settings.enableVideoButton,
+            enableChannelButton: settings.enableChannelButton,
+            enablePlayingIcon: settings.enablePlayingIcon,
+            addByAuthor: settings.addByAuthor
         },
-        "jsApplicationType": currentMessage.applicationType
+        jsApplicationType: currentMessage.applicationType,
+        presenceData: generatePresenceData()
+
     };
     if (LOGGING) {
         console.log("Presence data:", dataObject);
@@ -287,13 +431,14 @@ let pipeInterval = setInterval(function () {
     if (previousMessage.timeLeft >= currentMessage.timeLeft && ((1000 * (previousMessage.timeLeft - currentMessage.timeLeft) < 2 * NORMAL_MESSAGE_DELAY) || (previousMessage.timeLeft == LIVESTREAM_TIME_ID && currentMessage.timeLeft != LIVESTREAM_TIME_ID))) {
         skipMessage = true;
     }
-    if (!(previousMessage.title == currentMessage.title && previousMessage.author == currentMessage.author && skipMessage)) {
+    if (!(previousMessage.title == currentMessage.title && previousMessage.author == currentMessage.author && previousMessage.thumbnailUrl == currentMessage.thumbnailUrl && skipMessage)) {
         assertNativeExistence(updateCallback);
     }
 
     previousMessage.title = currentMessage.title;
     previousMessage.author = currentMessage.author;
     previousMessage.timeLeft = currentMessage.timeLeft;
+    previousMessage.thumbnailUrl = currentMessage.thumbnailUrl;
     isIdle = false;
 }, NORMAL_MESSAGE_DELAY);
 

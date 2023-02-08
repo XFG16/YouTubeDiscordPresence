@@ -19,26 +19,20 @@
             If correctly installed, then this error will disappear after you watch your first YouTube video.
         <h6>YouTubeDiscordPresence for Windows (x64)</h6>
     </div>
-    <div id="updateMessageContainer" style="display: none;">
-        <span id="closeUpdateMessage" class="returnBack">&#10006</span>
-        <h1>ATTENTION TO ALL USERS:</h1>
-        <p>
-            If you downloaded YTDP before 1/28/2023, then I recommend uninstalling the current version of YTDP that
-            you downloaded onto your desktop and downloading the more recent
-            version from <a href="https://github.com/XFG16/YouTubeDiscordPresence/releases/" target="blank">Github</a>,
-            which contains new features and functionality. Before you uninstall, make sure to turn YTDP off in
-            chrome://extensions because Windows won't let you uninstall a program while it's running.
-        </p>
-        <p>
-            You won't be able to use the "Edit presence details" tab without the new update, but everything else should
-            work the same.
-        </p>
-        <p>
-            Don't know how to uninstall? Visit the <a
-                href="https://support.microsoft.com/en-us/windows/uninstall-or-remove-apps-and-programs-in-windows-4b55f974-2cc6-2d2b-d092-5905080eaf98#"
-                target="blank">Microsoft support article</a>
-        </p>
-        <h6>Thank you for your continued support &#8212 Michael Ren</h6>
+    <div id="versionWarningContainer" style="display: none;">
+        <span id="closeUpdateMessage" class="returnBack">&#8722</span>
+        <h1>WARNING: Version not up to date</h1>
+        <div class="minimizeBody" style="display: block;">
+            <p>A new version of the desktop application has been released to accompany new extension features. Not all
+                features of YouTubeDiscordPresence will work without the latest desktop application. However, everything
+                else that was previously installed will continue to work normally.</p>
+            <p style="margin-top: -5px;">
+                For updating to the new version, make sure to switch YouTubeDiscordPresence off in chrome://extensions
+                and uninstall the version on your computer before installing the latest version
+                <a href="https://github.com/XFG16/YouTubeDiscordPresence/releases" target="blank">from GitHub</a>.
+            </p>
+            <h6>YouTubeDiscordPresence for Windows (x64)</h6>
+        </div>
     </div>
     <div id="ytdpSettingsOutside" class="pageOutside">
         <div id="ytdpSettingsBody" class="pageBody">
@@ -185,6 +179,13 @@
                 <span class="switchStatus" style="color: #ff0000;">OFF</span>
             </p>
             <p id="addByAuthorLabel" class="settingsOption">Add "by" before author
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+                <span class="switchStatus" style="color: #ff0000;">OFF</span>
+            </p>
+            <p id="useAlbumThumbnailLabel" class="settingsOption">Use album cover for YT Music
                 <label class="switch">
                     <input type="checkbox">
                     <span class="slider round"></span>

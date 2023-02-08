@@ -1,8 +1,8 @@
 // Node.js version of YouTubeDiscordPresence (buttons and no watermark!)
 // MAIN VARIABLE INITIALIZATION
 
-const URL = require("url").URL;
 const bundle = require("./bundle");
+const version = "1.4.1"; // CHANGE THIS EVERY UPDATE
 
 let rpc = require("discord-rpc");
 let client = new rpc.Client({ transport: "ipc" });
@@ -14,23 +14,21 @@ const MUSIC_APPLICATION_ID = bundle.YTDP_MUSIC_APPLICATION_ID;
 let currentApplication = "youtube"; // "youtube" or "youtubeMusic"
 let currentApplicationId = APPLICATION_ID;
 
-const LIVESTREAM_TIME_ID = -1;
 const IDLE_MESSAGE = "#*IDLE*#";
 const CSM = "0_SUCCESS"; // CLIENT_SUCCESS_MESSAGE
 const CEM = "1_CLIENT_ERROR"; // CLIENT_ERROR_MESSAGE
 
-// URL CHECKING
-
-const isValidUrl = (s) => {
-    try {
-        let temp = new URL(s);
-        return temp.hostname.endsWith("youtube.com");
-    } catch (err) {
-        return false;
-    }
-};
-
 // SEND MESSAGE
+
+function sendNativeVersion() {
+    let dataObject = { nativeVersion: version };
+    let buffer = Buffer.from(JSON.stringify(dataObject));
+    let header = Buffer.alloc(4);
+
+    header.writeUInt32LE(buffer.length, 0);
+    let data = Buffer.concat([header, buffer]);
+    process.stdout.write(data);
+}
 
 function sendExtensionMessage(success, message, err = null) {
     if (!LOGGING) {
@@ -61,106 +59,19 @@ function sendExtensionMessage(success, message, err = null) {
 
 // PRESENCE HANDLERS
 
-async function updatePresence(title, author, timeLeft, videoUrl, channelUrl, presenceSettings, layer) {
+async function updatePresence(presenceData, layer) {
     try {
-        let stateData = null;
-        if (presenceSettings) {
-            stateData = presenceSettings.addByAuthor ? `by ${author}` : author;
-        }
-        else {
-            stateData = `by ${author}`;
-        }
-
-        let assetsData = {
-            large_image: "youtube3",
-            large_text: title.substring(0, 128)
-        };
-        if (currentApplication == "youtubeMusic") {
-            assetsData.large_image = "youtube-music";
-        }
-        if (presenceSettings && presenceSettings.enablePlayingIcon) {
-            assetsData.small_image = "playing-icon-6";
-            assetsData.small_text = "YouTubeDiscordPresence on GitHub"
-        }
-
-        let timeStampsData = {
-            end: Date.now() + (timeLeft * 1000)
-        };
-        if (timeLeft == LIVESTREAM_TIME_ID) {
-            if (presenceSettings) {
-                stateData = presenceSettings.addByAuthor ? `[LIVE] on ${author}` : author;
-            }
-            else {
-                stateData = `[LIVE] on ${author}`;
-            }
-            assetsData.large_image = "youtubelive1";
-            timeStampsData = {
-                start: Date.now()
-            };
-        }
-
-        let buttonsData = [];
-        if (presenceSettings && Object.keys(presenceSettings).length > 0) {
-            if (presenceSettings.enableVideoButton && videoUrl) {
-                if (isValidUrl(videoUrl)) {
-                    if (currentApplication == "youtubeMusic") {
-                        buttonsData.push({
-                            label: "Listen Along",
-                            url: videoUrl
-                        });
-                    }
-                    else {
-                        buttonsData.push({
-                            label: "Watch Video",
-                            url: videoUrl
-                        });
-                    }
-                }
-                else {
-                    sendExtensionMessage(false, "INVALID_URL_ERROR", videoUrl);
-                }
-            }
-            if (presenceSettings.enableChannelButton && channelUrl) {
-                if (isValidUrl(channelUrl) && !channelUrl.endsWith("undefined")) {
-                    buttonsData.push({
-                        label: "View Channel",
-                        url: channelUrl
-                    });
-                }
-                else {
-                    sendExtensionMessage(false, "INVALID_URL_ERROR", channelUrl);
-                }
-            }
-        }
-        else {
-            buttonsData.push({
-                label: "Watch Video",
-                url: videoUrl
-            });
-        }
-
         let successfulUpdate = false;
         setTimeout(() => {
             if (!successfulUpdate && layer == 0) {
                 client = new rpc.Client({ transport: "ipc" });
                 client.login({ clientId: currentApplicationId }).then(() => {
-                    updatePresence(title, author, timeLeft, videoUrl, channelUrl, presenceSettings, 1);
+                    updatePresence(presenceData, 1);
                 }).catch((loginErr) => {
                     sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", loginErr);
                 });
             }
         }, 1500);
-
-        let presenceData = {
-            details: title.substring(0, 128),
-            state: stateData.substring(0, 128),
-            assets: assetsData,
-            timestamps: timeStampsData,
-            buttons: buttonsData
-        };
-        if (buttonsData.length == 0) {
-            delete presenceData.buttons;
-        }
 
         client.request("SET_ACTIVITY", {
             pid: process.pid,
@@ -211,6 +122,7 @@ const flushChunksQueue = () => {
     payloadSize = null;
     chunks.splice(0);
 };
+
 const processData = () => {
     const stringData = Buffer.concat(chunks);
     if (!sizeHasBeenRead()) {
@@ -219,11 +131,15 @@ const processData = () => {
     if (stringData.length >= (payloadSize + 4)) {
         const contentWithoutSize = stringData.slice(4, (payloadSize + 4));
         flushChunksQueue();
+
         const json = JSON.parse(contentWithoutSize);
-        if (json.jsTitle == IDLE_MESSAGE) {
+        if (json.presenceData == IDLE_MESSAGE) {
             clearPresence();
         }
-        else {
+        else if (json.getNativeVersion) {
+            sendNativeVersion();
+        }
+        else if (json.presenceData) {
             if (json.jsApplicationType && json.jsApplicationType != currentApplication) {
                 if (json.jsApplicationType == "youtube") {
                     currentApplicationId = APPLICATION_ID;
@@ -237,7 +153,7 @@ const processData = () => {
                     client.destroy().then(() => {
                         client = new rpc.Client({ transport: "ipc" });
                         client.login({ clientId: currentApplicationId }).then(() => {
-                            updatePresence(json.jsTitle, json.jsAuthor, json.jsTimeLeft, json.jsVideoUrl, json.jsChannelUrl, json.jsPresenceSettings, 0);
+                            updatePresence(json.presenceData, 0);
                         }).catch((err) => {
                             sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", err);
                         });
@@ -248,7 +164,7 @@ const processData = () => {
                 clearPresence(resetPresence);
             }
             else {
-                updatePresence(json.jsTitle, json.jsAuthor, json.jsTimeLeft, json.jsVideoUrl, json.jsChannelUrl, json.jsPresenceSettings, 0);
+                updatePresence(json.presenceData, 0);
             }
         }
     }

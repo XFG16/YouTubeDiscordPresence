@@ -14,7 +14,8 @@ window.addEventListener("SendToLoader", function (message) {
         timeLeft: message.detail.timeLeft,
         videoId: message.detail.videoId,
         channelUrl: message.detail.channelUrl,
-        applicationType: message.detail.applicationType
+        applicationType: message.detail.applicationType,
+        thumbnailUrl: message.detail.thumbnailUrl,
     }, (response) => {
         if (LOGGING) {
             console.log(`Data was sent by content_loader.js and received by background.js: ${message.detail}`);
@@ -25,7 +26,7 @@ window.addEventListener("SendToLoader", function (message) {
 // INJECTION OF CONTENT.JS INTO MAIN DOM
 
 var mainScript = document.createElement("script");
-mainScript.src = chrome.runtime.getURL("content.js");
+mainScript.src = chrome.runtime.getURL("/content.js");
 (document.head || document.documentElement).appendChild(mainScript);
 mainScript.onload = function () {
     this.remove();

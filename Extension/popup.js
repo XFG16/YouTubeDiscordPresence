@@ -143,14 +143,14 @@ function addIeElement(text, key, isDocumentInitializing) {
 
 function initializeDocument(tab) {
     //UPDATE MESSAGE
-    chrome.storage.sync.get("nodeUpdateMessage_two", function (result) {
-        if (result.nodeUpdateMessage_two == undefined) {
-            saveStorageKey("nodeUpdateMessage_two", true);
-        }
-        if (result.nodeUpdateMessage_two != false) {
-            document.getElementById("updateMessageContainer").style.display = "block";
-        }
-    });
+    // chrome.storage.sync.get("nodeUpdateMessage_two", function (result) {
+    //     if (result.nodeUpdateMessage_two == undefined) {
+    //         saveStorageKey("nodeUpdateMessage_two", true);
+    //     }
+    //     if (result.nodeUpdateMessage_two != false) {
+    //         document.getElementById("updateMessageContainer").style.display = "block";
+    //     }
+    // });
 
     // NODE CONNECTION ERROR
     chrome.storage.sync.get("isNativeConnected", function (result) {
@@ -300,6 +300,17 @@ function initializeDocument(tab) {
         }
         handleSwitchStatusAndStorage(result.addByAuthor, status, null);
     });
+
+    // USE ALBUM COVER FOR YOUTUBE MUSIC
+    let useAlbumThumbnailLabel = document.getElementById("useAlbumThumbnailLabel");
+    chrome.storage.sync.get("useAlbumThumbnail", function (result) {
+        let status = useAlbumThumbnailLabel.querySelector("span.switchStatus");
+        let statusSwitch = useAlbumThumbnailLabel.querySelector("label.switch > input");
+        if (result.useAlbumThumbnail) {
+            statusSwitch.checked = "checked";
+        }
+        handleSwitchStatusAndStorage(result.useAlbumThumbnail, status, null);
+    });
 }
 
 // HANDLE USER INTERACTIONS ON MAIN PAGE
@@ -336,11 +347,11 @@ function handleMainChanges(tab) {
     });
 
     // UPDATE MESSAGE CLICK
-    let updateMessageContainer = document.getElementById("updateMessageContainer");
-    updateMessageContainer.querySelector("span.returnBack").onclick = function () {
-        saveStorageKey("nodeUpdateMessage_two", false);
-        document.getElementById("updateMessageContainer").style.display = "none";
-    };
+    // let updateMessageContainer = document.getElementById("updateMessageContainer");
+    // updateMessageContainer.querySelector("span.returnBack").onclick = function () {
+    //     saveStorageKey("nodeUpdateMessage_two", false);
+    //     document.getElementById("updateMessageContainer").style.display = "none";
+    // };
 }
 
 // HANDLE CHANGES TO EXCLUSIONS SECTION
@@ -594,9 +605,26 @@ function handleEditPresenceChanges() {
     let ytdpSettingsOutside = document.getElementById("ytdpSettingsOutside");
     let editPresenceOutside = document.getElementById("editPresenceOutside");
     let editPresenceLabel = document.getElementById("editPresenceLabel");
+
+    let versionWarningContainer = document.getElementById("versionWarningContainer");
+    let versionWarningMinimizeBody = versionWarningContainer.querySelector(".minimizeBody");
+    let versionWarningReturnBack = versionWarningContainer.querySelector("span.returnBack");
+
     editPresenceLabel.onclick = function () {
         ytdpSettingsOutside.style.display = "none";
         editPresenceOutside.style.display = "flex";
+        chrome.storage.sync.get("nativeVersionStatus", function (result) {
+            if (result.nativeVersionStatus == -1) {
+                versionWarningContainer.style.display = "block";
+            }
+        });
+        chrome.storage.sync.get("minimizeVersionWarning", function (result) {
+            if (result.minimizeVersionWarning) {
+                versionWarningMinimizeBody.style.display = "none";
+                versionWarningContainer.style.paddingBottom = "10px";
+                versionWarningReturnBack.innerHTML = "+";
+            }
+        });
     }
 
     // X BUTTON TO RETURN BACK TO MAIN PAGE FROM EDIT PRESENCE
@@ -604,7 +632,24 @@ function handleEditPresenceChanges() {
     returnFromEditPresenceLabel.onclick = function () {
         ytdpSettingsOutside.style.display = "flex";
         editPresenceOutside.style.display = "none";
+        versionWarningContainer.style.display = "none";
     }
+
+    // MINIMIZE WARNING ARNING 
+    versionWarningReturnBack.onclick = function () {
+        if (versionWarningMinimizeBody.style.display == "block") {
+            versionWarningMinimizeBody.style.display = "none";
+            versionWarningContainer.style.paddingBottom = "10px";
+            versionWarningReturnBack.innerHTML = "+";
+            saveStorageKey("minimizeVersionWarning", true);
+        }
+        else {
+            versionWarningMinimizeBody.style.display = "block";
+            versionWarningContainer.style.paddingBottom = "5px";
+            versionWarningReturnBack.innerHTML = "&#8722";
+            saveStorageKey("minimizeVersionWarning", false);
+        }
+    };
 
     // VIDEO BUTTON
     let enableVideoButtonLabel = document.getElementById("enableVideoButtonLabel");
@@ -639,6 +684,15 @@ function handleEditPresenceChanges() {
         chrome.storage.sync.get("addByAuthor", function (result) {
             let status = addByAuthorLabel.querySelector("span.switchStatus");
             handleSwitchStatusAndStorage(status.innerHTML == "OFF", status, "addByAuthor");
+        });
+    });
+
+    // USE ALBUM COVER FOR YOUTUBE MUSIC
+    let useAlbumThumbnailLabel = document.getElementById("useAlbumThumbnailLabel");
+    useAlbumThumbnailLabel.querySelector("label.switch").addEventListener("change", function () {
+        chrome.storage.sync.get("useAlbumThumbnail", function (result) {
+            let status = useAlbumThumbnailLabel.querySelector("span.switchStatus");
+            handleSwitchStatusAndStorage(status.innerHTML == "OFF", status, "useAlbumThumbnail");
         });
     });
 }

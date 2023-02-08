@@ -43,7 +43,7 @@ const getOEmbedJSON = async videoId => {
     if (!response.ok) {
         throw new Error(response.statusText);
     }
-    const data = response.json()
+    const data = response.json();
     return data;
 }
 
@@ -100,6 +100,7 @@ function getTimeData() {
     }
     else {
         documentData.timeLeft = null;
+        console.log("Unable to get timestamp data for YouTubeDiscordPresence");
     }
 }
 
@@ -107,6 +108,9 @@ function getTimeData() {
 
 function sendDocumentData() {
     if (documentData.title && documentData.author && documentData.timeLeft) {
+        if (documentData.author.endsWith(" - Topic")) {
+            documentData.author = documentData.author.slice(0, -8);
+        }
         let messageEvent = new CustomEvent("SendToLoader", { detail: documentData });
         window.dispatchEvent(messageEvent);
     }
@@ -118,21 +122,31 @@ function handleYouTubeData() {
     let livestreamHTML = videoPlayer.querySelector(LIVESTREAM_ELEMENT_SELECTOR);
     documentData.videoId = getVideoId(videoPlayer.getVideoUrl());
     documentData.applicationType = window.location.href.includes("music.youtube") ? "youtubeMusic" : "youtube";
+
+    if (documentData.applicationType == "youtubeMusic") { // GRABS YT MUSIC ALBUM THUMBNAIL
+        let thumbnail = document.querySelector("#song-image #thumbnail #img");
+        if (thumbnail && "src" in thumbnail && thumbnail.src.startsWith("https://lh3.googleusercontent.com/")) {
+            documentData.thumbnailUrl = thumbnail.src;
+        }
+        else {
+            documentData.thumbnailUrl = undefined;
+        }
+    }
     if (!livestreamHTML) {
-        getOEmbedJSON(documentData.videoId).then(data => {
+        getOEmbedJSON(documentData.videoId).then(data => { // TRY USING OEMBED FIRST
             documentData.title = data.title;
             documentData.author = data.author_name;
             documentData.channelUrl = data.author_url;
             getTimeData();
             sendDocumentData();
-        }).catch(error => {
+        }).catch(error => { // IF THAT DOESN'T WORK, USE SELECTORS
             getLivestreamData();
             getTimeData();
             sendDocumentData();
             console.error(error);
         });
     }
-    else {
+    else { // ALWAYS USE SELECTORS FOR LIVESTREAMS
         getLivestreamData();
         documentData.timeLeft = LIVESTREAM_TIME_ID;
         sendDocumentData();
