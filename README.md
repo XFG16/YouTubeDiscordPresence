@@ -3,7 +3,7 @@
 </p>
 <div align="center">
   <img width="49%" height="auto" src="https://raw.githubusercontent.com/XFG16/YouTubeDiscordPresence/main/Screenshots/ytdpScreenshot1.png?raw=true?">
-  <img width="49%" height="auto" src="https://raw.githubusercontent.com/XFG16/YouTubeDiscordPresence/main/Screenshots/ytdpScreenshot3.png?raw=true">
+  <img width="49%" height="auto" src="https://raw.githubusercontent.com/XFG16/YouTubeDiscordPresence/main/Screenshots/ytdpScreenshot4.png?raw=true">
 </div>
 <div align="center">
   <img width="100%" height="5" src="https://raw.githubusercontent.com/XFG16/YouTubeDiscordPresence/main/Screenshots/ytdpScreenshot1.png?raw=true">
@@ -29,15 +29,15 @@
 </p>
 
 ## General Notes 
- - This is an extension used to create a **detailed rich presence** for YouTube videos and livestreams on Discord. It is a project that I decided to take on towards the end of my freshman year
- - This extension seems appears to work on the Opera web browser
+ - This is an extension used to create a **detailed rich presence** for YouTube and YouTube Music on Discord. It is a project that I decided to take on towards the end of my freshman year
  - Currently, the application only supports **Windows**, although more operating systems will be supported in the future. Stay tuned!
- - Supports both **normal** and **livestream/premiere** videos on YouTube as well as **YouTube Music** songs
- - No, this is not a bootleg copy of PreMiD. In fact, on a more **technical note**, it works similar to the **Spotify rich presence**—it only appears **when a video is playing** and **disappears when there is no video or the video is paused**. In addition, it only displays the presence for videos. Idling and searching are **not displayed**. Features such as exclusions, fully customizable details, and album coverage are unique and original to YouTubeDiscordPresence.
+ - Creates a rich presence for both **normal** and **livestream/premiere** videos on YouTube, as well as **YouTube Music** songs
+    - Includes an **album cover** feature for the currently playing YouTube Music song (if detectable)
 <br><br>
  - There are **two** components:
    - Chrome Extension << Source code [v1.5.2]: `Extension` || Release [v1.5.2]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) >>
    - Desktop Application << Source code [v1.4.1]: `Host` || Release [v1.4.1]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.4.1) >>
+  - No, this is not a bootleg copy of PreMiD. In fact, on a more **technical note**, it works similar to the **Spotify rich presence**—it only appears **when a video is playing** and **disappears when there is no video or the video is paused**. In addition, it only displays the presence for videos. Idling and searching are **not displayed**. Features such as exclusions, fully customizable details, and album coverage are unique and original to YouTubeDiscordPresence.
 
 ## Detailed Installation Instructions
 
@@ -70,7 +70,7 @@ Licensed under the [MIT](https://github.com/XFG16/YouTubeDiscordPresence/blob/ma
 </p>
 <div align="center">
   <img width="49%" height="auto" src="https://raw.githubusercontent.com/XFG16/YouTubeDiscordPresence/main/Screenshots/ytdpScreenshot2.png?raw=true?">
-  <img width="49%" height="auto" src="https://raw.githubusercontent.com/XFG16/YouTubeDiscordPresence/main/Screenshots/ytdpScreenshot4.png?raw=true">
+  <img width="49%" height="auto" src="https://raw.githubusercontent.com/XFG16/YouTubeDiscordPresence/main/Screenshots/ytdpScreenshot3.png?raw=true">
 </div>
 <div align="center">
   <img width="100%" height="5" src="https://raw.githubusercontent.com/XFG16/YouTubeDiscordPresence/main/Screenshots/ytdpScreenshot1.png?raw=true">
