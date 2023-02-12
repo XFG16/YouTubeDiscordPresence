@@ -10,7 +10,7 @@
 </div>
 
 # Installation
-  1. Download the latest `YTDPsetup.msi` file in the [**<ins>releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.4.1) section of this repository and run it on your computer
+  1. Download the latest `YTDPsetup.msi` file in the [**<ins>releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.4.2) section of this repository and run it on your computer
       - If Windows SmartScreen appears, then simply click `More Info` and continue the installation from there
   2. Add the [<ins>**Chrome Extension**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) from the **Chrome Web Store** and turn it on **after installing the desktop component.** If you installed the extension before installing the desktop component, just turn it **off and back on** in `chrome://extensions` after the desktop component is installed
   3. You should be all set and ready to go! To access the **personalization** page, you need to click on the small icon on the **top right of the browser** under the **extensions icon**. It would also be easier to access if you **pinned** the extension. It would be **greatly appreciated** if you could leave a **rating and review** describing your experience on the Chrome Web Store! It would also help a lot if you could **recommend** this to others! Thank you for your consideration and enjoy the extension to its fullest!
@@ -36,7 +36,7 @@
 <br><br>
  - There are **two** components:
    - Chrome Extension << Source code [v1.5.3]: `Extension` || Release [v1.5.2]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) >>
-   - Desktop Application << Source code [v1.4.2]: `Host` || Release [v1.4.1]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.4.1) >>
+   - Desktop Application << Source code [v1.4.2]: `Host` || Release [v1.4.2]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.4.2) >>
   - No, this is not a bootleg copy of PreMiD. In fact, on a more **technical note**, it works similar to the **Spotify rich presence**—it only appears **when a video is playing** and **disappears when there is no video or the video is paused**. In addition, it only displays the presence for videos. Idling and searching are **not displayed**. Features such as exclusions, fully customizable details, and album coverage are unique and original to YouTubeDiscordPresence.
 
 ## Detailed Installation Instructions
