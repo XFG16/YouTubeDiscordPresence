@@ -133,6 +133,12 @@ nativePort.onDisconnect.addListener(handleDisconnect);
 setTimeout(() => {
     if (isNativeConnected) {
         saveStorageKey("isNativeConnected", true);
+        chrome.tabs.query({ url: ["https://www.youtube.com/*", "https://music.youtube.com/*"] }, function (tabs) {
+            let message = { removeWarning: true };
+            for (let i = 0; i < tabs.length; ++i) {
+                chrome.tabs.sendMessage(tabs[i].id, message);
+            }
+        });
         nativePort.onMessage.addListener(handleNativeMessage);
         nativePort.postMessage({ getNativeVersion: true });
     }
@@ -287,6 +293,12 @@ function assertNativeExistence(callback) {
         setTimeout(() => {
             if (isNativeConnected) {
                 saveStorageKey("isNativeConnected", true);
+                chrome.tabs.query({ url: ["https://www.youtube.com/*", "https://music.youtube.com/*"] }, function (tabs) {
+                    let message = { removeWarning: true };
+                    for (let i = 0; i < tabs.length; ++i) {
+                        chrome.tabs.sendMessage(tabs[i].id, message);
+                    }
+                });
                 nativePort.onMessage.addListener(handleNativeMessage);
                 callback();
             }
@@ -335,7 +347,7 @@ function generatePresenceData() {
     }
     if (settings.enablePlayingIcon) {
         assetsData.small_image = "playing-icon-6";
-        assetsData.small_text = "YouTubeDiscordPresence on GitHub" // MAYBE ADD FEATURE TO CHANGE THIS
+        assetsData.small_text = currentMessage.author // MAYBE ADD FEATURE TO CHANGE THIS
     }
 
     let timeStampsData = {};
@@ -433,7 +445,10 @@ let pipeInterval = setInterval(function () {
     }
     if (!(previousMessage.title == currentMessage.title && previousMessage.author == currentMessage.author && previousMessage.thumbnailUrl == currentMessage.thumbnailUrl && skipMessage)) {
         if (nativeVersionStatus < 0) {
-            nativePort.postMessage({ getNativeVersion: true });
+            function getNativeVersion() {
+                nativePort.postMessage({ getNativeVersion: true });
+            }
+            assertNativeExistence(getNativeVersion);
         }
         assertNativeExistence(updateCallback);
     }

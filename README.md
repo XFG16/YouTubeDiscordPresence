@@ -35,8 +35,8 @@
     - Includes an **album cover** feature for the currently playing YouTube Music song (if detectable)
 <br><br>
  - There are **two** components:
-   - Chrome Extension << Source code [v1.5.2]: `Extension` || Release [v1.5.2]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) >>
-   - Desktop Application << Source code [v1.4.1]: `Host` || Release [v1.4.1]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.4.1) >>
+   - Chrome Extension << Source code [v1.5.3]: `Extension` || Release [v1.5.2]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) >>
+   - Desktop Application << Source code [v1.4.2]: `Host` || Release [v1.4.1]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.4.1) >>
   - No, this is not a bootleg copy of PreMiD. In fact, on a more **technical note**, it works similar to the **Spotify rich presence**—it only appears **when a video is playing** and **disappears when there is no video or the video is paused**. In addition, it only displays the presence for videos. Idling and searching are **not displayed**. Features such as exclusions, fully customizable details, and album coverage are unique and original to YouTubeDiscordPresence.
 
 ## Detailed Installation Instructions
@@ -44,13 +44,16 @@
  1. Building the installer from scratch:
     - For C++ version: you can **build** the whole thing yourself with **Visual Studio 2022**. Just download the `Host` directory from this repository and open `YTDPwin.sln` under `Host/YTDPwin` in Visual Studio. Also, make sure to have the **Microsoft Visual Studio Installer Project** extension installed
     - For NodeJS version: download the `NodeHost` directory and use [**<ins>pkg</ins>**](https://github.com/vercel/pkg) to compile the code into an executable. However, you have to link the Chrome extension to the compiled executable manually, which can be done by following [**<ins>this guide</ins>**](https://developer.chrome.com/docs/apps/nativeMessaging/)
+      - Note that in `node_modules/discord-rpc/src/client.js`, the `RPC_CONNECTION_TIMEOUT` was changed from `10e3` to `2500`
 2. Add the [<ins>**Chrome Extension**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) from the **Chrome Web Store**
     - If you want to load the extension without the Chrome Web Store or make edits, download the `Extension` directory, compress it into a zip, and load it onto your browser manually. Make sure that the `"allowed_origins"` key in the JSON file involved in [**<ins>native messaging</ins>**](https://developer.chrome.com/docs/apps/nativeMessaging/) contains the extension's ID.
 
 ## Troubleshooting/Known Issues
  - It only works alongside the **desktop application** of Discord, not the browser version. Also, make sure to have `Display current activity as status message` in your Discord settings **on.**
  - The appearance and disappearance of the rich presence on your profile **can be delayed** because Discord limits the processing of rich presence update requests to once every 15 seconds
- - Otherwise, this is the first thing **you should always do:** head to `chrome://extensions` and turn the extension off and back on, especially if...
+ - Otherwise, this is the first thing **you should always do:** head to `chrome://extensions` and turn the extension off. Then, close your browser, reopen the browser, and turn the extension back on, especially...
+    - If the extension is not appearing even after you installed the desktop application
+      - In this case, it might be a good idea to restart Discord and even your computer if restarting Discord doesn't work
     - If the presence gets stuck at some video at `00:00 left`. This is simply a problem with the client socket API in the way that Discord handles presence update requests
     - If two instances of the rich presence appear on your profile. Again, this is an error with the socket implementation Discord currently has and there is no way around it
 <br><br>

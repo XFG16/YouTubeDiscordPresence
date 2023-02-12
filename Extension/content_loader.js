@@ -34,6 +34,16 @@ mainScript.onload = function () {
 
 // NATIVE APP NOT CONNECTED WARNING
 
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.removeWarning) {
+        let warning = document.getElementById("ytdpClientErrorContainer");
+        if (warning) {
+            warning.remove();
+        }
+    }
+    sendResponse(null);
+});
+
 chrome.storage.sync.get("isNativeConnected", function (result) {
     if (result.isNativeConnected == false) {
         fetch(chrome.runtime.getURL('/warning.html')).then(r => r.text()).then(html => {

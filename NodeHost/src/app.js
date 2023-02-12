@@ -2,7 +2,7 @@
 // MAIN VARIABLE INITIALIZATION
 
 const bundle = require("./bundle");
-const version = "1.4.1"; // CHANGE THIS EVERY UPDATE
+const version = "1.4.2"; // CHANGE THIS EVERY UPDATE
 
 let rpc = require("discord-rpc");
 let client = new rpc.Client({ transport: "ipc" });
@@ -60,44 +60,76 @@ function sendExtensionMessage(success, message, err = null) {
 // PRESENCE HANDLERS
 
 async function updatePresence(presenceData, layer) {
-    try {
-        let successfulUpdate = false;
-        setTimeout(() => {
-            if (!successfulUpdate && layer == 0) {
-                client = new rpc.Client({ transport: "ipc" });
-                client.login({ clientId: currentApplicationId }).then(() => {
-                    updatePresence(presenceData, 1);
-                }).catch((loginErr) => {
-                    sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", loginErr);
-                });
-            }
-        }, 1500);
+    let updated = false, errorCaught = false;
+    setTimeout(() => {
+        if (layer == 0 && !(updated || errorCaught)) {
+            client = new rpc.Client({ transport: "ipc" });
+            client.login({ clientId: currentApplicationId }).then(() => {
+                updatePresence(presenceData, 1);
+            }).catch((loginErr) => {
+                sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", loginErr);
+            });
+        }
+    }, 3000);
 
-        client.request("SET_ACTIVITY", {
-            pid: process.pid,
-            activity: presenceData
-        }).then(() => {
-            successfulUpdate = true;
-            sendExtensionMessage(true, "PRESENCE_UPDATED");
-        }).catch((err) => {
-            sendExtensionMessage(false, "PRESENCE_UPDATING_ERROR: [Discord is likely not running]", err);
-        });
-    } catch (err) {
-        sendExtensionMessage(false, "FATAL_RUNTIME_ERROR", err);
-    }
+    client.request("SET_ACTIVITY", {
+        pid: process.pid,
+        activity: presenceData
+    }).then(() => {
+        updated = true;
+        sendExtensionMessage(true, "PRESENCE_UPDATED");
+    }).catch((err) => { // IMPORTANT NOTE! Under node_modules/discord-rpc/src/client.js, the RPC_CONNECTION_TIMEOUT was changed from 10e3 to 2500
+        errorCaught = true;
+        if (layer == 0) {
+            client = new rpc.Client({ transport: "ipc" });
+            client.login({ clientId: currentApplicationId }).then(() => {
+                updatePresence(presenceData, 1);
+            }).catch((loginErr) => {
+                sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", loginErr);
+            });
+        }
+        else {
+            sendExtensionMessage(false, "PRESENCE_UPDATING_ERROR", err);
+        }
+    });
 }
 
 function clearPresence(callback = null) {
+    let updated = false, errorCaught = false;
+    setTimeout(() => {
+        if (!(updated || errorCaught)) {
+            client = new rpc.Client({ transport: "ipc" });
+            client.login({ clientId: currentApplicationId }).then(() => {
+                sendExtensionMessage(true, "PRESENCE_CLEARED");
+                if (callback) {
+                    callback();
+                }
+            }).catch((loginErr) => {
+                sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", loginErr);
+            });
+        }
+    }, 3000);
+
     client.request("SET_ACTIVITY", {
         pid: process.pid,
         activity: null
     }).then(() => {
+        updated = true;
         sendExtensionMessage(true, "PRESENCE_CLEARED");
         if (callback) {
             callback();
         }
     }).catch((err) => {
-        sendExtensionMessage(false, "PRESENCE_CLEARING_ERROR", err);
+        errorCaught = true;
+        client = new rpc.Client({ transport: "ipc" });
+        client.login({ clientId: currentApplicationId }).then(() => {
+            sendExtensionMessage(true, "PRESENCE_CLEARED");
+            if (callback) {
+                callback();
+            }
+        }).catch((loginErr) => {
+            sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", `${String(err)}, ${String(loginErr)}`);
+        });
     });
 }
 
@@ -123,6 +155,31 @@ const flushChunksQueue = () => {
     chunks.splice(0);
 };
 
+function handleExtensionPayload(json) {
+    if (json.jsApplicationType && json.jsApplicationType != currentApplication) {
+
+        currentApplication = json.jsApplicationType;
+        currentApplicationId = (currentApplication == "youtube") ? APPLICATION_ID : MUSIC_APPLICATION_ID;
+
+        function resetPresence() {
+            client.destroy().then(() => {
+                client = new rpc.Client({ transport: "ipc" });
+                client.login({ clientId: currentApplicationId }).then(() => {
+                    updatePresence(json.presenceData, 0);
+                }).catch((err) => {
+                    sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", err);
+                });
+            }).catch((err) => {
+                sendExtensionMessage(false, "CLIENT_DESTRUCTION_ERROR", err);
+            });
+        }
+        clearPresence(resetPresence);
+    }
+    else {
+        updatePresence(json.presenceData, 0);
+    }
+}
+
 const processData = () => {
     const stringData = Buffer.concat(chunks);
     if (!sizeHasBeenRead()) {
@@ -131,41 +188,22 @@ const processData = () => {
     if (stringData.length >= (payloadSize + 4)) {
         const contentWithoutSize = stringData.slice(4, (payloadSize + 4));
         flushChunksQueue();
+        if (stringData == "-1") {
+            process.kill(process.pid);
+        }
 
         const json = JSON.parse(contentWithoutSize);
         if (json.presenceData == IDLE_MESSAGE) {
+            sendExtensionMessage(true, "CLEAR_REQUEST_RECEIVED");
             clearPresence();
         }
-        else if (json.getNativeVersion) {
-            sendNativeVersion();
-        }
         else if (json.presenceData) {
-            if (json.jsApplicationType && json.jsApplicationType != currentApplication) {
-                if (json.jsApplicationType == "youtube") {
-                    currentApplicationId = APPLICATION_ID;
-                }
-                else {
-                    currentApplicationId = MUSIC_APPLICATION_ID;
-                }
-                currentApplication = json.jsApplicationType;
-
-                function resetPresence() {
-                    client.destroy().then(() => {
-                        client = new rpc.Client({ transport: "ipc" });
-                        client.login({ clientId: currentApplicationId }).then(() => {
-                            updatePresence(json.presenceData, 0);
-                        }).catch((err) => {
-                            sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", err);
-                        });
-                    }).catch((err) => {
-                        sendExtensionMessage(false, "CLIENT_DESTRUCTION_ERROR", err);
-                    });
-                }
-                clearPresence(resetPresence);
-            }
-            else {
-                updatePresence(json.presenceData, 0);
-            }
+            sendExtensionMessage(true, "UPDATE_REQUEST_RECEIVED");
+            handleExtensionPayload(json)
+        }
+        else if (json.getNativeVersion) {
+            sendExtensionMessage(true, "VERSION_REQUEST_RECEIVED");
+            sendNativeVersion();
         }
     }
 };
@@ -176,4 +214,10 @@ process.stdin.on("readable", () => {
         chunks.push(chunk);
     }
     processData();
+});
+
+// EXCEPTION HANDLER
+
+process.on('uncaughtException', function (err) {
+    sendExtensionMessage(false, "FATAL_RUNTIME_ERROR", err);
 });
