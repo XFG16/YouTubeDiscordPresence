@@ -9,10 +9,12 @@ let client = new rpc.Client({ transport: "ipc" });
 
 const LOGGING = true;
 
-const APPLICATION_ID = bundle.YTDP_APPLICATION_ID;
-const MUSIC_APPLICATION_ID = bundle.YTDP_MUSIC_APPLICATION_ID;
-let currentApplication = "youtube"; // "youtube" or "youtubeMusic"
-let currentApplicationId = APPLICATION_ID;
+const YT_APP_ID = bundle.YTDP_APPLICATION_ID;
+const YT_MUSIC_APP_ID = bundle.YTDP_MUSIC_APPLICATION_ID;
+let currentApplication = {
+    type: "youtube", // "youtube" or "youtubeMusic"
+    id: YT_APP_ID
+}
 
 const IDLE_MESSAGE = "#*IDLE*#";
 const CSM = "0_SUCCESS"; // CLIENT_SUCCESS_MESSAGE
@@ -31,21 +33,15 @@ function sendNativeVersion() {
 }
 
 function sendExtensionMessage(success, message, err = null) {
-    if (!LOGGING) {
-        return;
-    }
+    if (!LOGGING) return;
 
     let formattedMessage = null;
     if (success) {
         formattedMessage = `${CSM}: ${message}`;
     }
     else {
-        if (err) {
-            formattedMessage = `${CEM}: ${message}: ${err}`;
-        }
-        else {
-            formattedMessage = `${CEM}: ${message}`;
-        }
+        if (err) formattedMessage = `${CEM}: ${message}: ${err}`;
+        else formattedMessage = `${CEM}: ${message}`;
     }
 
     let dataObject = { data: formattedMessage };
@@ -64,7 +60,7 @@ async function updatePresence(presenceData, layer) {
     setTimeout(() => {
         if (layer == 0 && !(updated || errorCaught)) {
             client = new rpc.Client({ transport: "ipc" });
-            client.login({ clientId: currentApplicationId }).then(() => {
+            client.login({ clientId: currentApplication.id }).then(() => {
                 updatePresence(presenceData, 1);
             }).catch((loginErr) => {
                 sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", loginErr);
@@ -78,11 +74,11 @@ async function updatePresence(presenceData, layer) {
     }).then(() => {
         updated = true;
         sendExtensionMessage(true, "PRESENCE_UPDATED");
-    }).catch((err) => { // IMPORTANT NOTE! Under node_modules/discord-rpc/src/client.js, the RPC_CONNECTION_TIMEOUT was changed from 10e3 to 2500
+    }).catch((err) => { // IMPORTANT NOTE! Under node_modules/discord-rpc/src/client.js, the RPC_CONNECTION_TIMEOUT was changed from 10e3 to 2000
         errorCaught = true;
         if (layer == 0) {
             client = new rpc.Client({ transport: "ipc" });
-            client.login({ clientId: currentApplicationId }).then(() => {
+            client.login({ clientId: currentApplication.id }).then(() => {
                 updatePresence(presenceData, 1);
             }).catch((loginErr) => {
                 sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", loginErr);
@@ -99,11 +95,9 @@ function clearPresence(callback = null) {
     setTimeout(() => {
         if (!(updated || errorCaught)) {
             client = new rpc.Client({ transport: "ipc" });
-            client.login({ clientId: currentApplicationId }).then(() => {
+            client.login({ clientId: currentApplication.id }).then(() => {
                 sendExtensionMessage(true, "PRESENCE_CLEARED");
-                if (callback) {
-                    callback();
-                }
+                if (callback) callback();
             }).catch((loginErr) => {
                 sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", loginErr);
             });
@@ -116,17 +110,13 @@ function clearPresence(callback = null) {
     }).then(() => {
         updated = true;
         sendExtensionMessage(true, "PRESENCE_CLEARED");
-        if (callback) {
-            callback();
-        }
+        if (callback) callback();
     }).catch((err) => {
         errorCaught = true;
         client = new rpc.Client({ transport: "ipc" });
-        client.login({ clientId: currentApplicationId }).then(() => {
+        client.login({ clientId: currentApplication.id }).then(() => {
             sendExtensionMessage(true, "PRESENCE_CLEARED");
-            if (callback) {
-                callback();
-            }
+            if (callback) callback();
         }).catch((loginErr) => {
             sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", `${String(err)}, ${String(loginErr)}`);
         });
@@ -139,7 +129,7 @@ client.on("ready", () => {
     sendExtensionMessage(true, "CLIENT_READY");
 });
 
-client.login({ clientId: currentApplicationId }).catch((err) => {
+client.login({ clientId: currentApplication.id }).catch((err) => {
     sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", err);
 });
 
@@ -156,15 +146,14 @@ const flushChunksQueue = () => {
 };
 
 function handleExtensionPayload(json) {
-    if (json.jsApplicationType && json.jsApplicationType != currentApplication) {
-
-        currentApplication = json.jsApplicationType;
-        currentApplicationId = (currentApplication == "youtube") ? APPLICATION_ID : MUSIC_APPLICATION_ID;
+    if (json.jsApplicationType && json.jsApplicationType != currentApplication.type) {
+        currentApplication.type = json.jsApplicationType;
+        currentApplication.id = (currentApplication.type == "youtube") ? YT_APP_ID : YT_MUSIC_APP_ID;
 
         function resetPresence() {
             client.destroy().then(() => {
                 client = new rpc.Client({ transport: "ipc" });
-                client.login({ clientId: currentApplicationId }).then(() => {
+                client.login({ clientId: currentApplication.id }).then(() => {
                     updatePresence(json.presenceData, 0);
                 }).catch((err) => {
                     sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", err);
@@ -182,28 +171,29 @@ function handleExtensionPayload(json) {
 
 const processData = () => {
     const stringData = Buffer.concat(chunks);
-    if (!sizeHasBeenRead()) {
-        payloadSize = stringData.readUInt32LE(0);
-    }
+    if (!sizeHasBeenRead()) payloadSize = stringData.readUInt32LE(0);
+
     if (stringData.length >= (payloadSize + 4)) {
         const contentWithoutSize = stringData.slice(4, (payloadSize + 4));
         flushChunksQueue();
-        if (stringData == "-1") {
-            process.kill(process.pid);
-        }
 
-        const json = JSON.parse(contentWithoutSize);
-        if (json.presenceData == IDLE_MESSAGE) {
-            sendExtensionMessage(true, "CLEAR_REQUEST_RECEIVED");
-            clearPresence();
+        try {
+            const json = JSON.parse(contentWithoutSize);
+            if (json.presenceData == IDLE_MESSAGE) {
+                sendExtensionMessage(true, "CLEAR_REQUEST_RECEIVED");
+                clearPresence();
+            }
+            else if (json.presenceData) {
+                sendExtensionMessage(true, "UPDATE_REQUEST_RECEIVED");
+                handleExtensionPayload(json)
+            }
+            else if (json.getNativeVersion) {
+                sendExtensionMessage(true, "VERSION_REQUEST_RECEIVED");
+                sendNativeVersion();
+            }
         }
-        else if (json.presenceData) {
-            sendExtensionMessage(true, "UPDATE_REQUEST_RECEIVED");
-            handleExtensionPayload(json)
-        }
-        else if (json.getNativeVersion) {
-            sendExtensionMessage(true, "VERSION_REQUEST_RECEIVED");
-            sendNativeVersion();
+        catch (err) {
+            sendExtensionMessage(false, "FATAL_RUNTIME_ERROR", err);
         }
     }
 };
@@ -214,10 +204,4 @@ process.stdin.on("readable", () => {
         chunks.push(chunk);
     }
     processData();
-});
-
-// EXCEPTION HANDLER
-
-process.on('uncaughtException', function (err) {
-    sendExtensionMessage(false, "FATAL_RUNTIME_ERROR", err);
 });

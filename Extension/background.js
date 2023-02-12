@@ -13,7 +13,7 @@ const NMF = Object.freeze({ // NMF = NATIVE_MESSAGE_FORMAT (FOR HANDLING BY YTDP
 const NORMAL_MESSAGE_DELAY = 1000;
 const LIVESTREAM_TIME_ID = -1;
 const UPDATE_PRESENCE_MESSAGE = "UPDATE_PRESENCE_DATA";
-const REQUIRED_NATIVE_VERSION = "1.4.1";
+const REQUIRED_NATIVE_VERSION = "1.4.2";
 
 let nativeVersionStatus = -2;
 let currentMessage = new Object();
@@ -114,38 +114,52 @@ const handleNativeMessage = (message) => {
         nativeVersionStatus = versionCompare(message.nativeVersion, REQUIRED_NATIVE_VERSION);
         saveStorageKey("nativeVersionStatus", nativeVersionStatus);
     }
+    else if (LOGGING) {
+        console.log(`Unknown application message:\n   ${message}`);
+    }
 }
 
 // CONNECTING TO DESKTOP APP
 
-let isNativeConnected = true;
-let nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
+let isNativeConnected = false;
+let nativePort = {};
 
-function handleDisconnect() {
-    if (chrome.runtime.lastError) {
-        isNativeConnected = false;
-        saveStorageKey("isNativeConnected", false);
-        console.log("The YouTubeDiscordPresence desktop component was not properly installed.\nVisit https://github.com/XFG16/YouTubeDiscordPresence#installation");
+function assertNativeExistence(callback = null) {
+    if (!isNativeConnected) {
+        if (nativePort.disconnect) nativePort.disconnect();
+        nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
+
+        isNativeConnected = true;
+        nativePort.onDisconnect.addListener(() => {
+            if (chrome.runtime.lastError) {
+                isNativeConnected = false;
+                saveStorageKey("isNativeConnected", false);
+                console.log("The YouTubeDiscordPresence desktop component was not properly installed.\nVisit https://github.com/XFG16/YouTubeDiscordPresence#installation");
+            }
+        });
+
+        setTimeout(() => {
+            if (isNativeConnected) {
+                saveStorageKey("isNativeConnected", true);
+                nativePort.onMessage.addListener(handleNativeMessage);
+                if (callback) callback();
+            }
+        }, 1000);
+    }
+    else if (callback) {
+        callback();
     }
 }
 
-nativePort.onDisconnect.addListener(handleDisconnect);
-setTimeout(() => {
-    if (isNativeConnected) {
-        saveStorageKey("isNativeConnected", true);
-        chrome.tabs.query({ url: ["https://www.youtube.com/*", "https://music.youtube.com/*"] }, function (tabs) {
-            let message = { removeWarning: true };
-            for (let i = 0; i < tabs.length; ++i) {
-                chrome.tabs.sendMessage(tabs[i].id, message);
-            }
-        });
-        nativePort.onMessage.addListener(handleNativeMessage);
-        nativePort.postMessage({ getNativeVersion: true });
-    }
-    if (nativeVersionStatus == -2) {
-        saveStorageKey("nativeVersionStatus", -1);
-    }
-}, 400);
+assertNativeExistence(() => {
+    nativePort.postMessage({ getNativeVersion: true });
+    setTimeout(() => {
+        if (nativeVersionStatus == -2) saveStorageKey("nativeVersionStatus", -1);
+    }, 1000);
+});
+setInterval(() => {
+    assertNativeExistence();
+}, 3000);
 
 // STORAGE SAVING HANDLER
 
@@ -275,45 +289,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 const IDLE_DATA_OBJECT = {
     cppData: NMF.TITLE + NMF.IDLE + NMF.AUTHOR + NMF.IDLE + NMF.TIME_LEFT + NMF.IDLE + NMF.END,
     jsTitle: NMF.IDLE,
-    jsAuthor: NMF.IDLE,
-    jsTimeLeft: NMF.IDLE,
-    jsVideoUrl: NMF.IDLE,
-    jsChannelUrl: NMF.IDLE,
-    jsPresenceSettings: NMF.IDLE,
-    jsApplicationType: NMF.IDLE,
     presenceData: NMF.IDLE
 };
 
-function assertNativeExistence(callback) {
-    if (!isNativeConnected) {
-        isNativeConnected = true;
-        nativePort = chrome.runtime.connectNative("com.ytdp.discord.presence");
-        nativePort.onDisconnect.addListener(handleDisconnect);
-
-        setTimeout(() => {
-            if (isNativeConnected) {
-                saveStorageKey("isNativeConnected", true);
-                chrome.tabs.query({ url: ["https://www.youtube.com/*", "https://music.youtube.com/*"] }, function (tabs) {
-                    let message = { removeWarning: true };
-                    for (let i = 0; i < tabs.length; ++i) {
-                        chrome.tabs.sendMessage(tabs[i].id, message);
-                    }
-                });
-                nativePort.onMessage.addListener(handleNativeMessage);
-                callback();
-            }
-        }, 400);
-    }
-    else {
-        callback();
-    }
-}
-
 function idleCallback() {
-    if (LOGGING) {
-        console.log("Idle data sent:\n    #*IDLE*#");
-    }
+    if (LOGGING) console.log("Idle data sent:\n    #*IDLE*#");
     nativePort.postMessage(IDLE_DATA_OBJECT);
+
     currentMessage.scriptId = null;
     previousMessage = {};
     isIdle = true;
@@ -417,9 +399,8 @@ function updateCallback() {
         presenceData: generatePresenceData()
 
     };
-    if (LOGGING) {
-        console.log("Presence data:", dataObject);
-    }
+
+    if (LOGGING) console.log("Presence data:", dataObject);
     nativePort.postMessage(dataObject);
 }
 
@@ -457,6 +438,7 @@ let pipeInterval = setInterval(function () {
     previousMessage.author = currentMessage.author;
     previousMessage.timeLeft = currentMessage.timeLeft;
     previousMessage.thumbnailUrl = currentMessage.thumbnailUrl;
+
     isIdle = false;
 }, NORMAL_MESSAGE_DELAY);
 
