@@ -21,7 +21,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_8FFCDB85772B40009E0456065E42C6C4"
+        "MsmKey" = "8:_A1AA4834500941F59C4EB22662479FE4"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -138,9 +138,9 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8FFCDB85772B40009E0456065E42C6C4"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A1AA4834500941F59C4EB22662479FE4"
             {
-            "SourcePath" = "8:C:\\Program Files\\YouTubeDiscordPresence\\YTDPwin.exe"
+            "SourcePath" = "8:..\\..\\..\\NodeHost\\src\\YTDPwin.exe"
             "TargetName" = "8:YTDPwin.exe"
             "Tag" = "8:"
             "Folder" = "8:_56A3632D70DB4D05A6394C0929BF78F7"

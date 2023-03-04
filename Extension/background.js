@@ -38,7 +38,8 @@ let settings = {
     enableChannelButton: true,
     enablePlayingIcon: true,
     addByAuthor: true,
-    useAlbumThumbnail: true
+    useAlbumThumbnail: true,
+    useThumbnailIcon: false
 }
 
 // MUST RUN EVERY TIME BACKGROUND.JS STARTS - INITIALIZES KEYS JUST IN CASE THEY WEREN'T INITIALIZED BEFORE
@@ -317,19 +318,28 @@ function generatePresenceData() {
         large_text: currentMessage.title.substring(0, 128)
     };
     if (currentMessage.applicationType == "youtubeMusic") {
-        if (settings.useAlbumThumbnail && currentMessage.thumbnailUrl) {
+        if (currentMessage.thumbnailUrl.startsWith("https://lh3.googleusercontent.com/") && settings.useAlbumThumbnail) {
+            assetsData.large_image = currentMessage.thumbnailUrl;
+        }
+        else if (settings.useThumbnailIcon && !currentMessage.thumbnailUrl.startsWith("https://lh3.googleusercontent.com/")) {
             assetsData.large_image = currentMessage.thumbnailUrl;
         }
         else {
             assetsData.large_image = "youtube-music";
         }
     }
-    else if (currentMessage.timeLeft == LIVESTREAM_TIME_ID) {
-        assetsData.large_image = "youtubelive1";
+    else {
+        if (settings.useThumbnailIcon) {
+            assetsData.large_image = currentMessage.thumbnailUrl;
+        }
+        else if (currentMessage.timeLeft == LIVESTREAM_TIME_ID) {
+            assetsData.large_image = "youtubelive1";
+        }
     }
+
     if (settings.enablePlayingIcon) {
         assetsData.small_image = "playing-icon-6";
-        assetsData.small_text = currentMessage.author // MAYBE ADD FEATURE TO CHANGE THIS
+        assetsData.small_text = "YouTubeDiscordPresence on GitHub";
     }
 
     let timeStampsData = {};
@@ -438,7 +448,6 @@ let pipeInterval = setInterval(function () {
     previousMessage.author = currentMessage.author;
     previousMessage.timeLeft = currentMessage.timeLeft;
     previousMessage.thumbnailUrl = currentMessage.thumbnailUrl;
-
     isIdle = false;
 }, NORMAL_MESSAGE_DELAY);
 
@@ -447,4 +456,14 @@ let pipeInterval = setInterval(function () {
 chrome.runtime.onUpdateAvailable.addListener(function (details) {
     console.log(`YTDP IS updating to ${details.version}`);
     chrome.runtime.reload();
+});
+
+// OPEN INSTALLATION PAGE ON CHROME EXTENSION ADDED
+
+chrome.runtime.onInstalled.addListener(function (install) {
+    if (install.reason == chrome.runtime.OnInstalledReason.INSTALL) {
+        chrome.tabs.create({ url: "https://github.com/XFG16/YouTubeDiscordPresence/tree/main#installation" }, function (tab) {
+            console.log("Redirected user to installation page at\nhttps://github.com/XFG16/YouTubeDiscordPresence/tree/main#installation");
+        });
+    }
 });

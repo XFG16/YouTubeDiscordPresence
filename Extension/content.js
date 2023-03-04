@@ -129,9 +129,13 @@ function handleYouTubeData() {
             documentData.thumbnailUrl = thumbnail.src;
         }
         else {
-            documentData.thumbnailUrl = undefined;
+            documentData.thumbnailUrl = `https://i.ytimg.com/vi/${documentData.videoId}/hqdefault.jpg`;
         }
     }
+    else {
+        documentData.thumbnailUrl = `https://i.ytimg.com/vi/${documentData.videoId}/hqdefault.jpg`;
+    }
+
     if (!livestreamHTML) {
         getOEmbedJSON(documentData.videoId).then(data => { // TRY USING OEMBED FIRST
             documentData.title = data.title;

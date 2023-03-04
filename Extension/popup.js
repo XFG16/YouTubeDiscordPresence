@@ -311,6 +311,17 @@ function initializeDocument(tab) {
         }
         handleSwitchStatusAndStorage(result.useAlbumThumbnail, status, null);
     });
+
+    // USE THUMBNAIL FOR LARGE ICON
+    let useThumbnailIconLabel = document.getElementById("useThumbnailIconLabel");
+    chrome.storage.sync.get("useThumbnailIcon", function (result) {
+        let status = useThumbnailIconLabel.querySelector("span.switchStatus");
+        let statusSwitch = useThumbnailIconLabel.querySelector("label.switch > input");
+        if (result.useThumbnailIcon) {
+            statusSwitch.checked = "checked";
+        }
+        handleSwitchStatusAndStorage(result.useThumbnailIcon, status, null);
+    });
 }
 
 // HANDLE USER INTERACTIONS ON MAIN PAGE
@@ -693,6 +704,15 @@ function handleEditPresenceChanges() {
         chrome.storage.sync.get("useAlbumThumbnail", function (result) {
             let status = useAlbumThumbnailLabel.querySelector("span.switchStatus");
             handleSwitchStatusAndStorage(status.innerHTML == "OFF", status, "useAlbumThumbnail");
+        });
+    });
+
+    // USE THUMBNAIL FOR LARGE ICON
+    let useThumbnailIconLabel = document.getElementById("useThumbnailIconLabel");
+    useThumbnailIconLabel.querySelector("label.switch").addEventListener("change", function () {
+        chrome.storage.sync.get("useThumbnailIcon", function (result) {
+            let status = useThumbnailIconLabel.querySelector("span.switchStatus");
+            handleSwitchStatusAndStorage(status.innerHTML == "OFF", status, "useThumbnailIcon");
         });
     });
 }
