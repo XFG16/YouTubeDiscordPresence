@@ -465,5 +465,6 @@ chrome.runtime.onInstalled.addListener(function (install) {
         chrome.tabs.create({ url: "https://github.com/XFG16/YouTubeDiscordPresence/tree/main#installation" }, function (tab) {
             console.log("Redirected user to installation page at\nhttps://github.com/XFG16/YouTubeDiscordPresence/tree/main#installation");
         });
+        saveStorageKey("flashEditPresence", true);
     }
 });

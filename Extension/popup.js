@@ -159,6 +159,14 @@ function initializeDocument(tab) {
         }
     });
 
+    // FLASH EDIT PRESENCE
+    chrome.storage.sync.get("flashEditPresence", function (result) {
+        if (result.flashEditPresence == true) {
+            document.getElementById("editPresenceLabel").classList.add("flashOrange");
+            saveStorageKey("flashEditPresence", false);
+        }
+    });
+
     // OVERALL EXTENSION ENABLED
     let enabledLabel = document.getElementById("enabledLabel");
     chrome.storage.sync.get("enabled", function (result) {
@@ -622,6 +630,10 @@ function handleEditPresenceChanges() {
     let versionWarningReturnBack = versionWarningContainer.querySelector("span.returnBack");
 
     editPresenceLabel.onclick = function () {
+        saveStorageKey("flashEditPresence", false);
+        if (document.getElementById("editPresenceLabel").classList.contains("flashOrange")) {
+            document.getElementById("editPresenceLabel").classList.remove("flashOrange");
+        }
         ytdpSettingsOutside.style.display = "none";
         editPresenceOutside.style.display = "flex";
         chrome.storage.sync.get("nativeVersionStatus", function (result) {

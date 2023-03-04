@@ -214,6 +214,16 @@ body {
     display: none;
 }
 
+@keyframes flashOrangeAnim {
+    50% {
+        background-color: rgb(124, 87, 47);
+    }
+}
+
+.flashOrange {
+    animation: flashOrangeAnim 2s ease-in-out 0s infinite;
+}
+
 div {
     vertical-align: top;
     border: 0%;
