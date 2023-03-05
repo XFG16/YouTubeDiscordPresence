@@ -163,7 +163,6 @@ function initializeDocument(tab) {
     chrome.storage.sync.get("flashEditPresence", function (result) {
         if (result.flashEditPresence == true) {
             document.getElementById("editPresenceLabel").classList.add("flashOrange");
-            saveStorageKey("flashEditPresence", false);
         }
     });
 
@@ -630,8 +629,8 @@ function handleEditPresenceChanges() {
     let versionWarningReturnBack = versionWarningContainer.querySelector("span.returnBack");
 
     editPresenceLabel.onclick = function () {
-        saveStorageKey("flashEditPresence", false);
         if (document.getElementById("editPresenceLabel").classList.contains("flashOrange")) {
+            saveStorageKey("flashEditPresence", false);
             document.getElementById("editPresenceLabel").classList.remove("flashOrange");
         }
         ytdpSettingsOutside.style.display = "none";

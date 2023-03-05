@@ -22,8 +22,6 @@ You should be all set and ready to go! To access the **personalization** page, y
         <img src="https://img.shields.io/badge/Chrome%20Web%20Store-300%2B%20Users-critical" /></a>
     <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Category: Social & Communication">
         <img src="https://img.shields.io/badge/Category-Social%20%26%20Communication-blueviolet" /></a>
-    <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Listing: Featured">
-        <img src="https://img.shields.io/badge/Listing-Featured-blue" /></a>
     <a href="https://github.com/XFG16/YouTubeDiscordPresence#license" alt="MIT License">
         <img src="https://img.shields.io/badge/License-MIT-yellow" /></a>
 </p>
