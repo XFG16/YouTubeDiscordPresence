@@ -19,7 +19,7 @@ You should be all set and ready to go! To access the **personalization** page, y
 
 <p align="left">
     <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Chrome Extension">
-        <img src="https://img.shields.io/badge/Chrome%20Web%20Store-600%2B%20Users-critical" /></a>
+        <img src="https://img.shields.io/badge/Chrome%20Web%20Store-800%2B%20Users-critical" /></a>
     <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Category: Social & Communication">
         <img src="https://img.shields.io/badge/Category-Social%20%26%20Communication-blueviolet" /></a>
     <a href="https://github.com/XFG16/YouTubeDiscordPresence#license" alt="MIT License">
@@ -31,7 +31,7 @@ You should be all set and ready to go! To access the **personalization** page, y
  - Currently, the application only supports **Windows**, although more operating systems will be supported in the future. Stay tuned!
  - Creates a rich presence for both **normal** and **livestream/premiere** videos on YouTube, as well as **YouTube Music** songs. Includes an **album cover** feature for the currently playing YouTube Music song (if detectable) and an optional **thumbnail** feature for YouTube as well.
  - There are **two** components:
-   - Chrome Extension << Source code [v1.5.4]: `Extension` || Release [v1.5.4]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) >>
+   - Chrome Extension << Source code [v1.5.5]: `Extension` || Release [v1.5.4]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) >>
    - Desktop Application << Source code [v1.4.2]: `Host` || Release [v1.4.2]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.4.2) >>
 
 ## Troubleshooting/Known Issues
