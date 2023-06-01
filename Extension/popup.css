@@ -1,3 +1,9 @@
+/*
+Copyright (c) 2022-2023 Michael Ren
+Licensing and distribution info can be found at the GitHub repository
+https://github.com/XFG16/YouTubeDiscordPresence
+*/
+
 * {
     margin: 0px;
     padding: 0px;
@@ -39,7 +45,7 @@ body {
     margin-bottom: -3.5px;
 }
 
-#clientErrorContainer {
+#clientErrorContainer, #osIncompatibleContainer {
     background-color: rgb(214, 40, 40);
     padding-top: 10px;
     padding-bottom: 10px;
@@ -49,7 +55,7 @@ body {
     font-size: 16px;
 }
 
-#clientErrorContainer h1 {
+#clientErrorContainer h1, #osIncompatibleContainer h1 {
     font-size: 19px;
     padding-bottom: 6px;
     border-bottom: solid 2px white;
@@ -57,21 +63,21 @@ body {
     width: fit-content;
 }
 
-#clientErrorContainer h6 {
+#clientErrorContainer h6, #osIncompatibleContainer h6 {
     margin-top: 10px;
     text-align: right;
     font-size: 12px;
     font-family: monospace;
 }
 
-#clientErrorContainer a {
+#clientErrorContainer a, #osIncompatibleContainer a {
     display: inline-block;
     color: rgb(205, 223, 255);
     transition: color 200ms ease-in-out;
     font-weight: 500;
 }
 
-#clientErrorContainer a:hover {
+#clientErrorContainer a:hover, #osIncompatibleContainer a:hover {
     color: rgb(90, 225, 255);
 }
 

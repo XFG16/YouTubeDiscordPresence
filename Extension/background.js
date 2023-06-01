@@ -1,3 +1,9 @@
+/*
+Copyright (c) 2022-2023 Michael Ren
+Licensing and distribution info can be found at the GitHub repository
+https://github.com/XFG16/YouTubeDiscordPresence
+*/
+
 // MAIN VARIABLE INITIALIZATION
 
 const LOGGING = true;

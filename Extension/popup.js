@@ -1,3 +1,9 @@
+/*
+Copyright (c) 2022-2023 Michael Ren
+Licensing and distribution info can be found at the GitHub repository
+https://github.com/XFG16/YouTubeDiscordPresence
+*/
+
 // ==================================
 // SECTION 1: VARIABLE INITIALIZATION
 // ==================================
@@ -124,38 +130,21 @@ function addIeElement(text, key, isDocumentInitializing) {
 // SECTION 3: DOCUMENT INITIALIZATION AND INTERACTION
 // ==================================================
 
-// // CLIENT ERROR HANDLER FOR NODE CLIENT
-
-// chrome.storage.onChanged.addListener(function(changes, namespace) {
-//     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
-//         if (key == "isNodeClientReady") {
-//             if (newValue == false) {
-//                 document.getElementById("clientErrorContainer").style.display = "block";
-//             }
-//             else {
-//                 document.getElementById("clientErrorContainer").style.display = "none";
-//             }
-//         }
-//     }
-// });
-
 // SET KNOWN VALUES WHEN POP.JS IS INITIALIZED
 
 function initializeDocument(tab) {
-    //UPDATE MESSAGE
-    // chrome.storage.sync.get("nodeUpdateMessage_two", function (result) {
-    //     if (result.nodeUpdateMessage_two == undefined) {
-    //         saveStorageKey("nodeUpdateMessage_two", true);
-    //     }
-    //     if (result.nodeUpdateMessage_two != false) {
-    //         document.getElementById("updateMessageContainer").style.display = "block";
-    //     }
-    // });
-
-    // NODE CONNECTION ERROR
-    chrome.storage.sync.get("isNativeConnected", function (result) {
-        if (result.isNativeConnected == false) {
-            document.getElementById("clientErrorContainer").style.display = "block";
+    // INCORRECT OS ERROR
+    chrome.runtime.getPlatformInfo(function(info) {
+        if (info.os != "win") {
+            document.getElementById("osIncompatibleContainer").style.display = "block";
+        }
+        else {
+            // NODE CONNECTION ERROR
+            chrome.storage.sync.get("isNativeConnected", function (result) {
+                if (result.isNativeConnected == false) {
+                    document.getElementById("clientErrorContainer").style.display = "block";
+                }
+            });
         }
     });
 
