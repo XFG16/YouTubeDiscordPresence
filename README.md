@@ -18,9 +18,7 @@ You should be all set and ready to go.
 <br><br>
 To access the **personalization** page, you need to click on the small icon on the **top right of the browser** under the **extensions icon**. It would also be easier to access if you **pinned** the extension.
 <br><br>
-It would be greatly appreciated if you could leave a rating and review describing your experience on the Chrome Web Store! 
-<br>
-Thank you for your consideration and enjoy the extension to its fullest!
+It would be greatly appreciated if you could leave a rating and review describing your experience on the Chrome Web Store! Thank you for your consideration and enjoy the extension to its fullest!
 
 <br><br><br>
 
