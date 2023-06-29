@@ -10,16 +10,25 @@
 </div>
 
 # Installation
-  1. Add the [<ins>**Chrome Extension**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) from the **Chrome Web Store**
+If you're here from the Chrome Web Store, **continue your installation here!**
+  1. Add the [<ins>**Chrome Extension**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) from the **Chrome Web Store** if you haven't already done so
   2. **Download** the latest `YTDPsetup.msi` file in the [**<ins>releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.4.2) section of this repository **and run it on your device** to install the secondary desktop component
 
-You should be all set and ready to go! To access the **personalization** page, you need to click on the small icon on the **top right of the browser** under the **extensions icon**. It would also be easier to access if you **pinned** the extension. It would be **greatly appreciated** if you could leave a **rating and review** describing your experience on the Chrome Web Store! It would also help a lot if you could **recommend** this to others! Thank you for your consideration and enjoy the extension to its fullest!
+You should be all set and ready to go.
+<br><br>
+To access the **personalization** page, you need to click on the small icon on the **top right of the browser** under the **extensions icon**. It would also be easier to access if you **pinned** the extension.
+<br><br>
+It would be greatly appreciated if you could leave a rating and review describing your experience on the Chrome Web Store! 
+<br>
+Thank you for your consideration and enjoy the extension to its fullest!
+
+<br><br><br>
 
 # YouTubeDiscordPresence for Windows (x64)
 
 <p align="left">
     <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Chrome Extension">
-        <img src="https://img.shields.io/badge/Chrome%20Web%20Store-800%2B%20Users-critical" /></a>
+        <img src="https://img.shields.io/badge/Chrome%20Web%20Store-900%2B%20Users-critical" /></a>
     <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Category: Social & Communication">
         <img src="https://img.shields.io/badge/Category-Social%20%26%20Communication-blueviolet" /></a>
     <a href="https://github.com/XFG16/YouTubeDiscordPresence#license" alt="MIT License">
@@ -31,8 +40,10 @@ You should be all set and ready to go! To access the **personalization** page, y
  - Currently, the application only supports **Windows**, although more operating systems will be supported in the future. Stay tuned!
  - Creates a rich presence for both **normal** and **livestream/premiere** videos on YouTube, as well as **YouTube Music** songs. Includes an **album cover** feature for the currently playing YouTube Music song (if detectable) and an optional **thumbnail** feature for YouTube as well.
  - There are **two** components:
-   - Chrome Extension << Source code [v1.5.5]: `Extension` || Release [v1.5.4]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) >>
+   - Chrome Extension << Source code [v1.5.5]: `Extension` || Release [v1.5.5]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) >>
    - Desktop Application << Source code [v1.4.2]: `Host` || Release [v1.4.2]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.4.2) >>
+
+<br>
 
 ## Troubleshooting/Known Issues
  - It only works alongside the **desktop application** of Discord, not the browser version. Also, make sure to have `Display current activity as status message` in your Discord settings **on.**
@@ -46,6 +57,9 @@ Otherwise, this is the first thing **you should always do:** head to `chrome://e
     - This is simply a problem with the client socket API in the way that Discord handles presence update requests. Currently, there is no easy solution around it.
   - If **two or more instances of the rich presence** appear on your profile... 
     - Again, this is an error with the socket implementation Discord currently has and there is currently no easy way around it.
+
+<br>
+
 ## Opening a GitHub Issue
  - If you need more details and have the ability to open an issue, then before that, please head to `chrome://extensions`, **turn on developer mode**, and click **"inspect views <ins>service worker</ins>"**. This should open a developer window. From there, head to the **console** section and describe what the debug log shows.
  - Don't hesistate to open an issue if there's something wrong with YouTubeDiscordPresence. In fact, you should also open one if you have any suggestions for a new feature to be added.
@@ -64,6 +78,8 @@ Otherwise, this is the first thing **you should always do:** head to `chrome://e
  - Press `Alt` + `Enter` to show properties in Visual Studio
 
 **DISCLAIMER:** this is not a bootleg copy of PreMiD. On a more technical note, it works similar to the Spotify rich presence—it only appears **when a video is playing** and **disappears when there is no video or the video is paused**. In addition, it only displays the presence for videos. Idling and searching are **not displayed**. Features such as exclusions, fully customizable details, and thumbnail coverage are **unique and original** to YouTubeDiscordPresence. YouTubeDiscordPresence has not referenced nor is affiliated with PreMiD in any way whatsoever.
+
+<br>
 
 ## License
 Licensed under the [MIT](https://github.com/XFG16/YouTubeDiscordPresence/blob/main/LICENSE.txt) license.
