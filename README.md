@@ -38,7 +38,7 @@ It would be greatly appreciated if you could leave a rating and review describin
  - Currently, the application only supports **Windows**, although more operating systems will be supported in the future. Stay tuned!
  - Creates a rich presence for both **normal** and **livestream/premiere** videos on YouTube, as well as **YouTube Music** songs. Includes an **album cover** feature for the currently playing YouTube Music song (if detectable) and an optional **thumbnail** feature for YouTube as well.
  - There are **two** components:
-   - Chrome Extension << Source code [v1.5.5]: `Extension` || Release [v1.5.5]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) >>
+   - Chrome Extension << Source code [v1.5.6]: `Extension` || Release [v1.5.5]: [<ins>**Chrome Web Store**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) >>
    - Desktop Application << Source code [v1.4.2]: `Host` || Release [v1.4.2]: [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.4.2) >>
 
 <br>

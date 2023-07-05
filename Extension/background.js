@@ -40,6 +40,8 @@ let settings = {
     videoInclusionsList: new Array(),
     keywordInclusionsList: new Array(),
 
+    enableYouTube: true,
+    enableYouTubeMusic: true,
     enableVideoButton: true,
     enableChannelButton: true,
     enablePlayingIcon: true,
@@ -270,8 +272,17 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
 // LISTENER FOR DATA FROM CONTENT_LOADER.JS
 // SELECTION ON WHICH TAB TO DISPLAY IS BASED ON WHICH ONE IS LOADED FIRST BY SETTING CURRENTMESSAGE.SCRIPTID TO NULL
 
+function isApplicationTypeEnabled(applicationType) {
+    if (applicationType == "youtube") {
+        return settings.enableYouTube;
+    }
+    else {
+        return settings.enableYouTubeMusic;
+    }
+}
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.messageType == UPDATE_PRESENCE_MESSAGE && (sender.tab.id == currentMessage.scriptId || currentMessage.scriptId == null) && !isExcluded(message.title, message.author, message.videoId) && isIncluded(message.title, message.author, message.videoId)) {
+    if (message.messageType == UPDATE_PRESENCE_MESSAGE && (sender.tab.id == currentMessage.scriptId || currentMessage.scriptId == null) && !isExcluded(message.title, message.author, message.videoId) && isIncluded(message.title, message.author, message.videoId) && isApplicationTypeEnabled(message.applicationType)) {
         if (!(sender.tab.id in settings.tabEnabledList)) {
             settings.tabEnabledList[sender.tab.id] = true;
         }

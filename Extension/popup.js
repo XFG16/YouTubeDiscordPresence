@@ -253,6 +253,28 @@ function initializeDocument(tab) {
         }
     });
 
+    // ENABLE ON YOUTUBE
+    let enableYouTubeLabel = document.getElementById("enableYouTubeLabel");
+    chrome.storage.sync.get("enableYouTube", function (result) {
+        let status = enableYouTubeLabel.querySelector("span.switchStatus");
+        let statusSwitch = enableYouTubeLabel.querySelector("label.switch > input");
+        if (result.enableYouTube) {
+            statusSwitch.checked = "checked";
+        }
+        handleSwitchStatusAndStorage(result.enableYouTube, status, null);
+    });
+
+    // ENABLE ON YOUTUBE MUSIC
+    let enableYouTubeMusicLabel = document.getElementById("enableYouTubeMusicLabel");
+    chrome.storage.sync.get("enableYouTubeMusic", function (result) {
+        let status = enableYouTubeMusicLabel.querySelector("span.switchStatus");
+        let statusSwitch = enableYouTubeMusicLabel.querySelector("label.switch > input");
+        if (result.enableYouTubeMusic) {
+            statusSwitch.checked = "checked";
+        }
+        handleSwitchStatusAndStorage(result.enableYouTubeMusic, status, null);
+    });
+
     // ENABLE VIDEO BUTTON IN PRESENCE
     let enableVideoButtonLabel = document.getElementById("enableVideoButtonLabel");
     chrome.storage.sync.get("enableVideoButton", function (result) {
@@ -661,6 +683,24 @@ function handleEditPresenceChanges() {
             saveStorageKey("minimizeVersionWarning", false);
         }
     };
+
+    // ENABLE ON YOUTUBE
+    let enableYouTubeLabel = document.getElementById("enableYouTubeLabel");
+    enableYouTubeLabel.querySelector("label.switch").addEventListener("change", function () {
+        chrome.storage.sync.get("enableYouTube", function (result) {
+            let status = enableYouTubeLabel.querySelector("span.switchStatus");
+            handleSwitchStatusAndStorage(status.innerHTML == "OFF", status, "enableYouTube");
+        });
+    });
+
+    // ENABLE ON YOUTUBE MUSIC
+    let enableYouTubeMusicLabel = document.getElementById("enableYouTubeMusicLabel");
+    enableYouTubeMusicLabel.querySelector("label.switch").addEventListener("change", function () {
+        chrome.storage.sync.get("enableYouTubeMusic", function (result) {
+            let status = enableYouTubeMusicLabel.querySelector("span.switchStatus");
+            handleSwitchStatusAndStorage(status.innerHTML == "OFF", status, "enableYouTubeMusic");
+        });
+    });
 
     // VIDEO BUTTON
     let enableVideoButtonLabel = document.getElementById("enableVideoButtonLabel");
