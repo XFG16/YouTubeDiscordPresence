@@ -20,7 +20,7 @@ To access the **personalization** page, you need to click on the small icon on t
 <br><br>
 It would be greatly appreciated if you could leave a rating and review describing your experience on the Chrome Web Store! Thank you for your consideration and enjoy the extension to its fullest!
 
-<br>
+<br><br><br><br><br><br><br><br><br><br>
 
 # YouTubeDiscordPresence for Windows (x64)
 
