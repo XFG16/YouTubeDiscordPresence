@@ -212,13 +212,13 @@ function isExcluded(title, author, videoUrl) {
 
 // CHECK WHETHER OR NOT VIDEO/CHANNEL TITLE OR VIDEO ID IS INCLUDED
 
-function isIncluded(title, author, videoUrl) {
+function isIncluded(title, author, videoId) {
     if (settings.enableInclusions == false) {
         return true;
     }
     for (let i = 0; i < settings.videoInclusionsList.length; ++i) {
         includedVideoId = getVideoId(settings.videoInclusionsList[i]);
-        if (includedVideoId && getVideoId(videoUrl) == includedVideoId) {
+        if (includedVideoId && videoId == includedVideoId) {
             return true;
         }
         if (title == settings.videoInclusionsList[i] || author == settings.videoInclusionsList[i]) {
@@ -291,6 +291,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             currentMessage.title = message.title;
             currentMessage.author = message.author;
             currentMessage.timeLeft = message.timeLeft;
+            currentMessage.videoId = message.videoId;
             currentMessage.videoUrl = "https://youtube.com/watch?v=" + message.videoId;
             currentMessage.channelUrl = message.channelUrl;
             currentMessage.applicationType = message.applicationType;
@@ -433,7 +434,7 @@ function updateCallback() {
 
 let pipeInterval = setInterval(function () {
     let inclusionExclusionStatus = false;
-    if (!(Object.keys(currentMessage).length == 0) && (isExcluded(currentMessage.title, currentMessage.author, currentMessage.videoUrl) || !isIncluded(currentMessage.title, currentMessage.author, currentMessage.videoUrl))) {
+    if (!(Object.keys(currentMessage).length == 0) && (isExcluded(currentMessage.title, currentMessage.author, currentMessage.videoUrl) || !isIncluded(currentMessage.title, currentMessage.author, currentMessage.videoId))) {
         inclusionExclusionStatus = true;
     }
     let delaySinceUpdate = new Date().getTime() - lastUpdated;
