@@ -27,7 +27,7 @@ It would be greatly appreciated if you could leave a rating and review describin
 
 <p align="left">
     <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Chrome Extension">
-        <img src="https://img.shields.io/badge/Chrome%20Web%20Store-1000%2B%20Users-critical" /></a>
+        <img src="https://img.shields.io/badge/Chrome%20Web%20Store-2000%2B%20Users-critical" /></a>
     <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Category: Social & Communication">
         <img src="https://img.shields.io/badge/Category-Social%20%26%20Communication-blueviolet" /></a>
     <a href="https://github.com/XFG16/YouTubeDiscordPresence#license" alt="MIT License">
