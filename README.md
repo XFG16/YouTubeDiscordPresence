@@ -29,7 +29,11 @@ To access the **personalization** page, you need to click on the small icon on t
 <br><br>
 It would be greatly appreciated if you could leave a rating and review describing your experience on the Chrome Web Store! Thank you for your consideration and enjoy the extension to its fullest!
 
-<br><br><br><br><br><br><br><br><br><br>
+<br><br>
+
+![splotch](https://github.com/XFG16/YouTubeDiscordPresence/assets/55029965/e8bb0d9b-71da-4db3-b5fe-c949e0d7a079)
+
+<br>
 
 # YouTubeDiscordPresence for Windows (x64)
 
@@ -64,9 +68,13 @@ Otherwise, this is the first thing **you should always do:** head to `chrome://e
   - If **two or more instances of the rich presence** appear on your profile... 
     - Again, this is an error with the socket implementation Discord currently has and there is currently no easy way around it.
 
+<br>
+
 ## Opening a GitHub Issue
  - If you need more details and have the ability to open an issue, then before that, please head to `chrome://extensions`, **turn on developer mode**, and click **"inspect views <ins>service worker</ins>"**. This should open a developer window. From there, head to the **console** section and describe what the debug log shows.
  - Don't hesistate to open an issue if there's something wrong with YouTubeDiscordPresence. In fact, you should also open one if you have any suggestions for a new feature to be added.
+
+<br>
 
 ## Detailed Installation Instructions
 
@@ -79,9 +87,9 @@ Otherwise, this is the first thing **you should always do:** head to `chrome://e
     - If you want to load the extension without the Chrome Web Store or make edits, download the `Extension` directory, compress it into a zip, and load it onto your browser manually. 
     - Make sure that the `"allowed_origins"` key in the JSON file involved in [**<ins>native messaging</ins>**](https://developer.chrome.com/docs/apps/nativeMessaging/) contains the extension's ID. This file can be found in the location you installed YouTubeDiscordPresence, which is usually `C:\Program Files\YouTubeDiscordPresence` as `main.json`
 
-## Miscellaneous
- - Press `Alt` + `Enter` to show properties in Visual Studio
+<br>
 
+## Miscellaneous
 **DISCLAIMER:** this is not a bootleg copy of PreMiD. On a more technical note, it works similar to the Spotify rich presence—it only appears **when a video is playing** and **disappears when there is no video or the video is paused**. In addition, it only displays the presence for videos. Idling and searching are **not displayed**. Features such as exclusions, fully customizable details, and thumbnail coverage are **unique and original** to YouTubeDiscordPresence. YouTubeDiscordPresence has not referenced nor is affiliated with PreMiD in any way whatsoever.
 
 <br>
