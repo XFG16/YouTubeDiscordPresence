@@ -13,9 +13,9 @@
 
 <p align="left">
     <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Chrome Extension">
-        <img src="https://img.shields.io/badge/Chrome%20Web%20Store-3%2C000%2B%20Users-critical" /></a>
+        <img src="https://img.shields.io/badge/Chrome%20Web%20Store-4%2C000%2B%20Users-critical" /></a>
     <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Category: Social & Communication">
-        <img src="https://img.shields.io/badge/Total%20Installs-11%2C000%2B-blue" /></a>
+        <img src="https://img.shields.io/badge/Total%20Installs-15%2C000%2B-blue" /></a>
 </p>
 
 If you're here from the Chrome Web Store, **continue your installation here!**
