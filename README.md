@@ -18,11 +18,14 @@
         <img src="https://img.shields.io/badge/Total%20Installs-15%2C000%2B-blue" /></a>
 </p>
 
+Watch the installation tutorial on YouTube: **https://www.youtube.com/watch?v=BWPNqPGFyL4**
+
 If you're here from the Chrome Web Store, **continue your installation here!**
   1. Add the [<ins>**Chrome Extension**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) from the **Chrome Web Store** if you haven't already done so
   2. **Download** the latest `YTDPsetup.msi` file in the [**<ins>releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.4.2) section of this repository **and run it on your device** to install the secondary desktop component.
       - **NOTE: Only Windows x64 versions are currently supported.**
 
+<br><br>
 You should be all set and ready to go.
 <br><br>
 To access the **personalization** page, you need to click on the small icon on the **top right of the browser** under the **extensions icon**. It would also be easier to access if you **pinned** the extension.
