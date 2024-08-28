@@ -48,7 +48,7 @@ Recently, Discord has been making major UI/UX changes that have impacted the usa
 <br>
 
 <div align="center">
-  <img width="auto" height="400px" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/main/Extension/Images/newUiExample.png?raw=true">
+  <img width="auto" height="400px" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/main/Screenshots/newUiExample.png?raw=true">
 </div>
 
 <br>
