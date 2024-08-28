@@ -99,7 +99,8 @@ function getLivestreamData() {
 
 function getTimeData() {
     if (videoPlayer.getDuration() && videoPlayer.getCurrentTime()) {
-        documentData.timeLeft = videoPlayer.getDuration() - videoPlayer.getCurrentTime();
+        documentData.duration = videoPlayer.getDuration();
+        documentData.timeLeft = documentData.duration - videoPlayer.getCurrentTime();
         if (documentData.timeLeft < 0) {
             documentData.timeLeft = null;
         }

@@ -18,6 +18,7 @@ window.addEventListener("SendToLoader", function (message) {
         title: message.detail.title,
         author: message.detail.author,
         timeLeft: message.detail.timeLeft,
+        duration: message.detail.duration,
         videoId: message.detail.videoId,
         channelUrl: message.detail.channelUrl,
         applicationType: message.detail.applicationType,

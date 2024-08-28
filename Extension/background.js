@@ -291,6 +291,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             currentMessage.title = message.title;
             currentMessage.author = message.author;
             currentMessage.timeLeft = message.timeLeft;
+            currentMessage.duration = message.duration;
             currentMessage.videoId = message.videoId;
             currentMessage.videoUrl = "https://youtube.com/watch?v=" + message.videoId;
             currentMessage.channelUrl = message.channelUrl;
@@ -361,15 +362,16 @@ function generatePresenceData() {
     }
 
     let timeStampsData = {};
-    // if (currentMessage.timeLeft != LIVESTREAM_TIME_ID) {
-    //     timeStampsData.end = Date.now() + (currentMessage.timeLeft * 1000);
-    // }
-    // else {
-    //     timeStampsData.start = Date.now();
-    // }
-    timeStampsData.start = Date.now();
-    // THIS CHANGE WAS MADE TO ADDRESS THE NEW DISCORD UI/UX
-    // For more information see https://github.com/XFG16/YouTubeDiscordPresence#announcements
+    if (currentMessage.timeLeft != LIVESTREAM_TIME_ID) {
+        // timeStampsData.end = Date.now() + (currentMessage.timeLeft * 1000);
+        
+        // Changed to handle Discord UI/UX updates
+        // For more info, visit https://github.com/XFG16/YouTubeDiscordPresence#announcements
+        timeStampsData.start = Date.now() - ((currentMessage.duration - currentMessage.timeLeft) * 1000);
+    }
+    else {
+        timeStampsData.start = Date.now();
+    }
 
     let buttonsData = [];
     if (settings.enableVideoButton && currentMessage.videoUrl) {
