@@ -39,7 +39,9 @@ Recently, Discord has been making major UI/UX changes that have impacted the usa
 
 1. **Buttons:** Don't worry, Discord did not remove this feature. However, buttons on your profile will no longer show on your client. Instead, they will only show on other people's clients, so your friends and everyone else on Discord will still be able to click the buttons on your profile. If you want proof, simply ask a friend to take a screenshot after you start watching YouTube or YouTube Music.
 
-2. **Time Left:** For some reason, Discord seems to have changed the way RPC calls are made. Again, you might not see a timer on your client, but it will still be visible on everyone else's. This time, however, the time you've spent on a video will be displayed as elapsed time (how long you've been watching it for) instead of time left until the video ends. I will work on addressing this after Discord finalizes their client modifications.
+    - Here's [**<ins>an example</ins>**](https://github.com/discordjs/RPC/issues/180#issuecomment-2313232518).
+
+3. **Time Left:** For some reason, Discord seems to have changed the way RPC calls are made. Again, you might not see a timer on your client, but it will still be visible on everyone else's. This time, however, the time you've spent on a video will be displayed as elapsed time (how long you've been watching it for) instead of time left until the video ends. I will work on addressing this after Discord finalizes their client modifications.
 
 These issues are **not unique to YouTubeDiscordPresence.** For example, you can no longer see Spotify buttons on your own client either.
 
