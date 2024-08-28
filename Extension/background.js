@@ -361,12 +361,15 @@ function generatePresenceData() {
     }
 
     let timeStampsData = {};
-    if (currentMessage.timeLeft != LIVESTREAM_TIME_ID) {
-        timeStampsData.end = Date.now() + (currentMessage.timeLeft * 1000);
-    }
-    else {
-        timeStampsData.start = Date.now();
-    }
+    // if (currentMessage.timeLeft != LIVESTREAM_TIME_ID) {
+    //     timeStampsData.end = Date.now() + (currentMessage.timeLeft * 1000);
+    // }
+    // else {
+    //     timeStampsData.start = Date.now();
+    // }
+    timeStampsData.start = Date.now();
+    // THIS CHANGE WAS MADE TO ADDRESS THE NEW DISCORD UI/UX
+    // For more information see https://github.com/XFG16/YouTubeDiscordPresence#announcements
 
     let buttonsData = [];
     if (settings.enableVideoButton && currentMessage.videoUrl) {

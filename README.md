@@ -74,9 +74,9 @@ These issues are **not unique to YouTubeDiscordPresence.** For example, you can 
 
 ## Troubleshooting/Known Issues
 
-A few things to note before troubleshooting:
+If you're having problems with buttons or time left on videos, please see the **announcements (scroll up)** regarding recent Discord UI/UX changes.
 
-- If you're having problems with buttons or time left on videos, please see the [**<ins>announcements</ins>**](https://github.com/XFG16/YouTubeDiscordPresence#announcements) (scroll up) regarding recent Discord UI/UX changes.
+## Otherwise...
 
 - YouTubeDiscordPresence only works with the **desktop application** of Discord, not the browser version.
 
@@ -86,7 +86,7 @@ A few things to note before troubleshooting:
 
 - The rich presence can also randomly disappear and reappear within a few seconds because Chrome forcibly unloads and reloads the `background.js` in Manifest v3
 
-Otherwise, the first step you should always take is to go to `chrome://extensions` and disable the extension. Then, close and reopen your browser, and re-enable the extension, especially...
+If none of these are the issue, then the first step you should always take is to go to `chrome://extensions` and disable the extension. Then, close and reopen your browser, and re-enable the extension, especially...
 
 - If the extension is **not appearing** even after you installed the desktop application...
 
