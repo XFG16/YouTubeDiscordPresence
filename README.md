@@ -9,8 +9,6 @@
   <img width="100%" height="5" src="https://raw.githubusercontent.com/XFG16/YouTubeDiscordPresence/main/Screenshots/ytdpScreenshot1.png?raw=true">
 </div>
 
-<br>
-
 # Installation
 
 <p align="left">
@@ -26,24 +24,25 @@ If you're here from the Chrome Web Store, **you can skip the first step.**
 
    - To access the personalization page, click the small icon in the top right corner of the browser, located beneath the extensions icon. For easier access, consider pinning the extension.
 
-2. **Download** the latest `YTDPsetup.msi` file in the [**<ins>releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.4.2) section of this repository **and run it on your device** to install the secondary desktop component.
-   - **NOTE: Only Windows x64 versions are currently supported.**
+2. Download the latest `YTDPsetup.msi` file in the [**<ins>releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.4.2) section of this repository and **run it on your device** to install the secondary desktop component.
+
+   - **NOTE:** Only Windows (x64) versions are currently supported.
 
 Still confused? Watch the **installation tutorial** on YouTube using [**<ins>this link</ins>**](https://www.youtube.com/watch?v=BWPNqPGFyL4).
 
-<br>
+---
 
 # Announcements
 
-Recently, Discord has been making major UI/UX changes that have impacted the usability of YouTubeDiscordPresence. **Here are a few things you should know:**
+Recently, Discord has been making major UI/UX changes that have impacted YouTubeDiscordPresence. **Here are a few things you should know:**
 
-1. **Buttons:** Don't worry, Discord did not remove this feature. However, buttons on your profile will no longer show on your client. Instead, they will only show on other people's clients, so your friends and everyone else on Discord will still be able to click the buttons on your profile. If you want proof, simply ask a friend to take a screenshot after you start watching YouTube or YouTube Music.
+1. **Buttons:** Don't worry, Discord did not remove this feature. However, buttons on your profile will no longer show on your client. Instead, they will only be displayed on other people's clients, so everyone else will still be able to click the buttons on your profile. If you want proof, simply ask a friend to take a screenshot after you start watching YouTube or YouTube Music.
 
     - Here's [**<ins>an example</ins>**](https://github.com/discordjs/RPC/issues/180#issuecomment-2313232518).
 
-2. **Time Left:** For some reason, Discord seems to have changed the way RPC calls are made. Again, you might not see a timer on your client, but it will still be visible on everyone else's. This time, however, the time you've spent on a video will be displayed as elapsed time (how long you've been watching it for) instead of time left until the video ends. I will work on addressing this after Discord finalizes their client modifications.
+2. **Time Left:** For whatever reason, Discord deprecated the ability to display time left in a video. As a workaround, YouTubeDiscordPresence will now display how far you are into the video. I will work on addressing this once Discord finalizes its UI/UX updates.
 
-    - An example profile with all the features with new UI/UX updates is shown below. **Again, note that while you might not see it, this is what everyone else using Discord would see.**
+    - An example profile with all the features with new UI/UX updates is shown below. **Again, note that while you might not see all features on your client, this is what everyone else's client would display for your profile.**
 
 <br>
 
@@ -55,7 +54,7 @@ Recently, Discord has been making major UI/UX changes that have impacted the usa
 
 These issues are **not unique to YouTubeDiscordPresence.** For example, you can no longer see Spotify buttons on your own client either.
 
-<br>
+---
 
 # YouTubeDiscordPresence for Windows (x64)
 
@@ -66,41 +65,39 @@ These issues are **not unique to YouTubeDiscordPresence.** For example, you can 
         <img src="https://img.shields.io/badge/License-MIT-yellow" /></a>
 </p>
 
-- This is an extension used to create a **detailed rich presence** for YouTube and YouTube Music on Discord. It is a project that I decided to take on towards the end of my freshman year.
+- This is an extension used to create a detailed rich presence for YouTube and YouTube Music on Discord. It is a project that I decided to take on towards the end of my freshman year.
 
 - Currently, the application only supports **Windows (x64)**, although more operating systems will be supported in the future. Stay tuned!
 
-<br>
+- Any warnings from services like VirusTotal are **false positives** due to YouTubeDiscordPresence being compiled using [**<ins>pkg</ins>**](https://github.com/vercel/pkg), a widely-used app bundler.
+
+---
 
 ## Troubleshooting/Known Issues
 
-If you're having problems with buttons or time left on videos, please see the **announcements (scroll up)** regarding recent Discord UI/UX changes.
+**<ins>If you're having problems with buttons or time left on videos, please see the announcements (scroll up) regarding recent Discord UI/UX changes.</ins>**
 
-## Otherwise...
+Otherwise, see if any of the following address your issue:
 
-- YouTubeDiscordPresence only works with the **desktop application** of Discord, not the browser version.
+- YouTubeDiscordPresence only works with the desktop application of Discord, **not the browser version.**
 
-- Please ensure that `Display current activity as status message` in your Discord settings **on.**
+- Please ensure that `Display current activity as status message` in your Discord settings is **turned on.**
 
 - The appearance and disappearance of the rich presence on your profile **can be delayed** because Discord limits the processing of rich presence update requests to once every 15 seconds.
 
 - The rich presence can also randomly disappear and reappear within a few seconds because Chrome forcibly unloads and reloads the `background.js` in Manifest v3
 
-If none of these are the issue, then the first step you should always take is to go to `chrome://extensions` and disable the extension. Then, close and reopen your browser, and re-enable the extension, especially...
+If none of the above address your issue, then the first step you should always take is to go to `chrome://extensions` and disable the extension. Then, close and reopen your browser, and re-enable the extension, especially...
 
 - If the extension is **not appearing** even after you installed the desktop application...
 
   - In this case, your Discord client is likely ratelimiting YouTubeDiscordPresence. To fix this, **do not simply just reload Discord. Go to your system tray or task manager and quit Discord before relaunching it.**
 
-- If the presence **gets stuck** at some video at `00:00 left`...
-
-  - This is simply a problem with the client socket API in the way that Discord handles presence update requests. Currently, there is no easy solution around it.
-
 - If **two or more instances of the rich presence** appear on your profile...
 
   - Again, this is an error with the socket implementation Discord currently has and there is currently no easy way around it.
 
-<br>
+---
 
 ## Opening a GitHub Issue
 
@@ -108,7 +105,7 @@ If none of these are the issue, then the first step you should always take is to
 
 - Don't hesistate to open an issue if there's something wrong with YouTubeDiscordPresence. In fact, you should also open one if you have any suggestions for a new feature to be added.
 
-<br>
+---
 
 ## Detailed Installation Instructions
 
@@ -128,19 +125,17 @@ If none of these are the issue, then the first step you should always take is to
 
    - Make sure that the `"allowed_origins"` key in the JSON file involved in [**<ins>native messaging</ins>**](https://developer.chrome.com/docs/apps/nativeMessaging/) contains the extension's ID. This file can be found in the location you installed YouTubeDiscordPresence, which is usually `C:\Program Files\YouTubeDiscordPresence` as `main.json`
 
-<br>
+---
 
 ## Miscellaneous
 
 **DISCLAIMER:** this is not a bootleg copy of PreMiD. On a more technical note, it works similar to the Spotify rich presence—it only appears **when a video is playing** and **disappears when there is no video or the video is paused**. In addition, it only displays the presence for videos. Idling and searching are **not displayed**. Features such as exclusions, fully customizable details, and thumbnail coverage are **unique and original** to YouTubeDiscordPresence. YouTubeDiscordPresence has not referenced nor is affiliated with PreMiD in any way whatsoever.
 
-<br>
+---
 
 ## License
 
 Licensed under the [MIT](https://github.com/XFG16/YouTubeDiscordPresence/blob/main/LICENSE.txt) license.
-
-<br>
 
 <p align="center">
   <img width="100%" height="5" src="https://raw.githubusercontent.com/XFG16/YouTubeDiscordPresence/main/Screenshots/ytdpScreenshot1.png?raw=true">
