@@ -41,7 +41,17 @@ Recently, Discord has been making major UI/UX changes that have impacted the usa
 
     - Here's [**<ins>an example</ins>**](https://github.com/discordjs/RPC/issues/180#issuecomment-2313232518).
 
-3. **Time Left:** For some reason, Discord seems to have changed the way RPC calls are made. Again, you might not see a timer on your client, but it will still be visible on everyone else's. This time, however, the time you've spent on a video will be displayed as elapsed time (how long you've been watching it for) instead of time left until the video ends. I will work on addressing this after Discord finalizes their client modifications.
+2. **Time Left:** For some reason, Discord seems to have changed the way RPC calls are made. Again, you might not see a timer on your client, but it will still be visible on everyone else's. This time, however, the time you've spent on a video will be displayed as elapsed time (how long you've been watching it for) instead of time left until the video ends. I will work on addressing this after Discord finalizes their client modifications.
+
+    - An example profile with all the features with new UI/UX updates is shown below. **Again, note that while you might not see it, this is what everyone else using Discord would see.**
+
+<br>
+
+<div align="center">
+  <img width="auto" height="400px" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/main/Extension/Images/newUiExample.png?raw=true">
+</div>
+
+<br>
 
 These issues are **not unique to YouTubeDiscordPresence.** For example, you can no longer see Spotify buttons on your own client either.
 
