@@ -4,7 +4,7 @@
     <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Chrome Extension">
         <img src="https://img.shields.io/badge/Chrome%20Web%20Store-6%2C000%2B%20Users-critical" /></a>
     <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Category: Social & Communication">
-        <img src="https://img.shields.io/badge/Total%20Installs-21%2C000%2B-blue" /></a>
+        <img src="https://img.shields.io/badge/Total%20Installs-24%2C000%2B-blue" /></a>
 </p>
 
 If you're here from the Chrome Web Store, **you can skip the first step.**
