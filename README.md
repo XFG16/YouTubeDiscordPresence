@@ -67,7 +67,8 @@ These issues are **not unique to YouTubeDiscordPresence.** For example, you can 
 
 ## Troubleshooting/Known Issues
 
-**<ins>If you're having problems with buttons or time left on videos, please see the announcements (scroll up) regarding recent Discord UI/UX changes.</ins>**
+> [!IMPORTANT]  
+> Please read the announcements above for how the recent Discord UI/UX changes have impacted YouTubeDiscordPresence. **Don't worry, YouTubeDiscordPresence will still work, but there will be some minor changes to how the rich presence is diplayed.**
 
 Otherwise, see if any of the following address your issue:
 
