@@ -406,6 +406,7 @@ function generatePresenceData() {
         state: stateData.substring(0, 128),
         assets: assetsData,
         timestamps: timeStampsData,
+        type: 2,
     };
     if (buttonsData.length > 0) {
         presenceData.buttons = buttonsData;
