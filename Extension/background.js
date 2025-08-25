@@ -325,6 +325,7 @@ function idleCallback() {
 
 function generatePresenceData() {
     let stateData = "";
+    let activityType = 3; // Activity: Watching
     if (currentMessage.timeLeft != LIVESTREAM_TIME_ID) {
         stateData = settings.addByAuthor ? `by ${currentMessage.author}` : currentMessage.author;
     }
@@ -337,6 +338,8 @@ function generatePresenceData() {
         large_text: currentMessage.title.substring(0, 128)
     };
     if (currentMessage.applicationType == "youtubeMusic") {
+        activityType = 2;
+        
         if (currentMessage.thumbnailUrl.startsWith("https://lh3.googleusercontent.com/") && settings.useAlbumThumbnail) {
             assetsData.large_image = currentMessage.thumbnailUrl;
         }
@@ -348,6 +351,8 @@ function generatePresenceData() {
         }
     }
     else {
+        activityType = 3;
+        
         if (settings.useThumbnailIcon) {
             assetsData.large_image = currentMessage.thumbnailUrl;
         }
@@ -406,7 +411,7 @@ function generatePresenceData() {
         state: stateData.substring(0, 128),
         assets: assetsData,
         timestamps: timeStampsData,
-        type: 2,
+        type: activityType,
     };
     if (buttonsData.length > 0) {
         presenceData.buttons = buttonsData;
