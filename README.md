@@ -4,6 +4,33 @@ This fork features 2 main updates:
 - `Watching` and `Listening` statuses (instead of `Playing`) are now supported for YT and YT Music respectively (credit to [monster010](https://github.com/monster010)).
 - Fixes for Brave users.
 
+# Usage of the fork (running extension locally)
+1. Do the installation steps as described in the [Installation](#installation) section below.
+2. Download the `Extension` folder from [Releases](https://github.com/charleskimbac/YouTubeDiscordPresence2/releases).
+3. Move the `Extension` folder to somewhere safe from deletion, e.g. `Documents`.
+4. Navigate to `chrome://extensions`.
+5. Disable the `YouTubeDiscordPresence` extension you got from the Chrome Web Store.
+6. Turn on developer mode.
+7. Click `Load unpacked` and select the `Extension` folder.
+8. Click the extension's `Details` button.
+9. Copy the `ID` value (should be a bunch of letters).
+10. Navigate to `C:\Program Files\YouTubeDiscordPresence` and open `main.json`.
+11. Go to the `allowed_origins` array and add the ID you copied in step 9.  
+<details>
+<summary>Example</summary>
+<code>
+"allowed_origins": [
+  "chrome-extension://hnmeidgkfcbpjjjpmjmpehjdljlaeaaa/",
+  "chrome-extension://egbflricalalaknbcdhdjajomgclikmz/"
+]
+</code>
+</details>  
+
+12. Save the file.
+13. Restart your browser.  
+
+⭐ Consider starring if this helped you out, thanks!
+
 # Installation
 
 <p align="left">
