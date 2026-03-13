@@ -1,3 +1,9 @@
+# Updates
+
+This fork features 2 main updates:
+- `Watching` and `Listening` statuses (instead of `Playing`) are now supported for YT and YT Music respectively (credit to [monster010](https://github.com/monster010)).
+- Fixes for Brave users.
+
 # Installation
 
 <p align="left">
