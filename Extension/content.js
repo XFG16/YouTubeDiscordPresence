@@ -4,6 +4,9 @@ Licensing and distribution info can be found at the GitHub repository
 https://github.com/XFG16/YouTubeDiscordPresence
 */
 
+// using an IIFE is good practice, and
+// fixes: 'videoPlayer' has already been declared
+(function () {
 // MAIN VARIABLE INITIALIZATION
 
 const LOGGING = false;
@@ -174,3 +177,4 @@ setInterval(function () {
         handleYouTubeData();
     }
 }, NORMAL_MESSAGE_DELAY);
+})();
