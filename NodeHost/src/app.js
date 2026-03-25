@@ -1,7 +1,5 @@
 // Node.js version of YouTubeDiscordPresence (buttons and no watermark!)
 // MAIN VARIABLE INITIALIZATION
-
-const bundle = require("./bundle");
 const version = "1.4.2"; // CHANGE THIS EVERY UPDATE
 
 let rpc = require("discord-rpc");
@@ -9,8 +7,8 @@ let client = new rpc.Client({ transport: "ipc" });
 
 const LOGGING = true;
 
-const YT_APP_ID = bundle.YTDP_APPLICATION_ID;
-const YT_MUSIC_APP_ID = bundle.YTDP_MUSIC_APPLICATION_ID;
+const YT_APP_ID = "847682519214456862";
+const YT_MUSIC_APP_ID = "1064295774592180254";
 let currentApplication = {
     type: "youtube", // "youtube" or "youtubeMusic"
     id: YT_APP_ID
