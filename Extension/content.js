@@ -135,11 +135,11 @@ function handleYouTubeData() {
             documentData.thumbnailUrl = thumbnail.src;
         }
         else {
-            documentData.thumbnailUrl = `https://i.ytimg.com/vi/${documentData.videoId}/hqdefault.jpg`;
+            documentData.thumbnailUrl = `https://i.ytimg.com/vi/${documentData.videoId}/mqdefault.jpg`;
         }
     }
     else {
-        documentData.thumbnailUrl = `https://i.ytimg.com/vi/${documentData.videoId}/hqdefault.jpg`;
+        documentData.thumbnailUrl = `https://i.ytimg.com/vi/${documentData.videoId}/mqdefault.jpg`;
     }
 
     if (!livestreamHTML) {
