@@ -1,0 +1,37 @@
+diff --git a/node_modules/discord-rpc/src/transports/ipc.js b/node_modules/discord-rpc/src/transports/ipc.js
+index f050a01..9f0818a 100644
+--- a/node_modules/discord-rpc/src/transports/ipc.js
++++ b/node_modules/discord-rpc/src/transports/ipc.js
+@@ -40,6 +40,20 @@ function getIPC(id = 0) {
+   });
+ }
+ 
++function getIPCAtIndex(id) {
++  return new Promise((resolve, reject) => {
++    const path = getIPCPath(id);
++    const onerror = () => {
++      reject(new Error(`Could not connect to pipe ${id}`));
++    };
++    const sock = net.createConnection(path, () => {
++      sock.removeListener('error', onerror);
++      resolve(sock);
++    });
++    sock.once('error', onerror);
++  });
++}
++
+ async function findEndpoint(tries = 0) {
+   if (tries > 30) {
+     throw new Error('Could not find endpoint');
+@@ -107,7 +121,10 @@ class IPCTransport extends EventEmitter {
+   }
+ 
+   async connect() {
+-    const socket = this.socket = await getIPC();
++    const pipeIndex = this.client.options.pipeIndex;
++    const socket = this.socket = (pipeIndex !== undefined)
++      ? await getIPCAtIndex(pipeIndex)
++      : await getIPC();
+     socket.on('close', this.onClose.bind(this));
+     socket.on('error', this.onClose.bind(this));
+     this.emit('open');

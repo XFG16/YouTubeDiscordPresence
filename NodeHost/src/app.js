@@ -3,7 +3,6 @@
 const version = "1.4.2"; // CHANGE THIS EVERY UPDATE
 
 let rpc = require("discord-rpc");
-let client = new rpc.Client({ transport: "ipc" });
 
 const LOGGING = true;
 
@@ -17,6 +16,10 @@ let currentApplication = {
 const IDLE_MESSAGE = "#*IDLE*#";
 const CSM = "0_SUCCESS"; // CLIENT_SUCCESS_MESSAGE
 const CEM = "1_CLIENT_ERROR"; // CLIENT_ERROR_MESSAGE
+
+// MULTI-CLIENT STATE
+// Each entry: { client, pipeIndex, ready }
+let clients = [];
 
 // SEND MESSAGE
 
@@ -54,82 +57,134 @@ function sendExtensionMessage(success, message, err = null) {
 // PRESENCE HANDLERS
 
 async function updatePresence(presenceData, layer) {
-    let updated = false, errorCaught = false;
-    setTimeout(() => {
-        if (layer == 0 && !(updated || errorCaught)) {
-            client = new rpc.Client({ transport: "ipc" });
-            client.login({ clientId: currentApplication.id }).then(() => {
-                updatePresence(presenceData, 1);
-            }).catch((loginErr) => {
-                sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", loginErr);
-            });
-        }
-    }, 3000);
+    if (clients.length === 0) {
+        sendExtensionMessage(false, "NO_CLIENTS_CONNECTED");
+        return;
+    }
 
-    client.request("SET_ACTIVITY", {
-        pid: process.pid,
-        activity: presenceData
-    }).then(() => {
-        updated = true;
-        sendExtensionMessage(true, "PRESENCE_UPDATED");
-    }).catch((err) => { // IMPORTANT NOTE! Under node_modules/discord-rpc/src/client.js, the RPC_CONNECTION_TIMEOUT was changed from 10e3 to 2000
-        errorCaught = true;
-        if (layer == 0) {
-            client = new rpc.Client({ transport: "ipc" });
-            client.login({ clientId: currentApplication.id }).then(() => {
-                updatePresence(presenceData, 1);
-            }).catch((loginErr) => {
-                sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", loginErr);
+    let results = await Promise.allSettled(clients.map(async (entry) => {
+        try {
+            await entry.client.request("SET_ACTIVITY", {
+                pid: process.pid,
+                activity: presenceData
             });
+            return { pipeIndex: entry.pipeIndex, success: true };
+        } catch (err) {
+            // Try reconnecting this specific client
+            if (layer === 0) {
+                try {
+                    let newClient = new rpc.Client({ transport: "ipc", pipeIndex: entry.pipeIndex });
+                    await newClient.login({ clientId: currentApplication.id });
+                    entry.client = newClient;
+                    entry.ready = true;
+                    await newClient.request("SET_ACTIVITY", {
+                        pid: process.pid,
+                        activity: presenceData
+                    });
+                    return { pipeIndex: entry.pipeIndex, success: true, reconnected: true };
+                } catch (loginErr) {
+                    return { pipeIndex: entry.pipeIndex, success: false, error: loginErr };
+                }
+            }
+            return { pipeIndex: entry.pipeIndex, success: false, error: err };
         }
-        else {
-            sendExtensionMessage(false, "PRESENCE_UPDATING_ERROR", err);
-        }
-    });
+    }));
+
+    let anySuccess = results.some(r => r.status === "fulfilled" && r.value.success);
+    if (anySuccess) {
+        sendExtensionMessage(true, "PRESENCE_UPDATED");
+    } else {
+        sendExtensionMessage(false, "PRESENCE_UPDATING_ERROR", "All clients failed");
+    }
 }
 
 function clearPresence(callback = null) {
-    let updated = false, errorCaught = false;
-    setTimeout(() => {
-        if (!(updated || errorCaught)) {
-            client = new rpc.Client({ transport: "ipc" });
-            client.login({ clientId: currentApplication.id }).then(() => {
-                sendExtensionMessage(true, "PRESENCE_CLEARED");
-                if (callback) callback();
-            }).catch((loginErr) => {
-                sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", loginErr);
-            });
-        }
-    }, 3000);
-
-    client.request("SET_ACTIVITY", {
-        pid: process.pid,
-        activity: null
-    }).then(() => {
-        updated = true;
-        sendExtensionMessage(true, "PRESENCE_CLEARED");
+    if (clients.length === 0) {
         if (callback) callback();
-    }).catch((err) => {
-        errorCaught = true;
-        client = new rpc.Client({ transport: "ipc" });
-        client.login({ clientId: currentApplication.id }).then(() => {
+        return;
+    }
+
+    Promise.allSettled(clients.map(async (entry) => {
+        try {
+            await entry.client.request("SET_ACTIVITY", {
+                pid: process.pid,
+                activity: null
+            });
+            return { pipeIndex: entry.pipeIndex, success: true };
+        } catch (err) {
+            // Try reconnecting
+            try {
+                let newClient = new rpc.Client({ transport: "ipc", pipeIndex: entry.pipeIndex });
+                await newClient.login({ clientId: currentApplication.id });
+                entry.client = newClient;
+                entry.ready = true;
+                return { pipeIndex: entry.pipeIndex, success: true };
+            } catch (loginErr) {
+                return { pipeIndex: entry.pipeIndex, success: false, error: `${String(err)}, ${String(loginErr)}` };
+            }
+        }
+    })).then((results) => {
+        let anySuccess = results.some(r => r.status === "fulfilled" && r.value.success);
+        if (anySuccess) {
             sendExtensionMessage(true, "PRESENCE_CLEARED");
-            if (callback) callback();
-        }).catch((loginErr) => {
-            sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", `${String(err)}, ${String(loginErr)}`);
-        });
+        } else {
+            sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", "All clients failed to clear");
+        }
+        if (callback) callback();
     });
 }
 
-// CLIENT CONNECTION
+// CLIENT CONNECTION — discover and connect to ALL Discord pipes
 
-client.on("ready", () => {
-    sendExtensionMessage(true, "CLIENT_READY");
-});
+async function discoverAndConnect() {
+    let connectedPipes = new Set(clients.map(c => c.pipeIndex));
 
-client.login({ clientId: currentApplication.id }).catch((err) => {
-    sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", err);
-});
+    for (let pipeIndex = 0; pipeIndex < 4; pipeIndex++) {
+        if (connectedPipes.has(pipeIndex)) continue; // already connected
+
+        try {
+            let client = new rpc.Client({ transport: "ipc", pipeIndex: pipeIndex });
+            client.on("ready", () => {
+                sendExtensionMessage(true, `CLIENT_READY_PIPE_${pipeIndex}`);
+            });
+            await client.login({ clientId: currentApplication.id });
+            clients.push({ client, pipeIndex: pipeIndex, ready: true });
+            sendExtensionMessage(true, `CONNECTED_TO_PIPE_${pipeIndex}`);
+        } catch (err) {
+            // pipe not available or connection failed, skip
+        }
+    }
+
+    if (clients.length === 0) {
+        sendExtensionMessage(false, "NO_DISCORD_CLIENTS_CONNECTED");
+    } else {
+        sendExtensionMessage(true, `CONNECTED_TO_${clients.length}_DISCORD_CLIENTS`);
+    }
+}
+
+// Initial connection
+discoverAndConnect();
+
+// Periodically check for new Discord clients (every 30 seconds)
+setInterval(async () => {
+    let connectedPipes = new Set(clients.map(c => c.pipeIndex));
+
+    for (let pipeIndex = 0; pipeIndex < 4; pipeIndex++) {
+        if (connectedPipes.has(pipeIndex)) continue;
+
+        try {
+            let client = new rpc.Client({ transport: "ipc", pipeIndex: pipeIndex });
+            client.on("ready", () => {
+                sendExtensionMessage(true, `CLIENT_READY_PIPE_${pipeIndex}`);
+            });
+            await client.login({ clientId: currentApplication.id });
+            clients.push({ client, pipeIndex: pipeIndex, ready: true });
+            sendExtensionMessage(true, `NEW_CLIENT_CONNECTED_PIPE_${pipeIndex}`);
+        } catch (err) {
+            // pipe not available, skip
+        }
+    }
+}, 30000);
 
 // // READING DATA FROM BROWSER EXTENSION
 // // REFERENCED FROM: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_messaging#app_side
@@ -148,17 +203,22 @@ function handleExtensionPayload(json) {
         currentApplication.type = json.jsApplicationType;
         currentApplication.id = (currentApplication.type == "youtube") ? YT_APP_ID : YT_MUSIC_APP_ID;
 
-        function resetPresence() {
-            client.destroy().then(() => {
-                client = new rpc.Client({ transport: "ipc" });
-                client.login({ clientId: currentApplication.id }).then(() => {
-                    updatePresence(json.presenceData, 0);
-                }).catch((err) => {
-                    sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", err);
-                });
-            }).catch((err) => {
-                sendExtensionMessage(false, "CLIENT_DESTRUCTION_ERROR", err);
-            });
+        async function resetPresence() {
+            // Destroy all existing clients
+            for (const entry of clients) {
+                try {
+                    await entry.client.destroy();
+                } catch (e) {
+                    // ignore destroy errors
+                }
+            }
+            clients = [];
+
+            // Reconnect all with new app ID
+            await discoverAndConnect();
+
+            // Update presence on all new clients
+            updatePresence(json.presenceData, 0);
         }
         clearPresence(resetPresence);
     }
