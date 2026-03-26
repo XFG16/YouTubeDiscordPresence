@@ -5,7 +5,8 @@
   "main": "src/app.js",
   "scripts": {
     "test": "node src/app.js",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "compile": "pkg -t node14-win . -o YTDPwin.exe"
   },
   "author": "Michael Ren",
   "license": "MIT",
