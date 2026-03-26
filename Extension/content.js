@@ -1,13 +1,13 @@
 /*
 Copyright (c) 2022–Present Michael Ren
+Copyright (c) 2026–Present Charles Kim
 Licensing and distribution info can be found at the GitHub repository
 https://github.com/XFG16/YouTubeDiscordPresence
 */
 
+(function() {
 // MAIN VARIABLE INITIALIZATION
-
 const LOGGING = false;
-
 const VIDEO_ID_SEPARATOR_KEY = "v=";
 const PLAYLIST_SEPRATOR_KEY = "&";
 const NORMAL_MESSAGE_DELAY = 1000;
@@ -24,7 +24,6 @@ const LIVESTREAM_TIME_ID = -1;
 
 let documentData = new Object();
 let videoPlayer = document.getElementById("movie_player");
-let shouldSendData = 0;
 
 // LOGGING
 
@@ -174,3 +173,4 @@ setInterval(function () {
         handleYouTubeData();
     }
 }, NORMAL_MESSAGE_DELAY);
+})();
