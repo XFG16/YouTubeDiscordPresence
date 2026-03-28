@@ -118,6 +118,10 @@ function clearPresence(callback = null) {
                 await newClient.login({ clientId: currentApplication.id });
                 entry.client = newClient;
                 entry.ready = true;
+                await newClient.request("SET_ACTIVITY", {
+                    pid: process.pid,
+                    activity: null
+                });
                 return { pipeIndex: entry.pipeIndex, success: true };
             } catch (loginErr) {
                 return { pipeIndex: entry.pipeIndex, success: false, error: `${String(err)}, ${String(loginErr)}` };
