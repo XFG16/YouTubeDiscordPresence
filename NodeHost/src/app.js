@@ -1,6 +1,6 @@
 // Node.js version of YouTubeDiscordPresence (buttons and no watermark!)
 // MAIN VARIABLE INITIALIZATION
-const version = "1.4.2"; // CHANGE THIS EVERY UPDATE
+const version = "1.6.0"; // CHANGE THIS EVERY UPDATE
 
 let rpc = require("discord-rpc");
 

@@ -19,7 +19,7 @@ const NMF = Object.freeze({ // NMF = NATIVE_MESSAGE_FORMAT (FOR HANDLING BY YTDP
 const NORMAL_MESSAGE_DELAY = 1000;
 const LIVESTREAM_TIME_ID = -1;
 const UPDATE_PRESENCE_MESSAGE = "UPDATE_PRESENCE_DATA";
-const REQUIRED_NATIVE_VERSION = "1.4.2";
+const REQUIRED_NATIVE_VERSION = "1.6.0";
 
 let nativeVersionStatus = -2;
 let currentMessage = new Object();
