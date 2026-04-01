@@ -117,7 +117,12 @@ function versionCompare(v1, v2, options) { // CHECKS IF V1 IS GREATER THAN (1), 
 
 const handleNativeMessage = (message) => {
     if (LOGGING && message.data) {
-        console.log(`Received from application:\n    ${message.data}`);
+        if (message.data.toLowerCase().includes("error")) {
+            console.error(`Received from application:\n    ${message.data}`);
+        }
+        else {
+            console.log(`Received from application:\n    ${message.data}`);
+        }
     }
     else if (message.nativeVersion) {
         nativeVersionStatus = versionCompare(message.nativeVersion, REQUIRED_NATIVE_VERSION);
