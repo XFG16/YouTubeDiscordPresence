@@ -371,11 +371,8 @@ function generatePresenceData() {
 
     let timeStampsData = {};
     if (currentMessage.timeLeft != LIVESTREAM_TIME_ID) {
-        // timeStampsData.end = Date.now() + (currentMessage.timeLeft * 1000);
-        
-        // Changed to handle Discord UI/UX updates
-        // For more info, visit https://github.com/XFG16/YouTubeDiscordPresence#announcements
         timeStampsData.start = Date.now() - ((currentMessage.duration - currentMessage.timeLeft) * 1000);
+        timeStampsData.end = Date.now() + (currentMessage.timeLeft * 1000);
     }
     else {
         timeStampsData.start = Date.now();
