@@ -333,9 +333,12 @@ function generatePresenceData() {
         stateData = settings.addByAuthor ? `[LIVE] on ${currentMessage.author}` : currentMessage.author;
     }
 
+    // large_text and details must be >1 char long, pad with zws
+    let paddedTitle = currentMessage.title.padEnd(2, '\u200b');
+
     let assetsData = {
         large_image: "youtube3",
-        large_text: currentMessage.title.substring(0, 128)
+        large_text: paddedTitle.substring(0, 128)
     };
     if (currentMessage.applicationType == "youtubeMusic") {
         activityType = 2;
@@ -407,7 +410,7 @@ function generatePresenceData() {
     }
 
     let presenceData = {
-        details: currentMessage.title.substring(0, 128),
+        details: paddedTitle.substring(0, 128),
         state: stateData.substring(0, 128),
         assets: assetsData,
         timestamps: timeStampsData,
