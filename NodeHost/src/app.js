@@ -95,7 +95,12 @@ async function updatePresence(presenceData, layer) {
     if (anySuccess) {
         sendExtensionMessage(true, "PRESENCE_UPDATED");
     } else {
-        sendExtensionMessage(false, "PRESENCE_UPDATING_ERROR", "All clients failed");
+        let errors = results
+            .filter(r => r.status === "fulfilled" && !r.value.success)
+            .map(r => `Pipe ${r.value.pipeIndex}: ${r.value.error}`)
+            .join("; ");
+        sendExtensionMessage(false, "PRESENCE_UPDATING_ERROR", errors || "All clients failed");
+        clearPresence();
     }
 }
 
@@ -133,7 +138,11 @@ function clearPresence(callback = null) {
         if (anySuccess) {
             sendExtensionMessage(true, "PRESENCE_CLEARED");
         } else {
-            sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", "All clients failed to clear");
+            let errors = results
+                .filter(r => r.status === "fulfilled" && !r.value.success)
+                .map(r => `Pipe ${r.value.pipeIndex}: ${r.value.error}`)
+                .join("; ");
+            sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", errors || "All clients failed to clear");
         }
         if (callback) callback();
     });
