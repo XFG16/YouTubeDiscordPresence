@@ -206,7 +206,7 @@ setInterval(async () => {
 let payloadSize = null;
 let chunks = [];
 
-const sizeHasBeenRead = () => Boolean(payloadSize);
+const sizeHasBeenRead = () => payloadSize !== null;
 const flushChunksQueue = () => {
     payloadSize = null;
     chunks.splice(0);
