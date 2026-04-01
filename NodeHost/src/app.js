@@ -75,12 +75,13 @@ async function updatePresence(presenceData, layer) {
                 try {
                     let newClient = new rpc.Client({ transport: "ipc", pipeIndex: entry.pipeIndex });
                     await newClient.login({ clientId: currentApplication.id });
-                    entry.client = newClient;
-                    entry.ready = true;
                     await newClient.request("SET_ACTIVITY", {
                         pid: process.pid,
                         activity: presenceData
                     });
+                    // Only replace the old client after SET_ACTIVITY succeeds
+                    entry.client = newClient;
+                    entry.ready = true;
                     return { pipeIndex: entry.pipeIndex, success: true, reconnected: true };
                 } catch (loginErr) {
                     return { pipeIndex: entry.pipeIndex, success: false, error: loginErr };
