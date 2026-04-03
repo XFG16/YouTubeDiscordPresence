@@ -145,6 +145,23 @@ function initializeDocument(tab) {
                     document.getElementById("clientErrorContainer").style.display = "block";
                 }
             });
+            // VERSION WARNING ERROR
+            chrome.storage.sync.get("nativeVersionStatus", function (result) {
+                if (result.nativeVersionStatus == -1) {
+                    let versionWarningContainer = document.getElementById("versionWarningContainer");
+                    let versionWarningMinimizeBody = versionWarningContainer.querySelector(".minimizeBody");
+                    let versionWarningReturnBack = versionWarningContainer.querySelector("span.returnBack");
+                    
+                    versionWarningContainer.style.display = "block";
+                    chrome.storage.sync.get("minimizeVersionWarning", function (result) {
+                        if (result.minimizeVersionWarning) {
+                            versionWarningMinimizeBody.style.display = "none";
+                            versionWarningContainer.style.paddingBottom = "10px";
+                            versionWarningReturnBack.innerHTML = "+";
+                        }
+                    });
+                }
+            });
         }
     });
 
@@ -381,6 +398,26 @@ function handleMainChanges(tab) {
     //     saveStorageKey("nodeUpdateMessage_two", false);
     //     document.getElementById("updateMessageContainer").style.display = "none";
     // };
+
+    // WARNING MINIMIZE BUTTON
+    let versionWarningContainer = document.getElementById("versionWarningContainer");
+    let versionWarningMinimizeBody = versionWarningContainer.querySelector(".minimizeBody");
+    let versionWarningReturnBack = versionWarningContainer.querySelector("span.returnBack");
+
+    versionWarningReturnBack.onclick = function () {
+        if (versionWarningMinimizeBody.style.display == "block") {
+            versionWarningMinimizeBody.style.display = "none";
+            versionWarningContainer.style.paddingBottom = "10px";
+            versionWarningReturnBack.innerHTML = "+";
+            saveStorageKey("minimizeVersionWarning", true);
+        }
+        else {
+            versionWarningMinimizeBody.style.display = "block";
+            versionWarningContainer.style.paddingBottom = "5px";
+            versionWarningReturnBack.innerHTML = "&#8722";
+            saveStorageKey("minimizeVersionWarning", false);
+        }
+    };
 }
 
 // HANDLE CHANGES TO EXCLUSIONS SECTION
@@ -635,10 +672,6 @@ function handleEditPresenceChanges() {
     let editPresenceOutside = document.getElementById("editPresenceOutside");
     let editPresenceLabel = document.getElementById("editPresenceLabel");
 
-    let versionWarningContainer = document.getElementById("versionWarningContainer");
-    let versionWarningMinimizeBody = versionWarningContainer.querySelector(".minimizeBody");
-    let versionWarningReturnBack = versionWarningContainer.querySelector("span.returnBack");
-
     editPresenceLabel.onclick = function () {
         if (document.getElementById("editPresenceLabel").classList.contains("flashOrange")) {
             saveStorageKey("flashEditPresence", false);
@@ -646,18 +679,6 @@ function handleEditPresenceChanges() {
         }
         ytdpSettingsOutside.style.display = "none";
         editPresenceOutside.style.display = "flex";
-        chrome.storage.sync.get("nativeVersionStatus", function (result) {
-            if (result.nativeVersionStatus == -1) {
-                versionWarningContainer.style.display = "block";
-            }
-        });
-        chrome.storage.sync.get("minimizeVersionWarning", function (result) {
-            if (result.minimizeVersionWarning) {
-                versionWarningMinimizeBody.style.display = "none";
-                versionWarningContainer.style.paddingBottom = "10px";
-                versionWarningReturnBack.innerHTML = "+";
-            }
-        });
     }
 
     // X BUTTON TO RETURN BACK TO MAIN PAGE FROM EDIT PRESENCE
@@ -665,24 +686,7 @@ function handleEditPresenceChanges() {
     returnFromEditPresenceLabel.onclick = function () {
         ytdpSettingsOutside.style.display = "flex";
         editPresenceOutside.style.display = "none";
-        versionWarningContainer.style.display = "none";
     }
-
-    // MINIMIZE WARNING ARNING 
-    versionWarningReturnBack.onclick = function () {
-        if (versionWarningMinimizeBody.style.display == "block") {
-            versionWarningMinimizeBody.style.display = "none";
-            versionWarningContainer.style.paddingBottom = "10px";
-            versionWarningReturnBack.innerHTML = "+";
-            saveStorageKey("minimizeVersionWarning", true);
-        }
-        else {
-            versionWarningMinimizeBody.style.display = "block";
-            versionWarningContainer.style.paddingBottom = "5px";
-            versionWarningReturnBack.innerHTML = "&#8722";
-            saveStorageKey("minimizeVersionWarning", false);
-        }
-    };
 
     // ENABLE ON YOUTUBE
     let enableYouTubeLabel = document.getElementById("enableYouTubeLabel");
@@ -774,6 +778,11 @@ window.onload = function () {
         handleExclusionsChanges();
         handleInclusionsChanges();
         handleEditPresenceChanges();
+
+        document.getElementById('extensions-link').addEventListener('click', (event) => {
+            event.preventDefault(); // Stops the '#' from adding to the URL
+            chrome.tabs.create({ url: 'chrome://extensions' });
+        });
     }).catch(error => {
         console.error(error);
     });
