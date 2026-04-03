@@ -54,6 +54,13 @@ function sendExtensionMessage(success, message, err = null) {
     process.stdout.write(data);
 };
 
+// VERIFY DISCORD-RPC PATCH IS APPLIED
+const IPCTransport = require("discord-rpc/src/transports/ipc");
+if (!IPCTransport.prototype.connect.toString().includes("getIPCAtIndex")) {
+    sendExtensionMessage(false, "FATAL_RUNTIME_ERROR", "The 'discord-rpc' package is not patched. Please run 'npm run patch' or 'npx patch-package' in the NodeHost directory.");
+    // if not applied, will only attach to pipe 0 even if multiple discord clients are found
+}
+
 // PRESENCE HANDLERS
 
 async function updatePresence(presenceData, layer) {
