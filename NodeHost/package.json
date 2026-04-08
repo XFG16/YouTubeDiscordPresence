@@ -6,7 +6,9 @@
   "scripts": {
     "test": "node src/app.js",
     "postinstall": "patch-package",
-    "compile": "pkg -t node14-win . -o YTDPwin.exe"
+    "precompile": "node scripts/precompile.js",
+    "compile": "npx pkg -t node14-win . -o src/YTDPwin.exe",
+    "postcompile": "node scripts/postcompile.js"
   },
   "author": "Michael Ren",
   "license": "MIT",
@@ -15,6 +17,8 @@
   },
   "bin": "src/app.js",
   "devDependencies": {
-    "patch-package": "^8.0.1"
+    "patch-package": "^8.0.1",
+    "pkg": "^5.8.1",
+    "resedit-cli": "^3.0.1"
   }
 }

@@ -20,8 +20,8 @@ Host/YTDPwin/YTDPsetup/Release
 NodeHost/node_modules
 NodeHost/src/app-linux
 NodeHost/src/app-macos
-NodeHost/src/bundle.js
 test.js
 config.json
 test.bat
 .env
+NodeHost/src/version.json

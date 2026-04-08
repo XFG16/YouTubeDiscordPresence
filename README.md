@@ -7,7 +7,7 @@
         <img src="https://img.shields.io/badge/Total%20Installs-25%2C000%2B-blue" /></a>
 </p>
 
-If you're here from the Chrome Web Store, **you can skip the first step.**
+If you've already downloaded the extension, **you can skip the first step!**
 
 1. Add the [<ins>**Chrome Extension**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) from the Chrome Web Store
 
@@ -94,10 +94,11 @@ If you have suggestions for new features:
 
 ## Building
 
-Installer:
-   - For the NodeJS version: Use [**<ins>pkg</ins>**](https://github.com/vercel/pkg) with the `NodeHost` directory to compile `app.js` into an executable: `pkg -t node-latest NodeHost -o YTDPwin.exe`. Replace the existing `YTDPwin.exe` in `C:\Program Files\YouTubeDiscordPresence` with the newly compiled one.
+Desktop application:
+   - `npm run compile`
+   - Replace the existing `YTDPwin.exe` in `C:\Program Files\YouTubeDiscordPresence` with the newly compiled one.
 
-   - For the C++ version: you can **build** the whole project yourself with **Visual Studio 2022**. Download the `Host` directory from this repository and open `YTDPwin.sln` under `Host/YTDPwin` in Visual Studio. Ensure you have the **Microsoft Visual Studio Installer Project** extension installed.
+   - Building the `.msi`: Download **Visual Studio 2026** with the **Microsoft Visual Studio Installer Project** extension. Open `Host\YTDPwin\YTDPsetup\YTDPsetup.vdproj` and build `YTDPsetup`.
 
 Extension:
    - Download the `Extension` directory, compress it into a zip, and load it onto your browser manually.
