@@ -34,7 +34,7 @@ Still confused? Watch the **installation tutorial** on YouTube using [**<ins>thi
 
 <br>
 
-<img height="400px" src="https://github.com/XFG16/YouTubeDiscordPresence/blob/main/Screenshots/newUiExample.png?raw=true">
+<img height="350px" src="Screenshots/newUiExample.png">
 
 ## Things to know
 
