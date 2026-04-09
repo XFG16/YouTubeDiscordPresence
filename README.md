@@ -13,7 +13,7 @@ If you've already downloaded the extension, **you can skip the first step!**
 
    - To access personalization settings, click on the extension icon in your browser's extension menu at the top right corner of your browser.
 
-2. Download the latest `YTDPsetup.msi` file in the [**<ins>releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/tag/1.4.2) section of this repository and **run it on your device** to install the secondary desktop component.
+2. Download the latest `YTDPsetup.msi` file in the [**<ins>releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases) section of this repository and **run it on your device** to install the secondary desktop component.
 
    - **Note:** Only Windows (x64) is currently supported.
 
