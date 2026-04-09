@@ -2,9 +2,9 @@
 
 <p align="left">
     <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Chrome Extension">
-        <img src="https://img.shields.io/badge/Chrome%20Web%20Store-8%2C000%2B%20Users-critical" /></a>
+        <img src="https://img.shields.io/badge/Chrome%20Web%20Store-21%2C000%2B%20Users-critical" /></a>
     <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Category: Social & Communication">
-        <img src="https://img.shields.io/badge/Total%20Installs-25%2C000%2B-blue" /></a>
+        <img src="https://img.shields.io/badge/Total%20Installs-71%2C000%2B-blue" /></a>
 </p>
 
 If you've already downloaded the extension, **you can skip the first step!**
