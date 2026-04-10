@@ -36,17 +36,11 @@ Still confused? Watch the **installation tutorial** on YouTube using [**<ins>thi
 
 <img height="350px" src="Screenshots/newUiExample.png">
 
-## Things to know
-
-- **Buttons:** The `Listen Along` and `View Channel` buttons in the rich presence don't show when looking at your own profile, but it will show for others. See the example image above. This is a Discord [**<ins>limitation</ins>**](https://github.com/discordjs/RPC/issues/180#issuecomment-2313232518).
-
-- **Time Left:** Discord deprecated the ability to display the time left in a video, so as a workaround, the rich presence will display how far you are into the video instead.
-
-- **False Positives:** Any warnings from services like VirusTotal are false positives due to YTDP being compiled using [**<ins>pkg</ins>**](https://github.com/vercel/pkg), a widely-used app bundler.
-
 ---
 
 ## Troubleshooting/Known Issues
+
+- The `Listen Along` and `View Channel` buttons in the rich presence don't show when looking at your own profile, but it will show for others. See the example image above. This is a Discord [**<ins>limitation</ins>**](https://github.com/discordjs/RPC/issues/180#issuecomment-2313232518).
 
 - YouTubeDiscordPresence only works with the desktop application of Discord, **not the browser version.**
 
