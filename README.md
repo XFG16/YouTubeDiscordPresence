@@ -7,9 +7,9 @@
         <img src="https://img.shields.io/badge/Total%20Installs-71%2C000%2B-blue" /></a>
 </p>
 
-If you've already downloaded the extension, **you can skip the first step!**
+If you've already downloaded the extension, **skip the first step!**
 
-1. Add the [<ins>**Chrome Extension**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) from the Chrome Web Store
+1. Add the [<ins>**Chrome Extension**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) from the Chrome Web Store.
 
    - To access personalization settings, click on the extension icon in your browser's extension menu at the top right corner of your browser.
 
@@ -66,15 +66,16 @@ If none of the above address your issue, then you should first disable and re-en
 Before submitting a new [Issue](https://github.com/XFG16/YouTubeDiscordPresence/issues/new), please follow these steps to help us debug:
 
 1.  **Search First:** Check if the issue has [already been reported](https://github.com/XFG16/YouTubeDiscordPresence/issues).
-2.  **Inspect the Service Worker:**
-    - Go to `chrome://extensions` in your browser.
-    - Turn on **Developer mode** (top right).
-    - Find `YouTubeDiscordPresence` and click **inspect views: <ins>service worker</ins>**.
-    - In the window that opens, go to the **Console** tab.
-3.  **Provide Details:** In your issue description, include:
-    - What the console log shows (especially any errors in red).
-    - Your Browser (e.g., Chrome, Brave, Edge).
+2.  **Provide Details:**  
+In your issue description, include:
+    - Your browser (e.g., Chrome, Brave, Edge).
     - The extension version.
+    - Pictures.
+    - What the service worker console log shows (especially errors, search 'error').
+        - Go to `chrome://extensions` in your browser.
+        - Turn on **Developer mode** (top right).
+        - Find `YouTubeDiscordPresence` and click **inspect views: <ins>service worker</ins>**.
+        - In the window that opens, go to the **Console** tab.
 
 > [!IMPORTANT]
 > Most connection issues can be fixed by fully quitting Discord (from the system tray) and restarting it, or by restarting your browser.
