@@ -8,7 +8,8 @@
     "postinstall": "patch-package",
     "precompile": "node scripts/precompile.js",
     "compile": "npx pkg -t node14-win . -o src/YTDPwin.exe",
-    "postcompile": "node scripts/postcompile.js"
+    "postcompile": "node scripts/postcompile.js",
+    "postversion": "echo also update version in `background.js`, `manifest.json`, and when building!"
   },
   "author": "Michael Ren",
   "license": "MIT",
