@@ -1,6 +1,6 @@
 {
   "name": "youtube-discord-presence",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "NodeJS version of the YouTubeDiscordPresence desktop component",
   "main": "src/app.js",
   "scripts": {
