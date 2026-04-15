@@ -168,6 +168,16 @@ async function discoverAndConnect() {
             client.on("ready", () => {
                 sendExtensionMessage(true, `CLIENT_READY_PIPE_${pipeIndex}`);
             });
+            
+            // Add disconnect handler to remove stale clients
+            client.on("disconnected", () => {
+                const index = clients.findIndex(c => c.pipeIndex === pipeIndex);
+                if (index !== -1) {
+                    clients.splice(index, 1);
+                    sendExtensionMessage(true, `CLIENT_DISCONNECTED_PIPE_${pipeIndex}`);
+                }
+            });
+            
             await client.login({ clientId: currentApplication.id });
             clients.push({ client, pipeIndex: pipeIndex, ready: true });
             sendExtensionMessage(true, `CONNECTED_TO_PIPE_${pipeIndex}`);
@@ -186,26 +196,8 @@ async function discoverAndConnect() {
 // Initial connection
 discoverAndConnect();
 
-// Periodically check for new Discord clients (every 30 seconds)
-setInterval(async () => {
-    let connectedPipes = new Set(clients.map(c => c.pipeIndex));
-
-    for (let pipeIndex = 0; pipeIndex < 4; pipeIndex++) {
-        if (connectedPipes.has(pipeIndex)) continue;
-
-        try {
-            let client = new rpc.Client({ transport: "ipc", pipeIndex: pipeIndex });
-            client.on("ready", () => {
-                sendExtensionMessage(true, `CLIENT_READY_PIPE_${pipeIndex}`);
-            });
-            await client.login({ clientId: currentApplication.id });
-            clients.push({ client, pipeIndex: pipeIndex, ready: true });
-            sendExtensionMessage(true, `NEW_CLIENT_CONNECTED_PIPE_${pipeIndex}`);
-        } catch (err) {
-            // pipe not available, skip
-        }
-    }
-}, 30000);
+// Periodically check for new Discord clients
+setInterval(discoverAndConnect, 10000);
 
 // // READING DATA FROM BROWSER EXTENSION
 // // REFERENCED FROM: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_messaging#app_side
