@@ -59,21 +59,27 @@ If none of the above address your issue, then you should first disable and re-en
 ## Bugs & Feature Requests
 
 ### Reporting a Bug
-
 Before submitting a new [Issue](https://github.com/XFG16/YouTubeDiscordPresence/issues/new), please follow these steps to help us debug:
 
 1.  **Search First:** Check if the issue has [already been reported](https://github.com/XFG16/YouTubeDiscordPresence/issues).
 2.  **Provide Details:**  
-    In your issue description, include: - Your browser (e.g., Chrome, Brave, Edge). - The extension version. - Pictures. - What the service worker console log shows (especially errors, search 'error'). - Go to `chrome://extensions` in your browser. - Turn on **Developer mode** (top right). - Find `YouTubeDiscordPresence` and click **inspect views: <ins>service worker</ins>**. - In the window that opens, go to the **Console** tab.
+In your issue description, include:
+    - Your browser (e.g., Chrome, Brave, Edge).
+    - The extension version.
+    - Pictures.
+    - What the service worker console log shows (especially errors, search 'error').
+        - Go to `chrome://extensions` in your browser.
+        - Turn on **Developer mode** (top right).
+        - Find `YouTubeDiscordPresence` and click **inspect views: <ins>service worker</ins>**.
+        - In the window that opens, go to the **Console** tab.
 
 > [!IMPORTANT]
 > Most connection issues can be fixed by fully quitting Discord (from the system tray) and restarting it, or by restarting your browser.
 
 ### Requesting a Feature
-
 If you have suggestions for new features:
-
 1.  Check if it's already [been suggested](https://github.com/XFG16/YouTubeDiscordPresence/issues).
+
 2.  Submit a new [Issue](https://github.com/XFG16/YouTubeDiscordPresence/issues/new) and describe your idea in detail!
 
 ---
@@ -87,17 +93,16 @@ Desktop application (Windows):
 
 - Building the `.msi`: Download **Visual Studio 2026** with the **Microsoft Visual Studio Installer Project** extension. Open `Host\YTDPwin\YTDPsetup\YTDPsetup.vdproj` and build `YTDPsetup`.
 
-Desktop application (macOS, Apple Silicon):
+Desktop application (macOS-arm64):
 
 - `npm run compile:mac-arm64`
 - Double click the file created at `src/YouTubeDiscordPresence-mac-arm64.pkg` and follow the installer wizard.
-- The installer places the binary at `/Library/Application Support/YouTubeDiscordPresence/YTDPmac` and registers the native messaging host.
+- The installer places the binary at `/Library/Application Support/YouTubeDiscordPresence/YTDPmac-arm64` and registers the native messaging host.
 
 Extension:
-
 - Download the `Extension` directory, compress it into a zip, and load it onto your browser manually.
 
-- Make sure that the `"allowed_origins"` key in the JSON file involved in [**<ins>native messaging</ins>**](https://developer.chrome.com/docs/apps/nativeMessaging/) contains the extension's ID. This file should be found at `C:\Program Files\YouTubeDiscordPresence` as `main.json`.
+- Make sure that the `"allowed_origins"` key in the JSON file involved in [**<ins>native messaging</ins>**](https://developer.chrome.com/docs/apps/nativeMessaging/) contains the extension's ID. This file should be found at `C:\Program Files\YouTubeDiscordPresence` as `main.json` for Windows.
 
 ---
 
