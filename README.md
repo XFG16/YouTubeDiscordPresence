@@ -13,13 +13,13 @@ If you've already downloaded the extension, **skip the first step!**
    - To access personalization settings, click on the extension icon in your browser's extension menu at the top right corner of your browser.
 
 2. Download the latest `YTDPsetup.msi` file in the [**<ins>releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases) section of this repository and **run it on your device** to install the secondary desktop component.
-   - **Note:** Only Windows (x64) and MacOS (arm64) are currently supported.
+   - **Note:** Only Windows (x64) and macOS (arm64) are currently supported.
 
 Still confused? Watch the **installation tutorial** on YouTube using [**<ins>this link</ins>**](https://www.youtube.com/watch?v=BWPNqPGFyL4).
 
 ---
 
-# YouTubeDiscordPresence for Windows (x64)
+# YouTubeDiscordPresence
 
 <p align="left">
     <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Category: Social & Communication">
@@ -28,7 +28,7 @@ Still confused? Watch the **installation tutorial** on YouTube using [**<ins>thi
         <img src="https://img.shields.io/badge/License-MIT-yellow" /></a>
 </p>
 
-**YouTubeDiscordPresence** (YTDP) is an application and browser extension used to create a detailed rich presence for YouTube and YouTube Music on Discord. Only **Windows (x64)** is supported, although more operating systems may be supported in the future.
+**YouTubeDiscordPresence** (YTDP) is an application and browser extension used to create a detailed rich presence for YouTube and YouTube Music on Discord. Only **Windows (x64)** and **macOS (arm64)** is supported, although more operating systems may be supported in the future.
 
 <br>
 
@@ -86,7 +86,7 @@ If you have suggestions for new features:
 
 ## Building
 
-Desktop application (Windows):
+Desktop application (Windows-x64):
 
 - `npm run compile`
 - Replace the existing `YTDPwin.exe` in `C:\Program Files\YouTubeDiscordPresence` with the newly compiled one.

@@ -24,7 +24,7 @@ if [ ! -f "$BINARY_SRC" ]; then
     exit 1
 fi
 
-# We use package.json version here to use *.*.*-style versioning, not the one for Windows
+# We use the package.json version here (instead of version.json, which is used for Windows) for *.*.*-style versioning
 VERSION=$(node -p "require('$NODEHOST_DIR/package.json').version")
 
 echo "YouTubeDiscordPresence — macOS .pkg builder"
