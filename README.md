@@ -48,42 +48,13 @@ Still confused? Watch the **installation tutorial** on YouTube using [**<ins>thi
 
 - The rich presence may randomly disappear and reappear within a few seconds due to Chrome forcibly unloading and reloading `background.js` in Manifest v3.
 
-If none of the above address your issue, then you should first disable and re-enable the extension. Then close and reopen your browser, especially...
-
-- If the extension is **not appearing** even after you installed the desktop application...
-
-  - In this case, your Discord client is likely ratelimiting YTDP. To fix this, do not simply just reload Discord. Go to your system tray or task manager and quit Discord before relaunching it.
-
-- If **two or more instances of the rich presence** appear on your profile...
-
-  - This is an error with the socket implementation Discord currently has and there is currently no easy way around it.
+You should try fully closing your browser and Discord (from the system tray), and then reopening them.
 
 ---
 
-## Bugs & Feature Requests
+## Bugs, Feature Requests, or Support
 
-### Reporting a Bug
-Before submitting a new [Issue](https://github.com/XFG16/YouTubeDiscordPresence/issues/new), please follow these steps to help us debug:
-
-1.  **Search First:** Check if the issue has [already been reported](https://github.com/XFG16/YouTubeDiscordPresence/issues).
-2.  **Provide Details:**  
-In your issue description, include:
-    - Your browser (e.g., Chrome, Brave, Edge).
-    - The extension version.
-    - Pictures.
-    - What the service worker console log shows (especially errors, search 'error').
-        - Go to `chrome://extensions` in your browser.
-        - Turn on **Developer mode** (top right).
-        - Find `YouTubeDiscordPresence` and click **inspect views: <ins>service worker</ins>**.
-        - In the window that opens, go to the **Console** tab.
-
-> [!IMPORTANT]
-> Most connection issues can be fixed by fully quitting Discord (from the system tray) and restarting it, or by restarting your browser.
-
-### Requesting a Feature
-If you have suggestions for new features:
-1.  Check if it's already [been suggested](https://github.com/XFG16/YouTubeDiscordPresence/issues).
-2.  Submit a new [Issue](https://github.com/XFG16/YouTubeDiscordPresence/issues/new) and describe your idea in detail!
+Go [here](https://github.com/XFG16/YouTubeDiscordPresence/issues/new/choose) and follow the template!
 
 ---
 

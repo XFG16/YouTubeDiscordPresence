@@ -1,0 +1,28 @@
+name: Feature request
+description: Suggest an idea or improvement
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before submitting, please see if the feature has already been requsted for:
+        https://github.com/XFG16/YouTubeDiscordPresence/issues
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Duplicate check
+      options:
+        - label: I searched existing issues and did not find a duplicate
+          required: true
+
+  - type: textarea
+    id: feature_description
+    attributes:
+      label: Feature description
+      description: Describe your idea in detail! Include pictures if necessary.
+      placeholder: What your idea would look like
+    validations:
+      required: true

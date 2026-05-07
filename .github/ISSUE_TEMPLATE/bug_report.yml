@@ -1,0 +1,99 @@
+name: Bug report
+description: Report a bug to help us debug and fix it
+title: "[Bug]: "
+labels:
+  - investigating
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before submitting, please see if the bug has already been reported:
+        https://github.com/XFG16/YouTubeDiscordPresence/issues
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Duplicate check
+      options:
+        - label: I searched existing issues and it has not been reported yet
+          required: true
+
+  - type: dropdown
+    id: operating_system
+    attributes:
+      label: Operating system
+      description: What operating system are you using?
+      options:
+        - Windows
+        - macOS-arm64
+    validations:
+      required: true
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      description: Which browser are you using?
+      options:
+        - Chrome
+        - Edge
+        - Brave
+        - Opera
+        - Vivaldi
+        - Other (share below)
+    validations:
+      required: true
+
+  - type: input
+    id: extension_version
+    attributes:
+      label: Extension version
+      description: |
+        What version of the extension are you using?
+        1. Go to chrome://extensions
+        2. Turn on Developer mode (top right)
+        3. Find YouTubeDiscordPresence and click Details
+        4. See the Version section  
+        PS. This flow will be improved in the next update.
+      placeholder: for example, 1.6.1
+    validations:
+      required: true
+
+  - type: input
+    id: desktop_version
+    attributes:
+      label: Desktop version
+      description: |
+        What version of the desktop app are you using?
+        1. Press WinKey + R
+        2. Enter "C:\Program Files\YouTubeDiscordPresence"
+        3. Right click YTDPwin.exe and click Properties
+        4. Click Details at the top
+        5. See the File version section  
+        PS. This flow will be improved in the next update.
+      placeholder: for example, 19.1.6.1
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug_description
+    attributes:
+      label: Describe the bug
+      description: What happens right now and what should happen instead? Include steps and pictures/examples.
+      placeholder: A clear and concise description of the problem
+    validations:
+      required: true
+
+  - type: textarea
+    id: service_worker_log
+    attributes:
+      label: Service worker console log
+      description: |
+        Not required, but it really helps us to debug, and we will probably ask for it later. To get the logs:
+        1. Go to chrome://extensions
+        2. Turn on Developer mode (top right)
+        3. Find YouTubeDiscordPresence and click "inspect views: service worker"
+        4. In the window that opens, go to the Console tab at the top
+        5. Filter/search "error", select all, and paste here (if any).
+      placeholder: Paste console output here
+      render: shell
