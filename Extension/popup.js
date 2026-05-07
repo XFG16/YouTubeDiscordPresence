@@ -359,6 +359,25 @@ function initializeDocument(tab) {
         }
         handleSwitchStatusAndStorage(result.useThumbnailIcon, status, null);
     });
+
+    // DISPLAY VERSION INFORMATION
+    // Get extension version from manifest
+    const manifestData = chrome.runtime.getManifest();
+    const extensionVersion = manifestData.version;
+    document.getElementById("extensionVersion").textContent = `Extension: v${extensionVersion}`;
+
+    // Get desktop app version from storage
+    chrome.storage.sync.get(["nativeVersion", "nativeVersionStatus", "isNativeConnected"], function (result) {
+        const desktopVersionElement = document.getElementById("desktopVersion");
+        
+        if (result.nativeVersion) {
+            desktopVersionElement.textContent = `Desktop: v${result.nativeVersion}`;
+        } else if (result.isNativeConnected === true) {
+            desktopVersionElement.textContent = "Desktop: Connected";
+        } else if (result.isNativeConnected === false) {
+            desktopVersionElement.textContent = "Desktop: Not connected";
+        }
+    });
 }
 
 // HANDLE USER INTERACTIONS ON MAIN PAGE

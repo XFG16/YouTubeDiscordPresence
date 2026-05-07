@@ -127,6 +127,7 @@ const handleNativeMessage = (message) => {
     else if (message.nativeVersion) {
         nativeVersionStatus = versionCompare(message.nativeVersion, REQUIRED_NATIVE_VERSION);
         saveStorageKey("nativeVersionStatus", nativeVersionStatus);
+        saveStorageKey("nativeVersion", message.nativeVersion);
     }
     else if (LOGGING) {
         console.log(`Unknown application message:\n   ${message}`);
