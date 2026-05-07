@@ -10,18 +10,16 @@
 If you've already downloaded the extension, **skip the first step!**
 
 1. Add the [<ins>**Chrome Extension**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) from the Chrome Web Store.
-
    - To access personalization settings, click on the extension icon in your browser's extension menu at the top right corner of your browser.
 
 2. Download the latest `YTDPsetup.msi` file in the [**<ins>releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases) section of this repository and **run it on your device** to install the secondary desktop component.
-
-   - **Note:** Only Windows (x64) is currently supported.
+   - **Note:** Only Windows (x64) and macOS (arm64) are currently supported.
 
 Still confused? Watch the **installation tutorial** on YouTube using [**<ins>this link</ins>**](https://www.youtube.com/watch?v=BWPNqPGFyL4).
 
 ---
 
-# YouTubeDiscordPresence for Windows (x64)
+# YouTubeDiscordPresence
 
 <p align="left">
     <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Category: Social & Communication">
@@ -30,7 +28,7 @@ Still confused? Watch the **installation tutorial** on YouTube using [**<ins>thi
         <img src="https://img.shields.io/badge/License-MIT-yellow" /></a>
 </p>
 
-**YouTubeDiscordPresence** (YTDP) is an application and browser extension used to create a detailed rich presence for YouTube and YouTube Music on Discord. Only **Windows (x64)** is supported, although more operating systems may be supported in the future.
+**YouTubeDiscordPresence** (YTDP) is an application and browser extension used to create a detailed rich presence for YouTube and YouTube Music on Discord. Only **Windows (x64)** and **macOS (arm64)** is supported, although more operating systems may be supported in the future.
 
 <br>
 
@@ -51,11 +49,9 @@ Still confused? Watch the **installation tutorial** on YouTube using [**<ins>thi
 If none of the above address your issue, then you should first disable and re-enable the extension. Then close and reopen your browser, especially...
 
 - If the extension is **not appearing** even after you installed the desktop application...
-
   - In this case, your Discord client is likely ratelimiting YTDP. To fix this, do not simply just reload Discord. Go to your system tray or task manager and quit Discord before relaunching it.
 
 - If **two or more instances of the rich presence** appear on your profile...
-
   - This is an error with the socket implementation Discord currently has and there is currently no easy way around it.
 
 ---
@@ -83,22 +79,30 @@ In your issue description, include:
 ### Requesting a Feature
 If you have suggestions for new features:
 1.  Check if it's already [been suggested](https://github.com/XFG16/YouTubeDiscordPresence/issues).
+
 2.  Submit a new [Issue](https://github.com/XFG16/YouTubeDiscordPresence/issues/new) and describe your idea in detail!
 
 ---
 
 ## Building
 
-Desktop application:
-   - `npm run compile`
-   - Replace the existing `YTDPwin.exe` in `C:\Program Files\YouTubeDiscordPresence` with the newly compiled one.
+Desktop application (Windows-x64):
 
-   - Building the `.msi`: Download **Visual Studio 2026** with the **Microsoft Visual Studio Installer Project** extension. Open `Host\YTDPwin\YTDPsetup\YTDPsetup.vdproj` and build `YTDPsetup`.
+- `npm run compile`
+- Replace the existing `YTDPwin.exe` in `C:\Program Files\YouTubeDiscordPresence` with the newly compiled one.
+
+- Building the `.msi`: Download **Visual Studio 2026** with the **Microsoft Visual Studio Installer Project** extension. Open `Host\YTDPwin\YTDPsetup\YTDPsetup.vdproj` and build `YTDPsetup`.
+
+Desktop application (macOS-arm64):
+
+- `npm run compile:mac-arm64`
+- Double click the file created at `src/YouTubeDiscordPresence-mac-arm64.pkg` and follow the installer wizard.
+- The installer places the binary at `/Library/Application Support/YouTubeDiscordPresence/YTDPmac-arm64` and registers the native messaging host.
 
 Extension:
-   - Download the `Extension` directory, compress it into a zip, and load it onto your browser manually.
+- Download the `Extension` directory, compress it into a zip, and load it onto your browser manually.
 
-   - Make sure that the `"allowed_origins"` key in the JSON file involved in [**<ins>native messaging</ins>**](https://developer.chrome.com/docs/apps/nativeMessaging/) contains the extension's ID. This file should be found at `C:\Program Files\YouTubeDiscordPresence` as `main.json`.
+- Make sure that the `"allowed_origins"` key in the JSON file involved in [**<ins>native messaging</ins>**](https://developer.chrome.com/docs/apps/nativeMessaging/) contains the extension's ID. This file should be found at `C:\Program Files\YouTubeDiscordPresence` as `main.json` for Windows.
 
 ---
 
