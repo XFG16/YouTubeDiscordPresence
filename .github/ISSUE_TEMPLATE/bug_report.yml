@@ -18,6 +18,28 @@ body:
         - label: I searched existing issues and it has not been reported yet
           required: true
 
+  - type: textarea
+    id: bug_description
+    attributes:
+      label: Bug description
+      description: What happens right now and what should happen instead? Include example links and screenshots.
+      placeholder: A clear and concise description of the problem
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug_steps
+    attributes:
+      label: Steps to reproduce
+      description: How did the bug happen and what steps did you take?
+      placeholder: |
+        1.
+        2.
+        3.
+        ...
+    validations:
+      required: true
+
   - type: dropdown
     id: operating_system
     attributes:
@@ -54,7 +76,7 @@ body:
         2. Turn on Developer mode (top right)
         3. Find YouTubeDiscordPresence and click Details
         4. See the Version section  
-        PS. This flow will be improved in the next update.
+        PS. This flow will be improved in a future update.
       placeholder: for example, 1.6.1
     validations:
       required: true
@@ -70,17 +92,8 @@ body:
         3. Right click YTDPwin.exe and click Properties
         4. Click Details at the top
         5. See the File version section  
-        PS. This flow will be improved in the next update.
+        PS. This flow will be improved in a future update.
       placeholder: for example, 19.1.6.1
-    validations:
-      required: true
-
-  - type: textarea
-    id: bug_description
-    attributes:
-      label: Describe the bug
-      description: What happens right now and what should happen instead? Include steps and pictures/examples.
-      placeholder: A clear and concise description of the problem
     validations:
       required: true
 
