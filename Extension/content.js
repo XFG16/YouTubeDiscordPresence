@@ -129,18 +129,7 @@ function handleYouTubeData() {
     documentData.videoId = getVideoId(videoPlayer.getVideoUrl());
     documentData.applicationType = window.location.href.includes("music.youtube") ? "youtubeMusic" : "youtube";
 
-    if (documentData.applicationType == "youtubeMusic") { // GRABS YT MUSIC ALBUM THUMBNAIL
-        let thumbnail = document.querySelector("#song-image #thumbnail #img");
-        if (thumbnail && "src" in thumbnail && thumbnail.src.startsWith("https://lh3.googleusercontent.com/")) {
-            documentData.thumbnailUrl = thumbnail.src;
-        }
-        else {
-            documentData.thumbnailUrl = `https://i.ytimg.com/vi/${documentData.videoId}/mqdefault.jpg`;
-        }
-    }
-    else {
-        documentData.thumbnailUrl = `https://i.ytimg.com/vi/${documentData.videoId}/mqdefault.jpg`;
-    }
+    documentData.thumbnailUrl = `https://i.ytimg.com/vi/${documentData.videoId}/mqdefault.jpg`;
 
     if (!livestreamHTML) {
         getOEmbedJSON(documentData.videoId).then(data => { // TRY USING OEMBED FIRST

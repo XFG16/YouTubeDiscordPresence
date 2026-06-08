@@ -46,8 +46,7 @@ let settings = {
     enableChannelButton: true,
     enablePlayingIcon: true,
     addByAuthor: true,
-    useAlbumThumbnail: true,
-    useThumbnailIcon: false
+    useThumbnailIcon: true
 }
 
 // MUST RUN EVERY TIME BACKGROUND.JS STARTS - INITIALIZES KEYS JUST IN CASE THEY WEREN'T INITIALIZED BEFORE
@@ -349,10 +348,7 @@ function generatePresenceData() {
     if (currentMessage.applicationType == "youtubeMusic") {
         activityType = 2;
         
-        if (currentMessage.thumbnailUrl.startsWith("https://lh3.googleusercontent.com/") && settings.useAlbumThumbnail) {
-            assetsData.large_image = currentMessage.thumbnailUrl;
-        }
-        else if (settings.useThumbnailIcon && !currentMessage.thumbnailUrl.startsWith("https://lh3.googleusercontent.com/")) {
+        if (settings.useThumbnailIcon) {
             assetsData.large_image = currentMessage.thumbnailUrl;
         }
         else {

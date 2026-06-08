@@ -338,16 +338,6 @@ function initializeDocument(tab) {
         handleSwitchStatusAndStorage(result.addByAuthor, status, null);
     });
 
-    // USE ALBUM COVER FOR YOUTUBE MUSIC
-    let useAlbumThumbnailLabel = document.getElementById("useAlbumThumbnailLabel");
-    chrome.storage.sync.get("useAlbumThumbnail", function (result) {
-        let status = useAlbumThumbnailLabel.querySelector("span.switchStatus");
-        let statusSwitch = useAlbumThumbnailLabel.querySelector("label.switch > input");
-        if (result.useAlbumThumbnail) {
-            statusSwitch.checked = "checked";
-        }
-        handleSwitchStatusAndStorage(result.useAlbumThumbnail, status, null);
-    });
 
     // USE THUMBNAIL FOR LARGE ICON
     let useThumbnailIconLabel = document.getElementById("useThumbnailIconLabel");
@@ -763,14 +753,6 @@ function handleEditPresenceChanges() {
         });
     });
 
-    // USE ALBUM COVER FOR YOUTUBE MUSIC
-    let useAlbumThumbnailLabel = document.getElementById("useAlbumThumbnailLabel");
-    useAlbumThumbnailLabel.querySelector("label.switch").addEventListener("change", function () {
-        chrome.storage.sync.get("useAlbumThumbnail", function (result) {
-            let status = useAlbumThumbnailLabel.querySelector("span.switchStatus");
-            handleSwitchStatusAndStorage(status.innerHTML == "OFF", status, "useAlbumThumbnail");
-        });
-    });
 
     // USE THUMBNAIL FOR LARGE ICON
     let useThumbnailIconLabel = document.getElementById("useThumbnailIconLabel");

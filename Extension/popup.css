@@ -12,7 +12,7 @@ https://github.com/XFG16/YouTubeDiscordPresence
 html,
 body {
     width: 404px;
-    height: 500px;
+    height: 600px;
     background-color: rgb(40, 40, 40);
     margin: 0px;
     display: block;
@@ -191,7 +191,7 @@ body {
 .pageOutside {
     margin-top: 4px;
     width: 100%;
-    height: 500px;
+    height: 485px;
     display: flex;
 }
 
