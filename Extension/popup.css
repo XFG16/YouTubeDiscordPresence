@@ -4,189 +4,220 @@ Licensing and distribution info can be found at the GitHub repository
 https://github.com/XFG16/YouTubeDiscordPresence
 */
 
+/* ─── macOS Dark Theme ─────────────────────────────────────────────────────── */
+
+:root {
+    /* macOS dark mode system colors */
+    --bg-primary: #1c1c1e;
+    --bg-secondary: #2c2c2e;
+    --bg-tertiary: #3a3a3c;
+    --bg-elevated: #242426;
+    --bg-input: #3a3a3c;
+
+    --text-primary: rgba(255, 255, 255, 0.92);
+    --text-secondary: rgba(255, 255, 255, 0.55);
+    --text-tertiary: rgba(255, 255, 255, 0.3);
+
+    --separator: rgba(255, 255, 255, 0.1);
+    --separator-strong: rgba(255, 255, 255, 0.16);
+
+    --accent-blue: #0a84ff;
+    --accent-green: #34c759;
+    --accent-red: #ff453a;
+    --accent-orange: #ff9f0a;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+
+    --font:
+        -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+        system-ui, sans-serif;
+
+    /* ie button colors (overridden by popup.js) */
+    --videoExclusionsInputButtonBackgroundColor: var(--bg-tertiary);
+    --videoExclusionsInputButtonTextColor: var(--text-secondary);
+    --videoExclusionsInputButtonBackgroundColorHover: #48484a;
+    --keywordExclusionsInputButtonBackgroundColor: var(--bg-tertiary);
+    --keywordExclusionsInputButtonTextColor: var(--text-secondary);
+    --keywordExclusionsInputButtonBackgroundColorHover: #48484a;
+
+    --videoInclusionsInputButtonBackgroundColor: var(--bg-tertiary);
+    --videoInclusionsInputButtonTextColor: var(--text-secondary);
+    --videoInclusionsInputButtonBackgroundColorHover: #48484a;
+    --keywordInclusionsInputButtonBackgroundColor: var(--bg-tertiary);
+    --keywordInclusionsInputButtonTextColor: var(--text-secondary);
+    --keywordInclusionsInputButtonBackgroundColorHover: #48484a;
+}
+
 * {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 html,
 body {
     width: 404px;
     height: 600px;
-    background-color: rgb(40, 40, 40);
-    margin: 0px;
+    background-color: var(--bg-primary);
+    font-family: var(--font);
     display: block;
     position: relative;
     overflow-y: auto;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
 }
+
+/* ─── Scrollbars ────────────────────────────────────────────────────────────── */
 
 ::-webkit-scrollbar {
     width: 4px;
 }
 
 ::-webkit-scrollbar-track {
-    background: rgb(128, 128, 128);
+    background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: rgb(215, 215, 215);
-    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.18);
+    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: rgb(170, 170, 170);
+    background-color: rgba(255, 255, 255, 0.3);
 }
+
+div::-webkit-scrollbar {
+    width: 4px;
+}
+
+div::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+div::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 4px;
+}
+
+div::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.28);
+}
+
+/* ─── Header image ──────────────────────────────────────────────────────────── */
 
 #ytdpSettingsTitle {
     width: 100%;
     height: auto;
     margin: 1px;
     margin-bottom: -3.5px;
+    border-radius: 14px 14px 0 0;
+    display: block;
 }
 
-#clientErrorContainer, #osIncompatibleContainer {
-    background-color: rgb(214, 40, 40);
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
-    color: rgb(240, 240, 240);
-    font-size: 16px;
-}
+/* ─── Error / Warning banners ───────────────────────────────────────────────── */
 
-#clientErrorContainer h1, #osIncompatibleContainer h1 {
-    font-size: 19px;
-    padding-bottom: 6px;
-    border-bottom: solid 2px white;
-    margin-bottom: 5px;
-    width: fit-content;
-}
-
-#clientErrorContainer h6, #osIncompatibleContainer h6 {
-    margin-top: 10px;
-    text-align: right;
-    font-size: 12px;
-    font-family: monospace;
-}
-
-#clientErrorContainer a, #osIncompatibleContainer a {
-    display: inline-block;
-    color: rgb(205, 223, 255);
-    transition: color 200ms ease-in-out;
-    font-weight: 500;
-}
-
-#clientErrorContainer a:hover, #osIncompatibleContainer a:hover {
-    color: rgb(90, 225, 255);
-}
-
-#updateMessageContainer {
-    width: 100%;
-    margin-bottom: 5px;
-    background-color: rgb(254, 115, 46);
-}
-
-#updateMessageContainer h1 {
-    padding-top: 15px;
-    padding-left: 20px;
-    padding-bottom: 5px;
-    color: white;
-    font-size: 20px;
-}
-
-#updateMessageContainer p {
-    padding-bottom: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
-    color: rgb(240, 240, 240);
-    font-size: 16px;
-}
-
-#updateMessageContainer a {
-    color: rgb(215, 240, 255);
-    transition: color 200ms ease-in-out;
-}
-
-#updateMessageContainer a:hover {
-    color: rgb(90, 225, 255);
-}
-
-#updateMessageContainer h6 {
-    border-top: solid 2px white;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-top: 5px;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    color: white;
-    font-weight: 400;
+#clientErrorContainer,
+#osIncompatibleContainer {
+    background-color: rgba(255, 69, 58, 0.18);
+    border-left: 3px solid var(--accent-red);
+    padding: 12px 18px;
+    color: var(--text-primary);
     font-size: 14px;
 }
 
-#updateMessageContainer .returnBack {
-    color: white;
-    border-color: white;
-    margin-top: 15px;
-    margin-right: 15px;
+#clientErrorContainer h1,
+#osIncompatibleContainer h1 {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255, 69, 58, 0.35);
+    margin-bottom: 6px;
+    width: fit-content;
+    color: var(--accent-red);
 }
 
-#updateMessageContainer .returnBack:hover {
-    opacity: 0.7;
+#clientErrorContainer h6,
+#osIncompatibleContainer h6 {
+    margin-top: 10px;
+    text-align: right;
+    font-size: 11px;
+    font-family: "SF Mono", "Menlo", monospace;
+    color: var(--text-tertiary);
+    font-weight: 400;
 }
+
+#clientErrorContainer a,
+#osIncompatibleContainer a {
+    display: inline-block;
+    color: var(--accent-blue);
+    transition: opacity 150ms ease;
+    font-weight: 500;
+}
+
+#clientErrorContainer a:hover,
+#osIncompatibleContainer a:hover {
+    opacity: 0.75;
+}
+
+/* ─── Version warning ───────────────────────────────────────────────────────── */
 
 #versionWarningContainer {
     width: 100%;
     margin-bottom: 5px;
-    background-color: rgb(190, 93, 11);
+    background-color: rgba(255, 159, 10, 0.15);
+    border-left: 3px solid var(--accent-orange);
 }
 
 #versionWarningContainer h1 {
-    padding-top: 15px;
-    padding-left: 20px;
-    padding-bottom: 5px;
-    color: white;
-    font-size: 18px;
+    padding: 14px 18px 4px;
+    color: var(--accent-orange);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
 }
 
 #versionWarningContainer p {
-    padding-bottom: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
-    color: rgb(240, 240, 240);
-    font-size: 14px;
+    padding: 0 18px 10px;
+    color: var(--text-primary);
+    font-size: 13px;
+    line-height: 1.5;
 }
 
 #versionWarningContainer a {
-    color: rgb(215, 240, 255);
-    transition: color 200ms ease-in-out;
+    color: var(--accent-blue);
+    transition: opacity 150ms ease;
 }
 
 #versionWarningContainer a:hover {
-    color: rgb(90, 225, 255);
+    opacity: 0.75;
 }
 
 #versionWarningContainer h6 {
-    border-top: solid 2px white;
-    margin-left: 20px;
-    margin-right: 20px;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    color: white;
+    border-top: 1px solid rgba(255, 159, 10, 0.25);
+    margin: 0 18px;
+    padding: 8px 0 16px;
+    color: var(--text-tertiary);
     font-weight: 400;
-    font-size: 12px;
+    font-size: 11px;
+    font-family: "SF Mono", "Menlo", monospace;
 }
 
 #versionWarningContainer .returnBack {
-    color: white;
-    border-color: white;
-    margin-top: 15px;
-    margin-right: 20px;
+    color: var(--text-secondary);
+    border-color: var(--separator-strong);
+    margin-top: 12px;
+    margin-right: 16px;
 }
 
 #versionWarningContainer .returnBack:hover {
-    opacity: 0.7;
+    color: var(--text-primary);
+    opacity: 1;
 }
+
+/* ─── Page layout ───────────────────────────────────────────────────────────── */
 
 .pageOutside {
     margin-top: 4px;
@@ -200,12 +231,11 @@ body {
     width: 92%;
     height: 92%;
     margin: 2%;
-    background-color: rgb(50, 50, 50);
-    border-radius: 5px;
-    padding-right: 4%;
-    padding-left: 4%;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    background-color: var(--bg-elevated);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--separator);
+    padding: 14px 18px 18px;
+    overflow-y: auto;
 }
 
 #exclusionsOutside {
@@ -220,9 +250,11 @@ body {
     display: none;
 }
 
+/* ─── Animations ────────────────────────────────────────────────────────────── */
+
 @keyframes flashOrangeAnim {
     50% {
-        background-color: rgb(124, 87, 47);
+        background-color: rgba(255, 159, 10, 0.15);
     }
 }
 
@@ -230,110 +262,177 @@ body {
     animation: flashOrangeAnim 2s ease-in-out 0s infinite;
 }
 
+/* ─── Base element resets ───────────────────────────────────────────────────── */
+
 div {
     vertical-align: top;
-    border: 0%;
-    margin: 0%;
+    border: 0;
+    margin: 0;
 }
 
-.settingsCategory {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    margin: 0px;
-    margin-left: 2px;
-    margin-top: 14px;
+/* ─── Subpage header (title + close button row) ────────────────────────────── */
+
+.subpageHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 4px;
-    color: rgb(128, 128, 128);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--separator);
 }
+
+.subpageTitle {
+    font-family: var(--font);
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    color: var(--text-primary);
+}
+
+/* Override float on .returnBack when inside .subpageHeader */
+.subpageHeader .returnBack {
+    float: none;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+/* ─── IE section label (Video / Keyword sub-headings) ───────────────────────── */
+
+.ieSection {
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin: 14px 0 6px 2px;
+}
+
+/* ─── Input + ADD button row ────────────────────────────────────────────────── */
+
+.ieInputRow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ieInputRow .ieListInput {
+    flex: 1;
+    width: auto;
+    margin: 0;
+}
+
+/* ─── Settings category label ───────────────────────────────────────────────── */
+
+.settingsCategory {
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0;
+    margin-left: 2px;
+    margin-top: 18px;
+    margin-bottom: 6px;
+    color: var(--text-secondary);
+}
+
+/* ─── Close / back button ───────────────────────────────────────────────────── */
 
 .returnBack {
     float: right;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    margin: 0px;
-    margin-top: 6px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    padding-left: 6px;
-    padding-right: 6px;
-    border: 1px;
-    border-style: solid;
-    border-radius: 100%;
-    color: rgb(128, 128, 128);
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 500;
+    margin: 0;
+    margin-top: 4px;
+    padding: 2px 7px;
+    border: 1px solid var(--separator-strong);
+    border-radius: 50%;
+    color: var(--text-secondary);
+    background: var(--bg-tertiary);
+    transition:
+        background 150ms ease,
+        color 150ms ease;
+    line-height: 1.6;
 }
 
 .returnBack:hover {
-    color: rgb(207, 207, 207);
+    color: var(--text-primary);
+    background: #48484a;
     cursor: pointer;
 }
+
+/* ─── Settings row ──────────────────────────────────────────────────────────── */
 
 .settingsOption {
     display: block;
     text-decoration: none;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    color: rgb(210, 210, 210);
-    padding-left: 6px;
-    padding-right: 6px;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    border-bottom: solid;
-    border-width: 1px;
-    border-color: rgb(111, 111, 111);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    margin: 0px;
+    font-family: var(--font);
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: -0.1px;
+    color: var(--text-primary);
+    padding: 13px 6px;
+    border-bottom: 1px solid var(--separator);
+    border-radius: 0;
+    margin: 0;
+    transition: background 150ms ease;
+}
+
+.settingsOption:last-child {
+    border-bottom: none;
 }
 
 .settingsOption a {
-    color: rgb(210, 210, 210);
+    color: var(--text-primary);
     text-decoration: none;
 }
 
+/* ─── Inputs ────────────────────────────────────────────────────────────────── */
+
 .ieListInput {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 11px;
-    font-weight: 500;
-    color: rgb(210, 210, 210);
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-primary);
     margin: 3px;
-    padding-top: 10px;
-    padding-bottom: 9px;
-    padding-left: 7px;
-    padding-right: 7px;
-    border-radius: 5px;
-    border-style: none;
-    background-color: rgb(70, 70, 70);
-    width: 270px;
+    padding: 9px 10px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--separator-strong);
+    background-color: var(--bg-input);
+    width: 268px;
+    outline: none;
+    transition: border-color 150ms ease;
+    caret-color: var(--accent-blue);
 }
 
-:root {
-    --videoExclusionsInputButtonBackgroundColor: rgb(60, 60, 60);
-    --videoExclusionsInputButtonTextColor: rgb(90, 90, 90);
-    --videoExclusionsInputButtonBackgroundColorHover: rgb(60, 60, 60);
-    --keywordExclusionsInputButtonBackgroundColor: rgb(60, 60, 60);
-    --keywordExclusionsInputButtonTextColor: rgb(90, 90, 90);
-    --keywordExclusionsInputButtonBackgroundColorHover: rgb(60, 60, 60);
-
-    --videoInclusionsInputButtonBackgroundColor: rgb(60, 60, 60);
-    --videoInclusionsInputButtonTextColor: rgb(90, 90, 90);
-    --videoInclusionsInputButtonBackgroundColorHover: rgb(60, 60, 60);
-    --keywordInclusionsInputButtonBackgroundColor: rgb(60, 60, 60);
-    --keywordInclusionsInputButtonTextColor: rgb(90, 90, 90);
-    --keywordInclusionsInputButtonBackgroundColorHover: rgb(60, 60, 60);
+.ieListInput:focus {
+    border-color: var(--accent-blue);
 }
+
+.ieListInput::placeholder {
+    color: var(--text-tertiary);
+}
+
+/* ─── ADD buttons ───────────────────────────────────────────────────────────── */
 
 .ieInputButton {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--font);
     font-size: 12px;
     font-weight: 600;
-    padding: 9px;
-    border: solid;
-    border-style: none;
-    border-radius: 5px;
+    padding: 9px 12px;
+    border: none;
+    border-radius: var(--radius-sm);
     cursor: pointer;
+    transition:
+        opacity 150ms ease,
+        background 150ms ease;
+    letter-spacing: 0.02em;
+}
+
+.ieInputButton:hover {
+    opacity: 0.85;
 }
 
 #videoExclusionInputButton {
@@ -372,122 +471,122 @@ div {
     background-color: var(--keywordInclusionsInputButtonBackgroundColorHover);
 }
 
+/* ─── Separator ─────────────────────────────────────────────────────────────── */
+
 .separator {
     margin: 10px;
 }
 
+/* ─── Exclusion / inclusion list body ──────────────────────────────────────── */
+
 .ieListBody {
-    /* ie is abbreviation for includeExclude */
-    margin-top: 8px;
-    margin-bottom: 8px;
-    margin-left: 3px;
-    margin-right: 3px;
-    background-color: rgb(56, 56, 56);
-    border-radius: 5px;
-    padding: 0px;
-    height: 90px;
+    margin: 8px 3px;
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--separator);
+    padding: 0;
+    height: 126px;
     overflow: hidden;
     overflow-y: scroll;
 }
 
 .ieList {
-    color: rgb(210, 210, 210);
+    color: var(--text-primary);
     list-style-type: none;
     margin-bottom: 8px;
-    padding-top: 0px;
-    padding-left: 8px;
-    padding-right: 8px;
-    font-size: 14px;
+    padding: 0 8px;
+    font-size: 13px;
 }
 
 li {
-    background-color: rgb(50, 45, 50);
-    border-radius: 3px;
-    padding: 8px;
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
     width: 100%;
     max-width: 300px;
     overflow-wrap: break-word;
     margin-top: 8px;
-    font-size: 14px;
+    font-size: 13px;
+    border: 1px solid var(--separator);
+    line-height: 1.4;
 }
 
-div::-webkit-scrollbar {
-    width: 5px;
-}
-
-div::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-div::-webkit-scrollbar-thumb {
-    background: rgb(210, 210, 210);
-    border-radius: 4px;
-}
-
-div::-webkit-scrollbar-thumb:hover {
-    background: rgb(177, 177, 177);
-}
+/* ─── Remove / URL detail labels inside list items ──────────────────────────── */
 
 .removeIeButton {
     position: relative;
     font-size: 10px;
-    color: rgb(128, 128, 128);
+    font-weight: 500;
+    color: var(--text-tertiary);
     margin-left: 1px;
-    margin-top: 4px;
+    margin-top: 5px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    transition: color 150ms ease;
+}
+
+.removeIeButton:hover {
+    cursor: pointer;
+    color: var(--accent-red);
 }
 
 .urlDetails {
     position: relative;
     font-size: 10px;
-    color: rgb(170, 170, 170);
+    color: var(--text-secondary);
     margin-left: 1px;
     margin-top: 4px;
 }
 
-.removeIeButton:hover {
-    cursor: pointer;
-    color: red;
-    font-weight: 500;
-}
+/* ─── Switch status label ───────────────────────────────────────────────────── */
 
 .switchStatus {
     float: right;
     position: relative;
-    margin: 6px;
-    margin-right: 8px;
+    margin: 5px 8px 5px 6px;
     font-size: 10px;
-    font-weight: bold;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
 }
+
+/* ─── Subpage arrow ─────────────────────────────────────────────────────────── */
 
 .triangle {
     width: 0;
     height: 0;
-    border-top: 5px solid transparent;
-    border-left: 10px solid white;
-    border-bottom: 5px solid transparent;
+    border-top: 4px solid transparent;
+    border-left: 8px solid var(--text-secondary);
+    border-bottom: 4px solid transparent;
+    transition: border-left-color 150ms ease;
 }
 
 .subpageButton {
     float: right;
     position: relative;
-    margin: 6px;
-    margin-right: 8px;
-    font-size: 10px;
-    font-weight: bold;
+    margin: 8px 8px 8px 6px;
 }
 
 .subpageButtonBody:hover {
-    background-color: rgb(40, 40, 40);
+    background-color: rgba(255, 255, 255, 0.05);
     cursor: pointer;
+    border-radius: var(--radius-sm);
 }
+
+.subpageButtonBody:hover .triangle {
+    border-left-color: var(--text-primary);
+}
+
+/* ─── macOS-style toggle switch ─────────────────────────────────────────────── */
 
 .switch {
     float: right;
     position: relative;
     vertical-align: middle;
-    width: 45px;
-    height: 22px;
-    margin: 0px;
+    width: 44px;
+    height: 24px;
+    margin: 0;
+    flex-shrink: 0;
 }
 
 .switch input {
@@ -503,54 +602,58 @@ div::-webkit-scrollbar-thumb:hover {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgb(149, 149, 149);
-    transition: 0.2s;
-    transition: 0.2s;
+    background-color: rgba(255, 255, 255, 0.18);
+    transition: background-color 0.2s ease;
 }
 
 .slider::before {
     position: absolute;
     content: "";
-    height: 16px;
-    width: 16px;
+    height: 18px;
+    width: 18px;
     left: 3px;
     bottom: 3px;
-    background-color: white;
-    transition: 0.2s;
-    transition: 0.2s;
+    background-color: #ffffff;
+    transition: transform 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-input:checked+.slider {
-    background-color: #2ab045;
+input:checked + .slider {
+    background-color: var(--accent-green);
 }
 
-input:focus+.slider {
-    box-shadow: 0 0 1px #2ab045;
+input:focus + .slider {
+    box-shadow: 0 0 0 2px rgba(52, 199, 89, 0.35);
 }
 
-input:checked+.slider::before {
-    transform: translateX(22px);
+input:checked + .slider::before {
+    transform: translateX(20px);
 }
 
 .slider.round {
-    border-radius: 22px;
+    border-radius: 24px;
 }
 
 .slider.round::before {
     border-radius: 50%;
 }
 
+/* ─── Version info bar ──────────────────────────────────────────────────────── */
+
 #versionInfo {
     width: 100%;
-    background-color: rgb(30, 30, 30);
-    padding: 8px 12px;
+    background-color: var(--bg-primary);
+    padding: 8px 16px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     font-size: 11px;
-    color: rgb(150, 150, 150);
-    border-top: 1px solid rgb(60, 60, 60);
+    font-family: "SF Mono", "Menlo", monospace;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--separator);
     box-sizing: border-box;
     margin-top: 5px;
+    letter-spacing: 0.01em;
 }
 
 #versionInfo span {
@@ -558,9 +661,9 @@ input:checked+.slider::before {
 }
 
 #extensionVersion {
-    color: rgb(120, 180, 255);
+    color: var(--accent-blue);
 }
 
 #desktopVersion {
-    color: rgb(120, 255, 180);
+    color: var(--accent-green);
 }
