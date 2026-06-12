@@ -71,13 +71,8 @@ body:
     attributes:
       label: Extension version
       description: |
-        What version of the extension are you using?
-        1. Go to chrome://extensions
-        2. Turn on Developer mode (top right)
-        3. Find YouTubeDiscordPresence and click Details
-        4. See the Version section  
-        PS. This flow will be improved in a future update.
-      placeholder: for example, 1.6.1
+        What version of the extension are you using? See the bottom of the extension popup page.
+      placeholder: for example, 1.5.9
     validations:
       required: true
 
@@ -86,14 +81,8 @@ body:
     attributes:
       label: Desktop version
       description: |
-        What version of the desktop app are you using?
-        1. Press WinKey + R
-        2. Enter "C:\Program Files\YouTubeDiscordPresence"
-        3. Right click YTDPwin.exe and click Properties
-        4. Click Details at the top
-        5. See the File version section  
-        PS. This flow will be improved in a future update.
-      placeholder: for example, 19.1.6.1
+        What version of the desktop app are you using? See the bottom of the extension popup page.
+      placeholder: for example, 19.1.5.9 or 1.5.9
     validations:
       required: true
 
