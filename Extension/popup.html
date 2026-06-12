@@ -94,8 +94,10 @@ https://github.com/XFG16/YouTubeDiscordPresence
     </div>
     <div id="exclusionsOutside" class="pageOutside">
         <div id="exclusionsBody" class="pageBody">
-            <span id="returnFromExclusionsLabel" class="returnBack">&#10006</span>
-            <p class="settingsCategory">EXCLUSIONS</p>
+            <div class="subpageHeader">
+                <span class="subpageTitle">Exclusions</span>
+                <span id="returnFromExclusionsLabel" class="returnBack">&#10006;</span>
+            </div>
             <p id="enableExclusionsLabel" class="settingsOption">Exclude certain videos
                 <label class="switch">
                     <input type="checkbox">
@@ -103,26 +105,18 @@ https://github.com/XFG16/YouTubeDiscordPresence
                 </label>
                 <span class="switchStatus" style="color: #ff0000;">OFF</span>
             </p>
-            <div class="separator"></div>
-            <div id="videoExclusionsInput">
+            <p class="ieSection">Video / Channel / URL</p>
+            <div id="videoExclusionsInput" class="ieInputRow">
                 <input class="ieListInput" type="text"
-                    placeholder="Add video title, video URL, or channel title to exclude...">
+                    placeholder="Video title, URL, or channel name...">
                 <span class="ieInputButton" id="videoExclusionInputButton">ADD</span>
             </div>
             <div class="ieListBody">
-                <ul id="videoExclusionsList" class="ieList">
-                    <!-- THIS IS A REFERENCE TEMPLATE: Use this format for lists
-                        <li> [Breaks] - Noisestorm - Barracuda [Monstercat Release]
-                            <div class="removeIeButton">REMOVE</div>
-                        </li>
-                        <li> https://www.youtube.com/watch?v=KKRRWQq5f5E
-                            [OPTIONAL FEATURE, MAY WORK ON IT LATER] <div class="urlDetails">[Breaks] - Noisestorm - Barracuda [Monstercat Release] <span style="color:rgb(194, 129, 255)">by</span> Monstercat Uncaged</div>
-                            <div class="removeIeButton">REMOVE</div>
-                        </li> -->
-                </ul>
+                <ul id="videoExclusionsList" class="ieList"></ul>
             </div>
-            <div id="keywordExclusionsInput">
-                <input class="ieListInput" type="text" placeholder="Add keyword in title or channel to exclude...">
+            <p class="ieSection">Keyword</p>
+            <div id="keywordExclusionsInput" class="ieInputRow">
+                <input class="ieListInput" type="text" placeholder="Keyword in title or channel name...">
                 <span class="ieInputButton" id="keywordExclusionInputButton">ADD</span>
             </div>
             <div class="ieListBody">
@@ -132,8 +126,10 @@ https://github.com/XFG16/YouTubeDiscordPresence
     </div>
     <div id="inclusionsOutside" class="pageOutside">
         <div id="inclusionsBody" class="pageBody">
-            <span id="returnFromInclusionsLabel" class="returnBack">&#10006</span>
-            <p class="settingsCategory">INCLUSIONS</p>
+            <div class="subpageHeader">
+                <span class="subpageTitle">Inclusions</span>
+                <span id="returnFromInclusionsLabel" class="returnBack">&#10006;</span>
+            </div>
             <p id="enableInclusionsLabel" class="settingsOption">Only display certain videos
                 <label class="switch">
                     <input type="checkbox">
@@ -141,26 +137,18 @@ https://github.com/XFG16/YouTubeDiscordPresence
                 </label>
                 <span class="switchStatus" style="color: #ff0000;">OFF</span>
             </p>
-            <div class="separator"></div>
-            <div id="videoInclusionsInput">
+            <p class="ieSection">Video / Channel / URL</p>
+            <div id="videoInclusionsInput" class="ieInputRow">
                 <input class="ieListInput" type="text"
-                    placeholder="Add video title, video URL, or channel title to include...">
+                    placeholder="Video title, URL, or channel name...">
                 <span class="ieInputButton" id="videoInclusionInputButton">ADD</span>
             </div>
             <div class="ieListBody">
-                <ul id="videoInclusionsList" class="ieList">
-                    <!-- THIS IS A REFERENCE TEMPLATE: Use this format for lists
-                        <li> [Breaks] - Noisestorm - Barracuda [Monstercat Release]
-                            <div class="removeInclusionButton">REMOVE</div>
-                        </li>
-                        <li> https://www.youtube.com/watch?v=KKRRWQq5f5E
-                            [OPTIONAL FEATURE, MAY WORK ON IT LATER] <div class="urlDetails">[Breaks] - Noisestorm - Barracuda [Monstercat Release] <span style="color:rgb(194, 129, 255)">by</span> Monstercat Uncaged</div>
-                            <div class="removeInclusionButton">REMOVE</div>
-                        </li> -->
-                </ul>
+                <ul id="videoInclusionsList" class="ieList"></ul>
             </div>
-            <div id="keywordInclusionsInput">
-                <input class="ieListInput" type="text" placeholder="Add keyword in title or channel to include...">
+            <p class="ieSection">Keyword</p>
+            <div id="keywordInclusionsInput" class="ieInputRow">
+                <input class="ieListInput" type="text" placeholder="Keyword in title or channel name...">
                 <span class="ieInputButton" id="keywordInclusionInputButton">ADD</span>
             </div>
             <div class="ieListBody">
@@ -170,7 +158,10 @@ https://github.com/XFG16/YouTubeDiscordPresence
     </div>
     <div id="editPresenceOutside" class="pageOutside">
         <div id="editPresenceBody" class="pageBody">
-            <span id="returnFromEditPresenceLabel" class="returnBack">&#10006</span>
+            <div class="subpageHeader">
+                <span class="subpageTitle">Edit Presence</span>
+                <span id="returnFromEditPresenceLabel" class="returnBack">&#10006;</span>
+            </div>
             <p class="settingsCategory">APPLICATION SPECIFIC TOGGLES</p>
             <p id="enableYouTubeLabel" class="settingsOption">Enable on YouTube
                 <label class="switch">
@@ -241,8 +232,8 @@ https://github.com/XFG16/YouTubeDiscordPresence
             <span id="closeUpdateMessage" class="returnBack">&#10006</span>
             <h1>ATTENTION TO ALL USERS:</h1>
             <p>
-                If you downloaded YTDP before October 2022, then I recommend uninstalling the current version of YTDP that you downloaded onto your desktop and downloading the more recent 
-                version from <a href="https://github.com/XFG16/YouTubeDiscordPresence/releases/" target="blank">Github</a>, 
+                If you downloaded YTDP before October 2022, then I recommend uninstalling the current version of YTDP that you downloaded onto your desktop and downloading the more recent
+                version from <a href="https://github.com/XFG16/YouTubeDiscordPresence/releases/" target="blank">Github</a>,
                 which contains new features and functionality.
             </p>
             <p>
