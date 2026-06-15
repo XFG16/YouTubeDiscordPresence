@@ -7,8 +7,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Before submitting, please see if the feature has already been requsted for:
-        https://github.com/XFG16/YouTubeDiscordPresence/issues
+        Before submitting, please see if the feature has already been requested:
+        https://github.com/XFG16/YouTubeDiscordPresence/issues?q=label%3Aenhancement
 
   - type: checkboxes
     id: checks

@@ -8,7 +8,7 @@ body:
     attributes:
       value: |
         Before submitting, please see if the bug has already been reported:
-        https://github.com/XFG16/YouTubeDiscordPresence/issues
+        https://github.com/XFG16/YouTubeDiscordPresence/issues?q=label%3Ainvestigating%2Cbug
 
   - type: checkboxes
     id: checks
