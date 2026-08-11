@@ -28,7 +28,7 @@ Still confused? Watch the **installation tutorial** on YouTube using [**<ins>thi
         <img src="https://img.shields.io/badge/License-MIT-yellow" /></a>
 </p>
 
-**YouTubeDiscordPresence** (YTDP) is an application and browser extension used to create a detailed rich presence for YouTube and YouTube Music on Discord. Only **Windows (x64)** and **macOS (arm64)** is supported, although more operating systems may be supported in the future.
+**YouTubeDiscordPresence** (YTDP) is an application and browser extension used to create a detailed rich presence for YouTube and YouTube Music on Discord. Only **Windows (x64)** and **macOS (arm64)** are supported, although more operating systems may be supported in the future.
 
 <br>
 
