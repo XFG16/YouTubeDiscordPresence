@@ -9,6 +9,7 @@
     "precompile": "node scripts/precompile.js",
     "compile": "npx pkg -t node14-win . -o src/YTDPwin.exe",
     "postcompile": "node scripts/postcompile.js",
+    "compile:mac-arm64": "node scripts/precompile.js && npx pkg -t node18-macos-arm64 . -o src/YTDPmac-arm64 && bash scripts/postcompile_mac_arm64.sh",
     "postversion": "echo also update version in `background.js`, `manifest.json`, and when building!"
   },
   "author": "Michael Ren",
