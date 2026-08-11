@@ -135,7 +135,9 @@ function addIeElement(text, key, isDocumentInitializing) {
 function initializeDocument(tab) {
     // INCORRECT OS ERROR
     chrome.runtime.getPlatformInfo(function(info) {
-        if (info.os != "win" && (info.os != "mac" && info.arch != "arm")) {
+        const isSupported = (info.os === "win" && info.arch === "x86-64") ||
+            (info.os === "mac" && info.arch === "arm64");
+        if (!isSupported) {
             document.getElementById("osIncompatibleContainer").style.display = "block";
         }
         else {
