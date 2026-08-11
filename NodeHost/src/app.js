@@ -157,7 +157,7 @@ function clearPresence(callback = null) {
 
 // CLIENT CONNECTION — discover and connect to ALL Discord pipes
 
-async function discoverAndConnect() {
+async function discoverAndConnect(shouldLog = true) {
     let connectedPipes = new Set(clients.map(c => c.pipeIndex));
 
     for (let pipeIndex = 0; pipeIndex < 4; pipeIndex++) {
@@ -186,10 +186,12 @@ async function discoverAndConnect() {
         }
     }
 
-    if (clients.length === 0) {
-        sendExtensionMessage(false, "NO_DISCORD_CLIENTS_CONNECTED");
-    } else {
-        sendExtensionMessage(true, `CONNECTED_TO_${clients.length}_DISCORD_CLIENTS`);
+    if (shouldLog) {
+        if (clients.length === 0) {
+            sendExtensionMessage(false, "NO_DISCORD_CLIENTS_CONNECTED");
+        } else {
+            sendExtensionMessage(true, `CONNECTED_TO_${clients.length}_DISCORD_CLIENTS`);
+        }
     }
 }
 
@@ -197,7 +199,7 @@ async function discoverAndConnect() {
 discoverAndConnect();
 
 // Periodically check for new Discord clients
-setInterval(discoverAndConnect, 10000);
+setInterval(() => discoverAndConnect(false), 10000);
 
 // // READING DATA FROM BROWSER EXTENSION
 // // REFERENCED FROM: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_messaging#app_side

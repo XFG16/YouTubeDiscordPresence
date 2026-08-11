@@ -1,0 +1,14 @@
+name: Other/support
+description: Something not working when first installing or have a question?
+title: "[Other]: "
+labels:
+  - investigating
+body:
+  - type: textarea
+    id: support_request
+    attributes:
+      label: How can we help?
+      description: Please describe what you need help with.
+      placeholder: Enter your question or support request here...
+    validations:
+      required: true

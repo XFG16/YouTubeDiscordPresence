@@ -340,16 +340,6 @@ function initializeDocument(tab) {
         handleSwitchStatusAndStorage(result.addByAuthor, status, null);
     });
 
-    // USE ALBUM COVER FOR YOUTUBE MUSIC
-    let useAlbumThumbnailLabel = document.getElementById("useAlbumThumbnailLabel");
-    chrome.storage.sync.get("useAlbumThumbnail", function (result) {
-        let status = useAlbumThumbnailLabel.querySelector("span.switchStatus");
-        let statusSwitch = useAlbumThumbnailLabel.querySelector("label.switch > input");
-        if (result.useAlbumThumbnail) {
-            statusSwitch.checked = "checked";
-        }
-        handleSwitchStatusAndStorage(result.useAlbumThumbnail, status, null);
-    });
 
     // USE THUMBNAIL FOR LARGE ICON
     let useThumbnailIconLabel = document.getElementById("useThumbnailIconLabel");
@@ -360,6 +350,25 @@ function initializeDocument(tab) {
             statusSwitch.checked = "checked";
         }
         handleSwitchStatusAndStorage(result.useThumbnailIcon, status, null);
+    });
+
+    // DISPLAY VERSION INFORMATION
+    // Get extension version from manifest
+    const manifestData = chrome.runtime.getManifest();
+    const extensionVersion = manifestData.version;
+    document.getElementById("extensionVersion").textContent = `Extension: v${extensionVersion}`;
+
+    // Get desktop app version from storage
+    chrome.storage.sync.get(["nativeVersion", "nativeVersionStatus", "isNativeConnected"], function (result) {
+        const desktopVersionElement = document.getElementById("desktopVersion");
+        
+        if (result.nativeVersion) {
+            desktopVersionElement.textContent = `Desktop: v${result.nativeVersion}`;
+        } else if (result.isNativeConnected === true) {
+            desktopVersionElement.textContent = "Desktop: Connected";
+        } else if (result.isNativeConnected === false) {
+            desktopVersionElement.textContent = "Desktop: Not connected";
+        }
     });
 }
 
@@ -746,14 +755,6 @@ function handleEditPresenceChanges() {
         });
     });
 
-    // USE ALBUM COVER FOR YOUTUBE MUSIC
-    let useAlbumThumbnailLabel = document.getElementById("useAlbumThumbnailLabel");
-    useAlbumThumbnailLabel.querySelector("label.switch").addEventListener("change", function () {
-        chrome.storage.sync.get("useAlbumThumbnail", function (result) {
-            let status = useAlbumThumbnailLabel.querySelector("span.switchStatus");
-            handleSwitchStatusAndStorage(status.innerHTML == "OFF", status, "useAlbumThumbnail");
-        });
-    });
 
     // USE THUMBNAIL FOR LARGE ICON
     let useThumbnailIconLabel = document.getElementById("useThumbnailIconLabel");

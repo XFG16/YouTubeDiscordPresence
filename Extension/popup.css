@@ -12,12 +12,12 @@ https://github.com/XFG16/YouTubeDiscordPresence
 html,
 body {
     width: 404px;
-    height: 500px;
+    height: 600px;
     background-color: rgb(40, 40, 40);
     margin: 0px;
     display: block;
     position: relative;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 
@@ -191,7 +191,7 @@ body {
 .pageOutside {
     margin-top: 4px;
     width: 100%;
-    height: 500px;
+    height: 436px;
     display: flex;
 }
 
@@ -202,10 +202,10 @@ body {
     margin: 2%;
     background-color: rgb(50, 50, 50);
     border-radius: 5px;
-    padding-right: 5%;
-    padding-left: 5%;
-    padding-top: 3%;
-    padding-bottom: 4%;
+    padding-right: 4%;
+    padding-left: 4%;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 #exclusionsOutside {
@@ -278,8 +278,8 @@ div {
     color: rgb(210, 210, 210);
     padding-left: 6px;
     padding-right: 6px;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 12px;
+    padding-bottom: 12px;
     border-bottom: solid;
     border-width: 1px;
     border-color: rgb(111, 111, 111);
@@ -385,7 +385,7 @@ div {
     background-color: rgb(56, 56, 56);
     border-radius: 5px;
     padding: 0px;
-    height: 126px;
+    height: 90px;
     overflow: hidden;
     overflow-y: scroll;
 }
@@ -538,4 +538,29 @@ input:checked+.slider::before {
 
 .slider.round::before {
     border-radius: 50%;
+}
+
+#versionInfo {
+    width: 100%;
+    background-color: rgb(30, 30, 30);
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: rgb(150, 150, 150);
+    border-top: 1px solid rgb(60, 60, 60);
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+#versionInfo span {
+    font-weight: 500;
+}
+
+#extensionVersion {
+    color: rgb(120, 180, 255);
+}
+
+#desktopVersion {
+    color: rgb(120, 255, 180);
 }
