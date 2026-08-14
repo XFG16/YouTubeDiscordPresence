@@ -58,10 +58,9 @@ body:
       description: Which browser are you using?
       options:
         - Chrome
+        - Firefox
         - Edge
         - Brave
-        - Opera
-        - Vivaldi
         - Other (share below)
     validations:
       required: true
@@ -89,13 +88,10 @@ body:
   - type: textarea
     id: service_worker_log
     attributes:
-      label: Service worker console log
+      label: Background console logs
       description: |
         Not required, but it really helps us to debug, and we will probably ask for it later. To get the logs:
-        1. Go to chrome://extensions
-        2. Turn on Developer mode (top right)
-        3. Find YouTubeDiscordPresence and click "inspect views: service worker"
-        4. In the window that opens, go to the Console tab at the top
-        5. Filter/search "error", select all, and paste here (if any).
+        - Chrome: Go to chrome://extensions, enable Developer mode, and click "inspect views: service worker" for YouTubeDiscordPresence.
+        - Firefox: Go to about:debugging#/runtime/this-firefox and click "Inspect" for YouTubeDiscordPresence.
+        In the window that opens, go to Console and paste a screenshot or the text here.
       placeholder: Paste console output here
-      render: shell
