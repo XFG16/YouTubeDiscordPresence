@@ -331,7 +331,7 @@
                                                 {
                                                     "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_0463D3C88B354864B77782843FAF1894"
                                                     {
-                                                    "Name" = "8:com.ydp.discord.presence"
+                                                    "Name" = "8:com.ytdp.discord.presence"
                                                     "Condition" = "8:"
                                                     "AlwaysCreate" = "11:FALSE"
                                                     "DeleteAtUninstall" = "11:FALSE"
