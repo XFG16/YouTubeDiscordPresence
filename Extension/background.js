@@ -366,7 +366,7 @@ function generatePresenceData() {
         large_text: paddedTitle.substring(0, 128)
     };
     if (currentMessage.applicationType == "youtubeMusic") {
-        activityType = 2;
+        activityType = 2; // Activity: Listening
         
         if (settings.useThumbnailIcon) {
             assetsData.large_image = currentMessage.thumbnailUrl;
@@ -435,6 +435,9 @@ function generatePresenceData() {
         timestamps: timeStampsData,
         type: activityType,
     };
+    if (currentMessage.applicationType == "youtubeMusic") {
+        presenceData.status_display_type = 2; // Show song name as status instead of "YouTube Music"
+    }
     if (buttonsData.length > 0) {
         presenceData.buttons = buttonsData;
     }
