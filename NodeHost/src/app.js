@@ -199,7 +199,7 @@ async function discoverAndConnect(shouldLog = true) {
 discoverAndConnect();
 
 // Periodically check for new Discord clients
-setInterval(() => discoverAndConnect(false), 10000);
+const clientDiscoveryInterval = setInterval(() => discoverAndConnect(false), 10000);
 
 // // READING DATA FROM BROWSER EXTENSION
 // // REFERENCED FROM: https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_messaging#app_side
@@ -276,5 +276,14 @@ process.stdin.on("readable", () => {
     while ((chunk = process.stdin.read()) !== null) {
         chunks.push(chunk);
     }
-    processData();
+    if (chunks.length > 0) processData();
+});
+
+process.stdin.on("end", async () => {
+    clearInterval(clientDiscoveryInterval);
+
+    const activeClients = clients;
+    clients = [];
+    await Promise.allSettled(activeClients.map(entry => entry.client.destroy()));
+    process.exit(0);
 });

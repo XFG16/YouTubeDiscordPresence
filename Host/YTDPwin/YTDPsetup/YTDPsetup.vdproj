@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_0030902FCCA648D8998B57F8355B7CBD"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6B301B626CF14E41AFC478258D1BB7CF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -118,6 +124,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0030902FCCA648D8998B57F8355B7CBD"
+            {
+            "SourcePath" = "8:..\\..\\main-firefox.json"
+            "TargetName" = "8:main-firefox.json"
+            "Tag" = "8:"
+            "Folder" = "8:_56A3632D70DB4D05A6394C0929BF78F7"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6B301B626CF14E41AFC478258D1BB7CF"
             {
             "SourcePath" = "8:..\\..\\YTDPlogo.ico"
@@ -234,21 +260,21 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:YouTubeDiscordPresence"
-        "ProductCode" = "8:{013E9815-6DE4-4AEC-BF90-F5BCB28642F2}"
-        "PackageCode" = "8:{824AFACB-ED40-4C78-8942-E3C0FD48F83E}"
+        "ProductCode" = "8:{A8DD88AC-C5B2-4FF5-893B-D24EE9CE7079}"
+        "PackageCode" = "8:{869A04B1-D36C-496F-BC4D-8ADD36C0B297}"
         "UpgradeCode" = "8:{E382DBD1-8EDE-47B6-A376-403178519F67}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.6.1"
+        "ProductVersion" = "8:1.7.0"
         "Manufacturer" = "8:YTDP Team"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/XFG16/YouTubeDiscordPresence"
         "Title" = "8:YTDPsetup"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Michael Ren"
+        "ARPCONTACT" = "8:YTDP Team"
         "Keywords" = "8:YouTube Discord Presence"
         "ARPCOMMENTS" = "8:Desktop helper application for the extension that takes data directly from the YouTube video playing on the browser and displays it as a rich presence on Discord. Works similar to the Spotify Discord rich presence."
         "ARPURLINFOABOUT" = "8:https://github.com/XFG16/YouTubeDiscordPresence"
@@ -276,6 +302,56 @@
                     "Transitive" = "11:FALSE"
                         "Keys"
                         {
+                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_5B111AE2695B4016B11F42C953D6F4C5"
+                            {
+                            "Name" = "8:Mozilla"
+                            "Condition" = "8:"
+                            "AlwaysCreate" = "11:FALSE"
+                            "DeleteAtUninstall" = "11:FALSE"
+                            "Transitive" = "11:FALSE"
+                                "Keys"
+                                {
+                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_FFB36A3954C446B38EA93F34250CCE37"
+                                    {
+                                    "Name" = "8:NativeMessagingHosts"
+                                    "Condition" = "8:"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "DeleteAtUninstall" = "11:FALSE"
+                                    "Transitive" = "11:FALSE"
+                                        "Keys"
+                                        {
+                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_C4FAE8A68C0F4CFC9D5E2ED275CF4DA6"
+                                            {
+                                            "Name" = "8:com.ytdp.discord.presence"
+                                            "Condition" = "8:"
+                                            "AlwaysCreate" = "11:FALSE"
+                                            "DeleteAtUninstall" = "11:FALSE"
+                                            "Transitive" = "11:FALSE"
+                                                "Keys"
+                                                {
+                                                }
+                                                "Values"
+                                                {
+                                                    "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_19EA18BED16B4376B25E584DC07177F6"
+                                                    {
+                                                    "Name" = "8:"
+                                                    "Condition" = "8:"
+                                                    "Transitive" = "11:FALSE"
+                                                    "ValueTypes" = "3:1"
+                                                    "Value" = "8:[TARGETDIR]main-firefox.json"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        "Values"
+                                        {
+                                        }
+                                    }
+                                }
+                                "Values"
+                                {
+                                }
+                            }
                             "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_AE415FB190F540488254B5ED01918D89"
                             {
                             "Name" = "8:Google"
@@ -305,7 +381,7 @@
                                                 {
                                                     "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_0463D3C88B354864B77782843FAF1894"
                                                     {
-                                                    "Name" = "8:com.ydp.discord.presence"
+                                                    "Name" = "8:com.ytdp.discord.presence"
                                                     "Condition" = "8:"
                                                     "AlwaysCreate" = "11:FALSE"
                                                     "DeleteAtUninstall" = "11:FALSE"
@@ -360,6 +436,56 @@
                     "Transitive" = "11:FALSE"
                         "Keys"
                         {
+                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_281BF8941DE34540AEFD69436D89CD34"
+                            {
+                            "Name" = "8:Mozilla"
+                            "Condition" = "8:"
+                            "AlwaysCreate" = "11:FALSE"
+                            "DeleteAtUninstall" = "11:FALSE"
+                            "Transitive" = "11:FALSE"
+                                "Keys"
+                                {
+                                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_C6A1D6F08F5D4E058CD654E4543720A1"
+                                    {
+                                    "Name" = "8:NativeMessagingHosts"
+                                    "Condition" = "8:"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "DeleteAtUninstall" = "11:FALSE"
+                                    "Transitive" = "11:FALSE"
+                                        "Keys"
+                                        {
+                                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_B05E904E6D104DBDAD4815C2DD88E297"
+                                            {
+                                            "Name" = "8:com.ytdp.discord.presence"
+                                            "Condition" = "8:"
+                                            "AlwaysCreate" = "11:FALSE"
+                                            "DeleteAtUninstall" = "11:FALSE"
+                                            "Transitive" = "11:FALSE"
+                                                "Keys"
+                                                {
+                                                }
+                                                "Values"
+                                                {
+                                                    "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_F6C64562DC2F40DAA898294AFF0060CA"
+                                                    {
+                                                    "Name" = "8:"
+                                                    "Condition" = "8:"
+                                                    "Transitive" = "11:FALSE"
+                                                    "ValueTypes" = "3:1"
+                                                    "Value" = "8:[TARGETDIR]main-firefox.json"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        "Values"
+                                        {
+                                        }
+                                    }
+                                }
+                                "Values"
+                                {
+                                }
+                            }
                             "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_6DE4B2C5D8BC4A0298C6E1714F695447"
                             {
                             "Name" = "8:Google"

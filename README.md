@@ -44,11 +44,9 @@ Still confused? Watch the **installation tutorial** on YouTube using [**<ins>thi
 
 - YouTubeDiscordPresence only works with the desktop application of Discord, **not the browser version.**
 
-- Ensure that the `Share my activity` setting under `Activity Privacy` is **turned on.**
+- Ensure that the `Share my activity` setting under `Activity Privacy` is **turned on**.
 
-- The rich presence may randomly disappear and reappear within a few seconds due to Chrome forcibly unloading and reloading `background.js` in Manifest v3.
-
-You should try fully closing your browser and Discord (from the system tray), and then reopening them.
+Restarting your PC usually resolves any issues, especially on first install.
 
 ---
 
@@ -67,15 +65,7 @@ Desktop application:
    - Building the `.msi`: Download **Visual Studio 2026** with the **Microsoft Visual Studio Installer Project** extension. Open `Host\YTDPwin\YTDPsetup\YTDPsetup.vdproj` and build `YTDPsetup`.
 
 Extension:
-   - Download the `Extension` directory, compress it into a zip, and load it onto your browser manually.
-
-   - Make sure that the `"allowed_origins"` key in the JSON file involved in [**<ins>native messaging</ins>**](https://developer.chrome.com/docs/apps/nativeMessaging/) contains the extension's ID. This file should be found at `C:\Program Files\YouTubeDiscordPresence` as `main.json`.
-
----
-
-## Maintainers
-
-- **Charles Kim** ([@charleskimbac](https://github.com/charleskimbac))
+   - Download the `Extension` directory, rename `*-manifest.json` accordingly, and load the extension into your browser manually.
 
 ---
 

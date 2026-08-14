@@ -1,6 +1,6 @@
 {
   "name": "youtube-discord-presence",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "NodeJS version of the YouTubeDiscordPresence desktop component",
   "main": "src/app.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "precompile": "node scripts/precompile.js",
     "compile": "npx pkg -t node14-win . -o src/YTDPwin.exe",
     "postcompile": "node scripts/postcompile.js",
-    "postversion": "echo also update version in `background.js`, `manifest.json`, and when building!"
+    "postversion": "echo also update version in background.js, manifest.json, and when building!"
   },
   "author": "Michael Ren",
   "license": "MIT",

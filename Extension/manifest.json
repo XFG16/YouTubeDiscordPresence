@@ -1,8 +1,8 @@
 {
     "name": "YouTubeDiscordPresence",
     "author": "Michael Ren",
-    "description": "An extension used to create a detailed rich presence for YouTube videos on Discord.",
-    "version": "1.7.0",
+    "description": "An extension used to create a detailed rich presence for YouTube and YouTube Music activity on Discord.",
+    "version": "1.8.0",
     "manifest_version": 3,
     "content_scripts": [
         {
@@ -15,9 +15,6 @@
             ]
         }
     ],
-    "background": {
-        "service_worker": "background.js"
-    },
     "action": {
         "default_icon": "/Images/icon16.png",
         "default_popup": "popup.html"
@@ -44,5 +41,21 @@
         "16": "/Images/icon16.png",
         "48": "/Images/icon48.png",
         "128": "/Images/icon128.png"
+    },
+    "background": {
+        "service_worker": "background.js",
+        "scripts": [ "background.js" ]
+    },
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "@youtubediscordpresence",
+            "data_collection_permissions": {
+                "required": [
+                    "browsingActivity",
+                    "websiteContent",
+                    "websiteActivity"
+                ]
+            }
+        }
     }
 }

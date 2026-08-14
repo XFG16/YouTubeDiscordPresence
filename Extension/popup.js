@@ -782,10 +782,17 @@ window.onload = function () {
         handleInclusionsChanges();
         handleEditPresenceChanges();
 
-        document.getElementById('extensions-link').addEventListener('click', (event) => {
-            event.preventDefault(); // Stops the '#' from adding to the URL
-            chrome.tabs.create({ url: 'chrome://extensions' });
-        });
+        let extensionsLink = document.getElementById('extensions-link');
+        if (window.location.protocol == 'moz-extension:') {
+            extensionsLink.textContent = 'about:addons';
+            extensionsLink.removeAttribute('href');
+        }
+        else {
+            extensionsLink.addEventListener('click', (event) => {
+                event.preventDefault(); // Stops the '#' from adding to the URL
+                chrome.tabs.create({ url: 'chrome://extensions' });
+            });
+        }
     }).catch(error => {
         console.error(error);
     });
