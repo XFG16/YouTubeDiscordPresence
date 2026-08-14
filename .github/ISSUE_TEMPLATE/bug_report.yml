@@ -46,7 +46,8 @@ body:
       label: Operating system
       description: What operating system are you using?
       options:
-        - Windows
+        - Windows 11
+        - Windows 10
         - macOS-arm64
     validations:
       required: true
