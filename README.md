@@ -10,18 +10,16 @@
 If you've already downloaded the extension, **skip the first step!**
 
 1. Add the [<ins>**Chrome Extension**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) from the Chrome Web Store.
-
    - To access personalization settings, click on the extension icon in your browser's extension menu at the top right corner of your browser.
 
-2. Download the latest `YTDPsetup.msi` file in the [**<ins>releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases) section of this repository and **run it on your device** to install the secondary desktop component.
-
-   - **Note:** Only Windows (x64) is currently supported.
+2. Download the latest `YTDPsetup.msi` file in [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases) and **run it on your device** to install the secondary desktop component.
+   - **Note:** Only Windows is currently supported.
 
 Still confused? Watch the **installation tutorial** on YouTube using [**<ins>this link</ins>**](https://www.youtube.com/watch?v=BWPNqPGFyL4).
 
 ---
 
-# YouTubeDiscordPresence for Windows (x64)
+# YouTubeDiscordPresence for Windows
 
 <p align="left">
     <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Category: Social & Communication">
@@ -30,7 +28,7 @@ Still confused? Watch the **installation tutorial** on YouTube using [**<ins>thi
         <img src="https://img.shields.io/badge/License-MIT-yellow" /></a>
 </p>
 
-**YouTubeDiscordPresence** (YTDP) is an application and browser extension used to create a detailed rich presence for YouTube and YouTube Music on Discord. Only **Windows (x64)** is supported, although more operating systems may be supported in the future.
+**YouTubeDiscordPresence** (YTDP) is a desktop application and browser extension used to create a detailed rich presence for YouTube and YouTube Music on Discord. Only **Windows (x64)** is supported, although more operating systems may be supported in the future.
 
 <br>
 
@@ -59,13 +57,16 @@ Go [here](https://github.com/XFG16/YouTubeDiscordPresence/issues/new/choose) and
 ## Building
 
 Desktop application:
-   - `npm run compile`
-   - Replace the existing `YTDPwin.exe` in `C:\Program Files\YouTubeDiscordPresence` with the newly compiled one.
 
-   - Building the `.msi`: Download **Visual Studio 2026** with the **Microsoft Visual Studio Installer Project** extension. Open `Host\YTDPwin\YTDPsetup\YTDPsetup.vdproj` and build `YTDPsetup`.
+- `npm run compile`
+- Replace the existing `YTDPwin.exe` in `C:\Program Files\YouTubeDiscordPresence` with the newly compiled one.
+
+- Building the `.msi`: Download **Visual Studio 2026** with the **Microsoft Visual Studio Installer Project** extension. Open `Host\YTDPwin\YTDPsetup\YTDPsetup.vdproj` and build `YTDPsetup`.
 
 Extension:
-   - Download the `Extension` directory, rename `*-manifest.json` accordingly, and load the extension into your browser manually.
+
+- Download the `Extension` directory and load the extension into your browser manually.
+  - Make sure that the `allowed_origins` key in the JSON file involved in native messaging contains the extension's ID. This file should be found at `C:\Program Files\YouTubeDiscordPresence\main.json`.
 
 ---
 
