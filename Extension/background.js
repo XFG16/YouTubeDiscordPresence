@@ -315,6 +315,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             currentMessage.scriptId = sender.tab.id;
             currentMessage.title = message.title;
             currentMessage.author = message.author;
+            currentMessage.album = message.album;
             currentMessage.timeLeft = message.timeLeft;
             currentMessage.duration = message.duration;
             currentMessage.videoId = message.videoId;
@@ -360,10 +361,11 @@ function generatePresenceData() {
 
     // large_text and details must be >1 char long, pad with zws
     let paddedTitle = currentMessage.title.padEnd(2, '\u200b');
+    let largeHoverText = (currentMessage.album ? currentMessage.album.padEnd(2, '\u200b') : paddedTitle).substring(0, 128);
 
     let assetsData = {
         large_image: "youtube3",
-        large_text: paddedTitle.substring(0, 128)
+        large_text: largeHoverText
     };
     if (currentMessage.applicationType == "youtubeMusic") {
         activityType = 2; // Activity: Listening
@@ -450,6 +452,7 @@ function updateCallback() {
         cppData: NMF.TITLE + currentMessage.title + NMF.AUTHOR + currentMessage.author + NMF.TIME_LEFT + Math.round(currentMessage.timeLeft) + NMF.END,
         jsTitle: currentMessage.title,
         jsAuthor: currentMessage.author,
+        jsAlbum: currentMessage.album,
         jsTimeLeft: currentMessage.timeLeft,
         jsVideoUrl: currentMessage.videoUrl,
         jsChannelUrl: currentMessage.channelUrl,
@@ -488,7 +491,7 @@ let pipeInterval = setInterval(function () {
     if (previousMessage.timeLeft >= currentMessage.timeLeft && ((1000 * (previousMessage.timeLeft - currentMessage.timeLeft) < 2 * NORMAL_MESSAGE_DELAY) || (previousMessage.timeLeft == LIVESTREAM_TIME_ID && currentMessage.timeLeft != LIVESTREAM_TIME_ID))) {
         skipMessage = true;
     }
-    if (!(previousMessage.title == currentMessage.title && previousMessage.author == currentMessage.author && previousMessage.thumbnailUrl == currentMessage.thumbnailUrl && skipMessage)) {
+    if (!(previousMessage.title == currentMessage.title && previousMessage.author == currentMessage.author && previousMessage.album == currentMessage.album && previousMessage.thumbnailUrl == currentMessage.thumbnailUrl && skipMessage)) {
         if (nativeVersionStatus < 0) {
             function getNativeVersion() {
                 sendNativeMessage({ getNativeVersion: true });
@@ -500,6 +503,7 @@ let pipeInterval = setInterval(function () {
 
     previousMessage.title = currentMessage.title;
     previousMessage.author = currentMessage.author;
+    previousMessage.album = currentMessage.album;
     previousMessage.timeLeft = currentMessage.timeLeft;
     previousMessage.thumbnailUrl = currentMessage.thumbnailUrl;
     isIdle = false;
