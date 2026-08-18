@@ -4,6 +4,6 @@
     "path": "YTDPwin.exe",
     "type": "stdio",
     "allowed_extensions": [
-        "@youtube-discord-presence"
+        "@youtubediscordpresence"
     ]
 }
