@@ -1,14 +1,6 @@
-Host/main.dSYM
-Host/log.txt
-Extension.zip
 .DS_Store
-Host/YTDPwin/x64
-Host/YTDPwin/YTDPwin/log.txt
-Host/YTDPwin/YTDPwin/x64
-Host/YTDPwin/UpgradeLog.htm
-Host/YTDPwin/UpgradeLog2.htm
-Host/YTDPwin/YTDPsetup/Debug
-Host/YTDPwin/YTDPsetup/Release
+Host/YTDPsetup/Debug
+Host/YTDPsetup/Release
 .vscode
 .vs
 *.o
@@ -19,8 +11,5 @@ Host/YTDPwin/YTDPsetup/Release
 NodeHost/node_modules
 NodeHost/src/app-linux
 NodeHost/src/app-macos
-test.js
-config.json
-test.bat
 .env
 NodeHost/src/version.json

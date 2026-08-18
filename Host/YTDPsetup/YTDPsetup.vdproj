@@ -126,7 +126,7 @@
         {
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0030902FCCA648D8998B57F8355B7CBD"
             {
-            "SourcePath" = "8:..\\..\\main-firefox.json"
+            "SourcePath" = "8:..\\main-firefox.json"
             "TargetName" = "8:main-firefox.json"
             "Tag" = "8:"
             "Folder" = "8:_56A3632D70DB4D05A6394C0929BF78F7"
@@ -146,7 +146,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6B301B626CF14E41AFC478258D1BB7CF"
             {
-            "SourcePath" = "8:..\\..\\YTDPlogo.ico"
+            "SourcePath" = "8:..\\YTDPlogo.ico"
             "TargetName" = "8:YTDPlogo.ico"
             "Tag" = "8:"
             "Folder" = "8:_56A3632D70DB4D05A6394C0929BF78F7"
@@ -166,7 +166,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A1AA4834500941F59C4EB22662479FE4"
             {
-            "SourcePath" = "8:..\\..\\..\\NodeHost\\src\\YTDPwin.exe"
+            "SourcePath" = "8:..\\..\\NodeHost\\src\\YTDPwin.exe"
             "TargetName" = "8:YTDPwin.exe"
             "Tag" = "8:"
             "Folder" = "8:_56A3632D70DB4D05A6394C0929BF78F7"
@@ -186,7 +186,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B0C7DA1524844F76A68B5FD5DB65EB7F"
             {
-            "SourcePath" = "8:..\\..\\main.json"
+            "SourcePath" = "8:..\\main.json"
             "TargetName" = "8:main.json"
             "Tag" = "8:"
             "Folder" = "8:_56A3632D70DB4D05A6394C0929BF78F7"
