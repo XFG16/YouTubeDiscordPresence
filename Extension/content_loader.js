@@ -17,6 +17,7 @@ window.addEventListener("SendToLoader", function (message) {
         messageType: UPDATE_PRESENCE_MESSAGE,
         title: message.detail.title,
         author: message.detail.author,
+        album: message.detail.album,
         timeLeft: message.detail.timeLeft,
         duration: message.detail.duration,
         videoId: message.detail.videoId,

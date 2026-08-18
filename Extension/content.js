@@ -122,12 +122,31 @@ function sendDocumentData() {
     }
 }
 
+// EXTRACT ALBUM FROM YOUTUBE MUSIC DOM
+
+function extractAlbumFromDOM() {
+    if (!window.location.href.includes("music.youtube")) return null;
+    const byline =
+        document.querySelector('yt-formatted-string.byline.ytmusic-player-bar') ||
+        document.querySelector('.subtitle.ytmusic-player-bar yt-formatted-string.byline') ||
+        document.querySelector('ytmusic-player-bar .byline');
+
+    if (!byline) return null;
+
+    const links = byline.querySelectorAll('a');
+
+    return links.length >= 2
+        ? (links[links.length - 1].textContent?.trim() || null)
+        : null;
+}
+
 // SEPARATE FUNCTION FOR LIVESTREAM DATA OR MINIPLAYERS THAT INCLUDE THE AUTHOR
 
 function handleYouTubeData() {
     let livestreamHTML = videoPlayer.querySelector(LIVESTREAM_ELEMENT_SELECTOR);
     documentData.videoId = getVideoId(videoPlayer.getVideoUrl());
     documentData.applicationType = window.location.href.includes("music.youtube") ? "youtubeMusic" : "youtube";
+    documentData.album = extractAlbumFromDOM();
 
     documentData.thumbnailUrl = `https://i.ytimg.com/vi/${documentData.videoId}/mqdefault.jpg`;
 
