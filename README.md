@@ -32,7 +32,7 @@ If you've already downloaded the extension, **skip the first step!**
 <a href="https://chromewebstore.google.com/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa"><img alt="Download on the Chrome Web Store" src="https://developer.chrome.com/static/docs/webstore/branding/image/HRs9MPufa1J1h5glNhut.png" height=60px></img></a>
 <a href="https://addons.mozilla.org/en-US/firefox/addon/youtubediscordpresence/"><img alt="Download on the Firefox Addon Store" src="https://extensionworkshop.com/assets/img/documentation/publish/get-the-addon-178x60px.dad84b42.png" height=60px></img></a>
 
-2. Download the latest `YTDPsetup.msi` file in [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases) and **run it on your device** to install the secondary desktop component.
+2. Download the latest `YTDPsetup.msi` file in [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/latest) and **run it on your device** to install the secondary desktop component.
    - **Note:** Only Windows is currently supported.
 
 Still confused? Watch the **installation tutorial** on YouTube using [**<ins>this link</ins>**](https://www.youtube.com/watch?v=BWPNqPGFyL4).
