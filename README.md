@@ -26,8 +26,11 @@
 
 If you've already downloaded the extension, **skip the first step!**
 
-1. Add the [<ins>**Chrome Extension**</ins>](https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa) from the Chrome Web Store.
-   - To access personalization settings, click on the extension icon in your browser's extension menu at the top right corner of your browser.
+1. Add the extension to your browser. 
+    - Access personalization settings later by clicking on the extension (puzzle piece) button at the top right corner of your browser.
+
+<a href="https://chromewebstore.google.com/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa"><img alt="Download on the Chrome Web Store" src="https://developer.chrome.com/static/docs/webstore/branding/image/HRs9MPufa1J1h5glNhut.png" height=60px></img></a>
+<a href="https://addons.mozilla.org/en-US/firefox/addon/youtubediscordpresence/"><img alt="Download on the Firefox Addon Store" src="https://extensionworkshop.com/assets/img/documentation/publish/get-the-addon-178x60px.dad84b42.png" height=60px></img></a>
 
 2. Download the latest `YTDPsetup.msi` file in [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases) and **run it on your device** to install the secondary desktop component.
    - **Note:** Only Windows is currently supported.
@@ -66,7 +69,7 @@ Desktop application:
 Extension:
 
 - Download the `Extension` directory and load the extension into your browser manually.
-  - Make sure that the `allowed_origins` key in the JSON file involved in native messaging contains the extension's ID. This file should be found at `C:\Program Files\YouTubeDiscordPresence\main.json`.
+  - Chrome: add the local extension's ID to the `allowed_origins` array at `C:\Program Files\YouTubeDiscordPresence\main.json`.
 
 ---
 
