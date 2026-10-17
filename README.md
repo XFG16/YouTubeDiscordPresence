@@ -1,4 +1,5 @@
 # YouTubeDiscordPresence
+<h6>This Fork focuses on fixing issues quickly that takes main branch (`XFG16/YouTubeDiscordPresence`) longer to fix.</h6>
 
 <p align="left">
     <a href="https://chrome.google.com/webstore/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa" alt="Category: Social & Communication">
