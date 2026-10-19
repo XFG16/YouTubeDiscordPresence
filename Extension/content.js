@@ -122,22 +122,48 @@ function sendDocumentData() {
     }
 }
 
-// EXTRACT ALBUM FROM YOUTUBE MUSIC DOM
+// GET ALBUM FROM YOUTUBE MUSIC DOM
 
 function extractAlbumFromDOM() {
-    if (!window.location.href.includes("music.youtube")) return null;
-    const byline =
-        document.querySelector('yt-formatted-string.byline.ytmusic-player-bar') ||
-        document.querySelector('.subtitle.ytmusic-player-bar yt-formatted-string.byline') ||
-        document.querySelector('ytmusic-player-bar .byline');
+    if (!window.location.href.includes("music.youtube")) {
+        return null;
+    }
 
-    if (!byline) return null;
+    if (navigator.mediaSession && navigator.mediaSession.metadata && navigator.mediaSession.metadata.album) {
+        return navigator.mediaSession.metadata.album;
+    }
 
-    const links = byline.querySelectorAll('a');
+    let byline = document.querySelector("yt-formatted-string.byline.ytmusic-player-bar") ||
+        document.querySelector(".subtitle.ytmusic-player-bar yt-formatted-string.byline") ||
+        document.querySelector("ytmusic-player-bar .byline");
 
-    return links.length >= 2
-        ? (links[links.length - 1].textContent?.trim() || null)
-        : null;
+    if (byline) {
+        let links = byline.querySelectorAll("a");
+        for (let i = 0; i < links.length; i++) {
+            let href = links[i].getAttribute("href") || links[i].href || "";
+            if (href.includes("browse/MPREb") || href.includes("list=OLAK5uy")) {
+                return links[i].innerText.trim();
+            }
+        }
+
+        if (links.length >= 2) {
+            let lastLink = links[links.length - 1];
+            let href = lastLink.getAttribute("href") || lastLink.href || "";
+            if (!href.includes("channel/") && !href.includes("/browse/UC")) {
+                return lastLink.innerText.trim();
+            }
+        }
+    }
+
+    let queueItem = document.querySelector("ytmusic-player-queue-item[play-button-state='playing'], ytmusic-player-queue-item[selected]");
+    if (queueItem) {
+        let queueAlbum = queueItem.querySelector(".byline a[href*='browse/MPREb'], .byline a[href*='list=OLAK5uy']");
+        if (queueAlbum && queueAlbum.innerText) {
+            return queueAlbum.innerText.trim();
+        }
+    }
+
+    return null;
 }
 
 // SEPARATE FUNCTION FOR LIVESTREAM DATA OR MINIPLAYERS THAT INCLUDE THE AUTHOR
@@ -148,7 +174,7 @@ function handleYouTubeData() {
     documentData.applicationType = window.location.href.includes("music.youtube") ? "youtubeMusic" : "youtube";
     documentData.album = extractAlbumFromDOM();
 
-    documentData.thumbnailUrl = `https://i.ytimg.com/vi/${documentData.videoId}/mqdefault.jpg`;
+    documentData.thumbnailUrl = "https://i.ytimg.com/vi/" + documentData.videoId + "/mqdefault.jpg";
 
     if (!livestreamHTML) {
         getOEmbedJSON(documentData.videoId).then(data => { // TRY USING OEMBED FIRST
