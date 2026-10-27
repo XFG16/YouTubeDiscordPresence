@@ -10,6 +10,9 @@ Host/YTDPsetup/Release
 *.zip
 NodeHost/node_modules
 NodeHost/src/app-linux
+NodeHost/src/YTDPlinux-x64
+*.tar.gz
+NodeHost/.build_linux
 NodeHost/src/app-macos
 .env
 NodeHost/src/version.json

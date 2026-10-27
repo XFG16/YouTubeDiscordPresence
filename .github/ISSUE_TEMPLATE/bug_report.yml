@@ -49,6 +49,7 @@ body:
         - Windows 11
         - Windows 10
         - macOS-arm64
+        - Linux-x64 (share distro below)
     validations:
       required: true
 

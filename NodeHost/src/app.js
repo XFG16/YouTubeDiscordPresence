@@ -2,6 +2,7 @@
 // MAIN VARIABLE INITIALIZATION
 const { version } = require('./version.json');
 
+const fs = require("fs");
 let rpc = require("discord-rpc");
 
 const LOGGING = true;
@@ -18,7 +19,7 @@ const CSM = "0_SUCCESS"; // CLIENT_SUCCESS_MESSAGE
 const CEM = "1_CLIENT_ERROR"; // CLIENT_ERROR_MESSAGE
 
 // MULTI-CLIENT STATE
-// Each entry: { client, pipeIndex, ready }
+// Each entry: { client, ipcPath, ready }
 let clients = [];
 
 // SEND MESSAGE
@@ -56,9 +57,9 @@ function sendExtensionMessage(success, message, err = null) {
 
 // VERIFY DISCORD-RPC PATCH IS APPLIED
 const IPCTransport = require("discord-rpc/src/transports/ipc");
-if (!IPCTransport.prototype.connect.toString().includes("getIPCAtIndex")) {
+if (!IPCTransport.prototype.connect.toString().includes("getIPCAtPath")) {
     sendExtensionMessage(false, "FATAL_RUNTIME_ERROR", "The 'discord-rpc' package is not patched. Please run 'npm run patch' or 'npx patch-package' in the NodeHost directory.");
-    // if not applied, will only attach to pipe 0 even if multiple discord clients are found
+    // if not applied, ipcPath is ignored and every client attaches to the first pipe found, even if multiple discord clients are found
 }
 
 // PRESENCE HANDLERS
@@ -75,12 +76,12 @@ async function updatePresence(presenceData, layer) {
                 pid: process.pid,
                 activity: presenceData
             });
-            return { pipeIndex: entry.pipeIndex, success: true };
+            return { ipcPath: entry.ipcPath, success: true };
         } catch (err) {
             // Try reconnecting this specific client
             if (layer === 0) {
                 try {
-                    let newClient = new rpc.Client({ transport: "ipc", pipeIndex: entry.pipeIndex });
+                    let newClient = new rpc.Client({ transport: "ipc", ipcPath: entry.ipcPath });
                     await newClient.login({ clientId: currentApplication.id });
                     await newClient.request("SET_ACTIVITY", {
                         pid: process.pid,
@@ -89,12 +90,12 @@ async function updatePresence(presenceData, layer) {
                     // Only replace the old client after SET_ACTIVITY succeeds
                     entry.client = newClient;
                     entry.ready = true;
-                    return { pipeIndex: entry.pipeIndex, success: true, reconnected: true };
+                    return { ipcPath: entry.ipcPath, success: true, reconnected: true };
                 } catch (loginErr) {
-                    return { pipeIndex: entry.pipeIndex, success: false, error: loginErr };
+                    return { ipcPath: entry.ipcPath, success: false, error: loginErr };
                 }
             }
-            return { pipeIndex: entry.pipeIndex, success: false, error: err };
+            return { ipcPath: entry.ipcPath, success: false, error: err };
         }
     }));
 
@@ -104,7 +105,7 @@ async function updatePresence(presenceData, layer) {
     } else {
         let errors = results
             .filter(r => r.status === "fulfilled" && !r.value.success)
-            .map(r => `Pipe ${r.value.pipeIndex}: ${r.value.error}`)
+            .map(r => `${r.value.ipcPath}: ${r.value.error}`)
             .join("; ");
         sendExtensionMessage(false, "PRESENCE_UPDATING_ERROR", errors || "All clients failed");
         clearPresence();
@@ -123,11 +124,11 @@ function clearPresence(callback = null) {
                 pid: process.pid,
                 activity: null
             });
-            return { pipeIndex: entry.pipeIndex, success: true };
+            return { ipcPath: entry.ipcPath, success: true };
         } catch (err) {
             // Try reconnecting
             try {
-                let newClient = new rpc.Client({ transport: "ipc", pipeIndex: entry.pipeIndex });
+                let newClient = new rpc.Client({ transport: "ipc", ipcPath: entry.ipcPath });
                 await newClient.login({ clientId: currentApplication.id });
                 entry.client = newClient;
                 entry.ready = true;
@@ -135,9 +136,9 @@ function clearPresence(callback = null) {
                     pid: process.pid,
                     activity: null
                 });
-                return { pipeIndex: entry.pipeIndex, success: true };
+                return { ipcPath: entry.ipcPath, success: true };
             } catch (loginErr) {
-                return { pipeIndex: entry.pipeIndex, success: false, error: `${String(err)}, ${String(loginErr)}` };
+                return { ipcPath: entry.ipcPath, success: false, error: `${String(err)}, ${String(loginErr)}` };
             }
         }
     })).then((results) => {
@@ -147,7 +148,7 @@ function clearPresence(callback = null) {
         } else {
             let errors = results
                 .filter(r => r.status === "fulfilled" && !r.value.success)
-                .map(r => `Pipe ${r.value.pipeIndex}: ${r.value.error}`)
+                .map(r => `${r.value.ipcPath}: ${r.value.error}`)
                 .join("; ");
             sendExtensionMessage(false, "CLIENT_CONNECTION_ERROR", errors || "All clients failed to clear");
         }
@@ -155,32 +156,78 @@ function clearPresence(callback = null) {
     });
 }
 
+// IPC PIPE DISCOVERY
+// Each Discord client listens on discord-ipc-N, taking the first free N. On Windows these are named pipes; elsewhere they
+// are unix sockets in the runtime/temp directory, except that Flatpak and Snap builds of Discord (and of clients like
+// Vesktop) on Linux create theirs inside their sandbox's own directory, so those are searched too.
+
+const PIPE_COUNT = 4;
+
+function listDirectory(dir) {
+    try {
+        return fs.readdirSync(dir);
+    } catch (err) {
+        return [];
+    }
+}
+
+function getIPCPaths() {
+    const pipeNames = Array.from({ length: PIPE_COUNT }, (_, i) => `discord-ipc-${i}`);
+    if (process.platform === "win32") {
+        return pipeNames.map(name => `\\\\?\\pipe\\${name}`);
+    }
+
+    const { XDG_RUNTIME_DIR, TMPDIR, TMP, TEMP } = process.env;
+    const baseDir = (XDG_RUNTIME_DIR || TMPDIR || TMP || TEMP || "/tmp").replace(/\/$/, "");
+    let dirs = [baseDir];
+    if (process.platform === "linux") {
+        for (const appId of listDirectory(`${baseDir}/app`)) dirs.push(`${baseDir}/app/${appId}`); // Flatpak
+        for (const appId of listDirectory(`${baseDir}/.flatpak`)) dirs.push(`${baseDir}/.flatpak/${appId}/xdg-run`); // Flatpak (private runtime dir)
+        for (const name of listDirectory(baseDir)) {
+            if (name.startsWith("snap.")) dirs.push(`${baseDir}/${name}`); // Snap
+        }
+    }
+
+    // Flatpak users often symlink the sandboxed socket into the runtime directory, so resolve links to avoid attaching to the same client twice
+    let socketPaths = new Set();
+    for (const dir of dirs) {
+        for (const name of pipeNames) {
+            try {
+                socketPaths.add(fs.realpathSync(`${dir}/${name}`));
+            } catch (err) {
+                // pipe does not exist, skip
+            }
+        }
+    }
+    return [...socketPaths];
+}
+
 // CLIENT CONNECTION — discover and connect to ALL Discord pipes
 
 async function discoverAndConnect(shouldLog = true) {
-    let connectedPipes = new Set(clients.map(c => c.pipeIndex));
+    let connectedPipes = new Set(clients.map(c => c.ipcPath));
 
-    for (let pipeIndex = 0; pipeIndex < 4; pipeIndex++) {
-        if (connectedPipes.has(pipeIndex)) continue; // already connected
+    for (const ipcPath of getIPCPaths()) {
+        if (connectedPipes.has(ipcPath)) continue; // already connected
 
         try {
-            let client = new rpc.Client({ transport: "ipc", pipeIndex: pipeIndex });
+            let client = new rpc.Client({ transport: "ipc", ipcPath: ipcPath });
             client.on("ready", () => {
-                sendExtensionMessage(true, `CLIENT_READY_PIPE_${pipeIndex}`);
+                sendExtensionMessage(true, `CLIENT_READY (${ipcPath})`);
             });
             
             // Add disconnect handler to remove stale clients
             client.on("disconnected", () => {
-                const index = clients.findIndex(c => c.pipeIndex === pipeIndex);
+                const index = clients.findIndex(c => c.ipcPath === ipcPath);
                 if (index !== -1) {
                     clients.splice(index, 1);
-                    sendExtensionMessage(true, `CLIENT_DISCONNECTED_PIPE_${pipeIndex}`);
+                    sendExtensionMessage(true, `CLIENT_DISCONNECTED (${ipcPath})`);
                 }
             });
             
             await client.login({ clientId: currentApplication.id });
-            clients.push({ client, pipeIndex: pipeIndex, ready: true });
-            sendExtensionMessage(true, `CONNECTED_TO_PIPE_${pipeIndex}`);
+            clients.push({ client, ipcPath: ipcPath, ready: true });
+            sendExtensionMessage(true, `CONNECTED_TO_PIPE (${ipcPath})`);
         } catch (err) {
             // pipe not available or connection failed, skip
         }

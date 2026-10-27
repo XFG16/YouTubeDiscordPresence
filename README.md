@@ -7,7 +7,7 @@
         <img src="https://img.shields.io/badge/License-MIT-yellow" /></a>
 </p>
 
-**YouTubeDiscordPresence** (YTDP) is a desktop application and browser extension used to create a detailed rich presence for YouTube and YouTube Music on Discord. Only **Windows (x64)** is supported, although more operating systems may be supported in the future.
+**YouTubeDiscordPresence** (YTDP) is a desktop application and browser extension used to create a detailed rich presence for YouTube and YouTube Music on Discord. Only **Windows (x64)** and **Linux (x64)** are supported, although more operating systems may be supported in the future.
 
 <br>
 
@@ -32,8 +32,11 @@ If you've already downloaded the extension, **skip the first step!**
 <a href="https://chromewebstore.google.com/detail/youtubediscordpresence/hnmeidgkfcbpjjjpmjmpehjdljlaeaaa"><img alt="Download on the Chrome Web Store" src="https://developer.chrome.com/static/docs/webstore/branding/image/HRs9MPufa1J1h5glNhut.png" height=60px></img></a>
 <a href="https://addons.mozilla.org/en-US/firefox/addon/youtubediscordpresence/"><img alt="Download on the Firefox Addon Store" src="https://extensionworkshop.com/assets/img/documentation/publish/get-the-addon-178x60px.dad84b42.png" height=60px></img></a>
 
-2. Download the latest `YTDPsetup.msi` file in [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/latest) and **run it on your device** to install the secondary desktop component.
-   - **Note:** Only Windows is currently supported.
+2. Install the secondary desktop component from [**<ins>Releases</ins>**](https://github.com/XFG16/YouTubeDiscordPresence/releases/latest).
+   - **Windows:** download the latest `YTDPsetup.msi` file and **run it on your device**.
+   - **Linux:** download the latest `YouTubeDiscordPresence-linux-x64-*.tar.gz` file, extract it, and run `./install.sh` from the extracted folder (no `sudo` needed). Then restart your browser.
+     - To uninstall, run `./install.sh --uninstall`.
+   - **Note:** Only Windows (x64) and Linux (x64) are currently supported.
 
 Still confused? Watch the **installation tutorial** on YouTube using [**<ins>this link</ins>**](https://www.youtube.com/watch?v=BWPNqPGFyL4).
 
@@ -47,6 +50,9 @@ Still confused? Watch the **installation tutorial** on YouTube using [**<ins>thi
 
 - Ensure that the `Share my activity` setting under `Activity Privacy` is **turned on**.
 
+- **Linux:** Flatpak and Snap versions of Discord are supported. Flatpak and Snap versions of the **browser** usually can't start the desktop component because of their sandbox, so if the extension says the desktop app isn't detected, use your distribution's package of the browser instead.
+  - Supported browsers are Chrome, Chromium, Brave, Edge, Vivaldi, Thorium, Firefox, and LibreWolf. If you installed one of them after running `install.sh`, run it again.
+
 Restarting your PC usually resolves any issues, especially on first install.
 
 ---
@@ -59,17 +65,23 @@ Go [here](https://github.com/XFG16/YouTubeDiscordPresence/issues/new/choose) and
 
 ## Building
 
-Desktop application:
+Desktop application (Windows-x64):
 
 - `npm run compile`
 - Replace the existing `YTDPwin.exe` in `C:\Program Files\YouTubeDiscordPresence` with the newly compiled one.
 
 - Building the `.msi`: Download **Visual Studio 2026** with the **Microsoft Visual Studio Installer Project** extension. Open `Host\YTDPsetup\YTDPsetup.vdproj` and build `YTDPsetup`.
 
+Desktop application (Linux-x64):
+
+- `npm run compile:linux-x64`
+- This creates `src/YouTubeDiscordPresence-linux-x64-<version>.tar.gz`. Extract it and run `./install.sh`, which installs the binary to `~/.local/share/YouTubeDiscordPresence/YTDPlinux-x64` and registers the native messaging host with each installed browser.
+
 Extension:
 
 - Download the `Extension` directory and load the extension into your browser manually.
   - Chrome: add the local extension's ID to the `allowed_origins` array at `C:\Program Files\YouTubeDiscordPresence\main.json`.
+  - Chrome on Linux: add it to the `allowed_origins` array in `com.ytdp.discord.presence.json`, in the browser's `NativeMessagingHosts` folder (for example, `~/.config/google-chrome/NativeMessagingHosts`).
 
 ---
 
